@@ -3,9 +3,24 @@ https://github.com/thepharaohart/Obsidian-CyberGlow
 I want to coppy this theme, and change some of the visuals to the Liquid Neon Theme. 
 this theme works and looks a ton like what i plan to make.
 
-Questions: Would it be better to just m,ake this as an obsidian plugin? or both a theme and a plugin? 
+Questions: Would it be better to just m,ake this as an obsidian plugin? or both a theme and a plugin?
 
-Major differences: 
+> ANSWER (decided 2026-05-31): **Both — theme-first.**
+> Build the look as a CSS **theme** that is **Style Settings**-compatible (the Style Settings
+> community plugin auto-generates the softness/contrast slider + color pickers from CSS
+> comments — no custom plugin needed for those). The theme covers ~90% of the goal,
+> including a *default* whole-app background (transparent panes + a body-level background),
+> and it can be submitted to community themes on its own.
+> Add a **small companion plugin** ONLY for what CSS can't do: the **user-changeable
+> background from a local image file** (file picker + persistence) and the **contrast-guard
+> auto-scrim** that keeps text ≥ 4.5:1 over any image. The plugin stays optional — users who
+> skip it still get the default background.
+> Caveat: the graph view is canvas-rendered, so we can set neon *colors* for nodes/edges but
+> can't add true per-node glow — plan for "neon colors, light glow," not full bloom.
+> Avoid a single all-in-one plugin: it reinvents theming in JS and loses the community-theme
+> distribution channel. Full design spec: ./Liquid-Neon-Design-Spec-from-Mythos-Writer.md
+
+Major differences:
 Background:
 I want a background immage (Make it changeable in the app if posible.)
 Make this the default background:
