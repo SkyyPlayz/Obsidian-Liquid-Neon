@@ -1,0 +1,53 @@
+I found a beautiful theme in obsidian! called Obsidian-CyberGlow
+https://github.com/thepharaohart/Obsidian-CyberGlow 
+I want to coppy this theme, and change some of the visuals to the Liquid Neon Theme. 
+this theme works and looks a ton like what i plan to make.
+
+Major differences: 
+Background:
+I want a background immage (Make it changeable in the app if posible.)
+Make this the default background:
+ ![background](immages/Background1.png)
+
+
+Boarders:
+I want everything to use a transparent glass like in apples Liquid glass theme. 
+but with a neon border, using cyan, violet, and magenta glow for the boarders like in the immage below 
+![alt text](<immages/Luquid Neon Example 1.png>) 
+
+Mouse Hover:
+I want the mouse hover to look similar to the hover in Obsidian-CyberGlow, where it adds a border, and fills it in with the theme color in a slight opacity. 
+Below is an exampel of how it looks in Obsidian theme CyberGlow:
+![alt text](<immages/CyberGlow hover example1.png>)
+
+Buit i want a neon frame; 
+Neone frame examlpe:![alt text](<immages/neon-frames- Example 1.jpg>)
+
+so it will look something like this: ![alt text](<immages/Liquid Neon button hover example 1.png>)
+But with an inner glow like in the Cyber glow example.
+
+
+Navigation bar: 
+in CyberGlow the navagation bar looks like this:
+
+ ![alt text](<immages/CyberGlow, navagation example1.png>)
+
+
+ i want it to look more like this:
+
+![alt text](<immages/Liquid neon navigator example .png>)
+
+but i want to keep the blue lines on the side bar from CyberGlow:
+
+![alt text](<immages/CyberGlow navigator example 2.png>)
+
+
+
+Graph view:
+I want to impliment the Liquid Neon graph view, where the nodes look like neon stars, and the connection lines look like neone lines. 
+Examples: 
+
+![alt text](<immages/Cosmic neon grapgh view example.png>)
+
+
+![alt text](<immages/Liquid Neon Graph view.png>)
