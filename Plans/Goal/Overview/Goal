@@ -3,11 +3,19 @@ https://github.com/thepharaohart/Obsidian-CyberGlow
 I want to coppy this theme, and change some of the visuals to the Liquid Neon Theme. 
 this theme works and looks a ton like what i plan to make.
 
+Questions: Would it be better to just m,ake this as an obsidian plugin? or both a theme and a plugin? 
+
 Major differences: 
 Background:
 I want a background immage (Make it changeable in the app if posible.)
 Make this the default background:
  ![background](immages/Background1.png)
+
+ I found a plugin that changes the background. 
+ https://github.com/shmolf/obsidian-editor-background
+
+ this plugin has some problems. it only changes the background of the text window. i want to set the background of the entire app. 
+ and the immage input is weblink only. i want to be able to add a .png or other immage file. 
 
 
 Boarders:
@@ -51,3 +59,17 @@ Examples:
 
 
 ![alt text](<immages/Liquid Neon Graph view.png>)
+
+
+Selected page Highlight: 
+In CyberGlow it highlights the page you have selected.
+Example1: i clicked to the right bar and it highlited it. 
+
+![alt text](<immages/Right bar highlight example.png>)
+
+Example2: i selected the text window. 
+
+![alt text](<immages/Text Window Highlight example.png>)
+
+I DO NOT like this. id rather you do the opposite. make the selected window sharper and clearer, and have the rest slightly more blurred. but id make it subtle. 
+
