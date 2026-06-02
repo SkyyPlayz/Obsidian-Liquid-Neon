@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Obsidian-Liquid-Neon is currently in the design/planning phase.
+# These jobs are stubs that pass immediately so branch protection can be
+# configured against required status checks from day one.
+# Each stub must be replaced with real tooling once CSS/JS development begins.
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint placeholder
+        run: echo "No lintable source yet — placeholder passes. Replace with eslint/stylelint once CSS dev begins."
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Typecheck placeholder
+        run: echo "No TypeScript source yet — placeholder passes. Replace with tsc once TS dev begins."
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test placeholder
+        run: echo "No test suite yet — placeholder passes. Replace with vitest/jest once code exists."
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build placeholder
+        run: echo "No build step yet — placeholder passes. Replace with the theme's build command once dev begins."
