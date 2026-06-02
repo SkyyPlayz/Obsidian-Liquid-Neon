@@ -19,7 +19,9 @@ The `plugin/Liquid-Neon-Companion/` folder is a placeholder for a small companio
 
 ## Attribution
 
-> **TODO (Phase 0.1):** Confirm exact attribution text once the CyberGlow license review is complete and insert it here.
+Liquid Neon is built on top of [Obsidian-CyberGlow](https://github.com/thepharaohart/Obsidian-CyberGlow)
+by ArtexJay, licensed under the MIT License. Full license text and attribution details are in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Target Obsidian Version
 
