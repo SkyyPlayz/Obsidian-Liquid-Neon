@@ -130,6 +130,10 @@ Internal class names drift between Obsidian releases, so all selectors and struc
 
 Pull requests are welcome. Please open an issue first for significant changes.
 
+Read [`docs/testing-strategy.md`](docs/testing-strategy.md) before writing or reviewing any test.
+It covers the pyramid shape, boundary-value analysis, regression discipline, and all other
+techniques required by the Code Quality Standard.
+
 ## Known limitations
 
 - **Dark mode only (v1).** A light-mode variant is not included. The theme forces dark mode via `body.theme-light { … }` overrides; light-mode users will see a fully dark UI.
