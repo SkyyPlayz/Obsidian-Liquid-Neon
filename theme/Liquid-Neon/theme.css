@@ -6186,6 +6186,224 @@ body:not(.CG-Fullstatus-off) .status-bar {
    ================================================================ */
 
 /* ================================================================
+   LIQUID NEON — Phase 2: Interaction States (SKY-290)
+   Transform CyberGlow hover/focus/active → --ln-* tokens.
+   Keep CyberGlow selectors; replace glow/fill/ring visual values.
+   Never inline literal hex or rgba here.
+   ================================================================ */
+
+/* @settings
+name: Liquid Neon
+id: LN
+settings:
+  -
+    id: LN-hover-glow-strength
+    title: Hover glow strength (0–3)
+    description: Multiplier for the neon frame spread on hover. 0 = off, 1 = default, 3 = intense.
+    type: variable-number-slider
+    min: 0
+    max: 3
+    step: 0.25
+    default: 1
+  -
+    id: LN-hover-border-alpha
+    title: Hover neon rim opacity (0–1)
+    description: Alpha of the 1 px neon border that appears on hover.
+    type: variable-number-slider
+    min: 0
+    max: 1
+    step: 0.05
+    default: 0.8
+  -
+    id: LN-focus-ring-width
+    title: Keyboard-focus ring width (px, 1–6)
+    description: Width of the neon focus ring shown during Tab-key navigation (a11y).
+    type: variable-number-slider
+    min: 1
+    max: 6
+    step: 1
+    default: 2
+    format: px
+*/
+
+/* ----------------------------------------------------------------
+   2.0 — Bridge Style Settings → runtime tokens
+   --ln-hover-glow-str: tunable multiplier (0–3, default 1)
+   --ln-hover-border-alpha: tunable rim opacity (0–1, default 0.8)
+   --ln-focus-ring-width: tunable focus ring px (1–6, default 2px)
+   --ln-hover-shadow / --ln-focus-shadow: computed from the above
+   ---------------------------------------------------------------- */
+body {
+  --ln-hover-glow-str: var(--LN-hover-glow-strength, 1);
+  --ln-hover-border-alpha: var(--LN-hover-border-alpha, 0.8);
+  --ln-focus-ring-width: var(--LN-focus-ring-width, 2px);
+
+  /* Computed hover shadow: outer magenta + violet bloom, inner tinted rim */
+  --ln-hover-shadow:
+    0 0 calc(18px * var(--ln-hover-glow-str)) var(--ln-magenta),
+    0 0 calc(36px * var(--ln-hover-glow-str)) var(--ln-violet),
+    inset 0 0 calc(8px * var(--ln-hover-glow-str)) rgba(255, 43, 214, 0.12),
+    inset 0 0 0 var(--ln-border-width) rgba(255, 43, 214, var(--ln-hover-border-alpha));
+
+  /* Computed focus shadow: strong cyan ring + violet bloom */
+  --ln-focus-shadow:
+    0 0 0 var(--ln-focus-ring-width) rgba(0, 229, 255, 0.9),
+    0 0 calc(20px * var(--ln-hover-glow-str)) var(--ln-cyan),
+    0 0 calc(40px * var(--ln-hover-glow-str)) var(--ln-violet),
+    inset 0 0 10px rgba(0, 229, 255, 0.12);
+}
+
+/* ----------------------------------------------------------------
+   2.1 — Neon-frame hover: buttons + dropdowns
+   CyberGlow: box-shadow var(--text-accent) → LN: --ln-hover-shadow
+   Phase 1 remaps --text-accent → --ln-cyan; Phase 2 promotes to
+   the full magenta+violet hover frame.
+   ---------------------------------------------------------------- */
+.theme-dark button:not(
+  .clickable-icon,
+  [aria-label='Sticker'],
+  .mod-warning
+):not(
+  .markdown-rendered button.copy-code-button,
+  .excalidraw .color-picker__button,
+  button.context-menu-item,
+  .excalidraw .help-icon,
+  .excalidraw .dropdown-menu-button,
+  .excalidraw .ToolIcon_type_button--show
+):hover,
+.theme-dark .dropdown:hover,
+.theme-dark .style-settings-export:hover,
+.theme-dark .style-settings-import:hover,
+.theme-dark .metadata-container .metadata-add-button:hover {
+  box-shadow: var(--ln-hover-shadow);
+  background-color: var(--ln-state-hover);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Copy code / code-block flair hover */
+.theme-dark .markdown-rendered button.copy-code-button:hover,
+.theme-dark .markdown-source-view.mod-cm6 .code-block-flair:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* ----------------------------------------------------------------
+   2.2 — Apply neon frame to all interactive surfaces
+   ---------------------------------------------------------------- */
+
+/* Settings headings, tree items, menu items, nav items */
+.theme-dark .setting-item.setting-item-heading.style-settings-heading:hover,
+.theme-dark .tree-item-self.is-clickable:hover,
+.theme-dark .menu-item:hover,
+.theme-dark .vertical-tab-nav-item:hover,
+.theme-dark .community-item:hover {
+  box-shadow: var(--ln-hover-shadow);
+  background-color: var(--ln-state-hover);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Workspace tabs */
+.theme-dark .workspace .mod-root .workspace-tab-header:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* File-explorer rows */
+.theme-dark .nav-file-title:hover,
+.theme-dark .nav-folder-title:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Ribbon icons */
+.theme-dark .workspace-ribbon.side-dock-ribbon .clickable-icon:hover,
+.theme-dark .workspace-ribbon .side-dock-ribbon-action:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Callout pills (collapsible callout title hover) */
+.theme-dark .callout.is-collapsible .callout-title:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* ----------------------------------------------------------------
+   2.3 — Keyboard-focus ring (a11y)
+   CyberGlow has no focus-visible handling; Liquid Neon adds a
+   strong neon ring so Tab navigation is visible on every surface.
+   ---------------------------------------------------------------- */
+
+/* Universal :focus-visible neon ring */
+.theme-dark :focus-visible {
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 2px;
+  box-shadow: var(--ln-focus-shadow);
+  transition:
+    outline var(--ln-duration-fast) var(--ln-easing-out),
+    box-shadow var(--ln-duration-fast) var(--ln-easing-out);
+}
+
+/* Suppress browser default outline when :focus-visible handles it */
+.theme-dark :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* File-explorer keyboard focus (.has-focus class — Obsidian's own pattern) */
+.theme-dark .workspace-leaf.mod-active .tree-item-self.has-focus {
+  box-shadow: var(--ln-focus-shadow);
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Input / textarea focus */
+.theme-dark textarea:focus-visible,
+.theme-dark input[type='text']:focus-visible,
+.theme-dark input[type='search']:focus-visible,
+.theme-dark input[type='email']:focus-visible,
+.theme-dark input[type='password']:focus-visible,
+.theme-dark input[type='number']:focus-visible,
+.theme-dark select:focus-visible {
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 0;
+  box-shadow: var(--ln-focus-shadow);
+}
+
+/* ----------------------------------------------------------------
+   2.4 — Reduced motion: disable glow transitions, keep static glow
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark :focus-visible,
+  .theme-dark button:hover,
+  .theme-dark .clickable-icon:hover,
+  .theme-dark .menu-item:hover,
+  .theme-dark .nav-file-title:hover,
+  .theme-dark .nav-folder-title:hover,
+  .theme-dark .tree-item-self.is-clickable:hover,
+  .theme-dark .workspace-tab-header:hover,
+  .theme-dark .callout.is-collapsible .callout-title:hover {
+    transition: none;
+  }
+}
+
+.theme-dark.CG-disableAni :focus-visible,
+.theme-dark .CG-disableAni button:hover,
+.theme-dark .CG-disableAni .menu-item:hover,
+.theme-dark .CG-disableAni .tree-item-self.is-clickable:hover {
+  transition: none;
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 2
+   ================================================================ */
+
+/* ================================================================
    LIQUID NEON — Phase 4: Graph View (SKY-292)
    Reskin CyberGlow graph styles → LN --ln-* tokens.
    Canvas caveat (locked): neon colors + light container glow only.
