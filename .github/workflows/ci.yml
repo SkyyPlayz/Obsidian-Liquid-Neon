@@ -78,13 +78,20 @@ jobs:
         working-directory: plugin/Liquid-Neon-Companion
         run: npm install --no-audit --no-fund
 
+      - name: Bundle fuzz harness (TypeScript → CJS via esbuild)
+        working-directory: plugin/Liquid-Neon-Companion
+        # Jazzer.js CLI cannot load .ts files directly — it resolves them as .ts.js.
+        # Pre-bundle to CJS so Node can load the harness; esbuild --platform=node
+        # automatically externalises all Node built-ins (fs, os, path).
+        run: npx esbuild src/fuzz/image-bytes-fuzz.ts --bundle --outfile=.fuzz/harness.cjs --platform=node --format=cjs
+
       - name: Run Jazzer.js fuzz harness (60 s)
         working-directory: plugin/Liquid-Neon-Companion
-        # jazzer CLI: first positional arg = harness module, --fuzz_time = wall-clock cap (seconds).
-        # Seed corpus is provided so the fuzzer starts from known-interesting inputs
-        # rather than random bytes, maximising coverage in 60 s.
+        # jazzer CLI: first positional arg = harness module (compiled CJS).
+        # Seed corpus provides known-interesting inputs to maximise coverage in 60 s.
+        # -max_total_time=60 is a libFuzzer flag passed after --.
         run: |
-          npx jazzer src/fuzz/image-bytes-fuzz.ts \
+          npx jazzer .fuzz/harness.cjs \
             src/fuzz/corpus/ \
             -- -max_total_time=60
         timeout-minutes: 3

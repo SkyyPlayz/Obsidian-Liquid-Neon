@@ -8,7 +8,8 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "test": "vitest run",
     "test:watch": "vitest",
-    "fuzz": "jazzer src/fuzz/image-bytes-fuzz.ts src/fuzz/corpus/ -- -max_total_time=60"
+    "fuzz:build": "esbuild src/fuzz/image-bytes-fuzz.ts --bundle --outfile=.fuzz/harness.cjs --platform=node --format=cjs",
+    "fuzz": "npm run fuzz:build && jazzer .fuzz/harness.cjs src/fuzz/corpus/ -- -max_total_time=60"
   },
   "keywords": ["obsidian", "obsidian-plugin"],
   "author": "SkyyPlayz",
