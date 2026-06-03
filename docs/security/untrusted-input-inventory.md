@@ -2,7 +2,7 @@
 
 **Scope:** Companion plugin (`plugin/Liquid-Neon-Companion/`) only.  
 **Theme CSS surfaces** (purely declarative; no runtime parser) are out of scope.  
-**Last updated:** 2026-06-03 (SKY-373)
+**Last updated:** 2026-06-03 (SKY-580)
 
 ---
 
@@ -17,9 +17,9 @@
 | **Trust boundary crossed** | Filesystem read. Path comes from Obsidian's native dialog but is persisted via Obsidian's `loadData()` / `saveData()` (JSON in vault's `.obsidian/plugins/liquid-neon-companion/data.json`) |
 | **Risk** | **Path traversal.** A malicious shared vault can set `imagePath` to `../../../../etc/passwd` or any other arbitrary path. `fs.readFileSync` will follow the path without validation. Extension-based MIME detection (line 60–67) is also bypass-able via double extension: `evil.sh.png`. |
 | **Exploit class** | CWE-22 (Path Traversal), CWE-73 (External Control of File Name/Path) |
-| **Current mitigation** | None. `validateImagePath()` in `src/utils.ts` (added in SKY-373) blocks NUL-byte injection and non-image extensions, but does NOT block `..` traversal. |
-| **Required fix** | Resolve path with `path.resolve(imagePath)` and verify it starts with an allowed root directory (e.g. vault root or user's home). Tracked as residual risk — follow-up required. |
-| **Property test** | `src/__tests__/scrim-math.property.test.ts` — `validateImagePath` suite |
+| **Current mitigation** | `validateImagePath()` blocks NUL-byte injection and non-image extensions. `resolvedInsideRoot()` (added in SKY-580) resolves all `..` segments and verifies the result starts within `os.homedir()`, closing the path-traversal gap. Both checks run in `imagePathToObjectUrl` before `fs.readFileSync`. |
+| **Required fix** | ~~Fixed in SKY-580.~~ No further action required for path traversal. |
+| **Property test** | `src/__tests__/scrim-math.property.test.ts` — `validateImagePath` suite; `src/__tests__/settings-roundtrip.property.test.ts` — `resolvedInsideRoot` SKY-580 regression suite |
 | **Fuzz harness** | `src/fuzz/image-bytes-fuzz.ts` |
 
 ---
@@ -76,10 +76,10 @@
 
 ## Residual risks and follow-ups
 
-1. **`..` path traversal not blocked by `validateImagePath`.** A call-site guard (`path.resolve + startsWith`) is still required. No current ticket — security engineer to file follow-up.
-2. **`scrimAlpha` type confusion** on `Object.assign` — no schema validator added yet. Property test documents the gap (commented-out assertion in `settings-roundtrip.property.test.ts:65`).
+1. ~~**`..` path traversal not blocked by `validateImagePath`.**~~ **Fixed in [SKY-580](/SKY/issues/SKY-580).** `resolvedInsideRoot()` added to `src/utils.ts`; guard wired in `imagePathToObjectUrl` before `fs.readFileSync`. Regression suite in `settings-roundtrip.property.test.ts`.
+2. **`scrimAlpha` type confusion** on `Object.assign` — no schema validator added yet. Property test documents the gap (commented-out assertion in `settings-roundtrip.property.test.ts`).
 3. **DOM-dependent surfaces** (`computeScrimAlpha` canvas path, `Blob`, `URL.createObjectURL`) cannot be exercised by the headless fuzz harness. E2E coverage is deferred to integration test work.
 
 ---
 
-*Inventory maintained by SecurityEngineer. See [SKY-373](/SKY/issues/SKY-373) for context.*
+*Inventory maintained by SecurityEngineer. See [SKY-373](/SKY/issues/SKY-373) and [SKY-580](/SKY/issues/SKY-580) for context.*
