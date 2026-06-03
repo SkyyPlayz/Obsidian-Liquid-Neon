@@ -6230,6 +6230,15 @@ body.theme-dark {
   background: transparent !important;
 }
 
+/* SKY-723 (LN-26): Ensure main-area plugin views are dark-themed.
+   Without this, plugin panes that don't use .node-insert-event (e.g.
+   Smart Connections "What's new", other custom views) get the CyberGlow
+   active-pane highlight tint as their only background — visible as a
+   light lavender section on dark. Apply the LN glass base explicitly. */
+.theme-dark .workspace-split.mod-root .workspace-leaf-content .view-content {
+  background-color: var(--ln-glass-bg) !important;
+}
+
 /* ----------------------------------------------------------------
    1.2 / 1.3 — Glass surface base applied to all chrome
    Each surface:
