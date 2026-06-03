@@ -124,6 +124,7 @@ Pull requests are welcome. Please open an issue first for significant changes.
 - **Graph view: neon colors, light glow.** The graph view is recolored to the Liquid Neon palette (cyan nodes, violet links, magenta tags). The canvas API limits fine-grained shadow effects, so the "glow" is approximated rather than pixel-perfect. See [SKY-292](/SKY/issues/SKY-292) for detail.
 - **Obsidian version pin.** Theme selectors are tested against Obsidian **1.13.0**. Internal class names drift between releases; selectors may need a re-snapshot after major upgrades.
 - **Companion plugin optional.** Custom background images and the contrast-guard scrim require the Liquid Neon Companion plugin. Without it, all functionality works but the background is the default deep-black.
+- **Glass opacity + bright wallpaper contrast.** Setting glass surface opacity below ~0.30 over a bright system wallpaper can drop body text contrast below WCAG AA (4.5:1). The default opacity (0.72) over a dark desktop passes AAA (14:1). If you use a light/white wallpaper, enable **High-contrast mode** in Style Settings — it makes all glass surfaces fully opaque regardless of the opacity slider.
 
 ---
 
