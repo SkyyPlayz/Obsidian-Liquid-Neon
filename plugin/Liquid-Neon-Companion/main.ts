@@ -18,7 +18,7 @@ const WCAG_AA_RATIO = 4.5;
 const TEXT_LUMINANCE = 0.85;
 
 export default class LiquidNeonCompanion extends Plugin {
-  settings: LiquidNeonSettings;
+  settings!: LiquidNeonSettings;
 
   private styleEl: HTMLStyleElement | null = null;
   private scrimEl: HTMLElement | null = null;
