@@ -115,13 +115,13 @@ jobs:
       - name: Build self-contained theme.css
         run: node scripts/build-theme.js
 
-      - name: Verify both theme.css paths are in sync
+      - name: Verify committed files match build output
         run: |
-          if ! diff -q theme/Liquid-Neon/theme.css theme.css > /dev/null; then
-            echo "ERROR: theme/Liquid-Neon/theme.css and theme.css differ — run 'npm run build:theme' and commit both."
+          if ! git diff --exit-code -- theme/Liquid-Neon/theme.css theme.css > /dev/null; then
+            echo "ERROR: committed theme.css files are stale — run 'npm run build:theme' and commit both."
             exit 1
           fi
-          echo "theme.css sync check passed ✓"
+          echo "theme.css build-output check passed ✓"
 
       - name: Verify all --ln-* tokens are defined
         run: |
