@@ -11,20 +11,51 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Lint placeholder
-        run: echo "No lintable source yet — placeholder passes. Replace with eslint/stylelint once CSS dev begins."
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Lint CSS
+        run: npm run lint:css
 
   typecheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Typecheck placeholder
-        run: echo "No TypeScript source yet — placeholder passes. Replace with tsc once TS dev begins."
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install plugin dependencies
+        working-directory: plugin/Liquid-Neon-Companion
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck plugin
+        working-directory: plugin/Liquid-Neon-Companion
+        run: npx tsc --noEmit --skipLibCheck
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Test placeholder
-        run: echo "No test suite yet — placeholder passes. Replace with vitest/jest once code exists."
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install plugin dependencies
+        working-directory: plugin/Liquid-Neon-Companion
+        run: npm install --no-audit --no-fund
+
+      - name: Run tests
+        working-directory: plugin/Liquid-Neon-Companion
+        run: npx vitest run --passWithNoTests
 
   build:
     runs-on: ubuntu-latest
