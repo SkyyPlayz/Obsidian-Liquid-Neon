@@ -53,9 +53,49 @@ jobs:
         working-directory: plugin/Liquid-Neon-Companion
         run: npm install --no-audit --no-fund
 
-      - name: Run tests
+      - name: Run property-based tests (Vitest + fast-check)
         working-directory: plugin/Liquid-Neon-Companion
-        run: npx vitest run --passWithNoTests
+        run: npm test
+
+  fuzz:
+    # 60-second fuzz run on ubuntu-latest (NOT self-hosted — see SKY-373 memory note).
+    # Jazzer.js uses libFuzzer under the hood; ubuntu-latest runners have the required
+    # clang/LLVM toolchain available via LLVM apt.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install LLVM / libFuzzer dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends clang llvm
+
+      - name: Install plugin dependencies
+        working-directory: plugin/Liquid-Neon-Companion
+        run: npm install --no-audit --no-fund
+
+      - name: Run Jazzer.js fuzz harness (60 s)
+        working-directory: plugin/Liquid-Neon-Companion
+        # jazzer CLI: first positional arg = harness module, --fuzz_time = wall-clock cap (seconds).
+        # Seed corpus is provided so the fuzzer starts from known-interesting inputs
+        # rather than random bytes, maximising coverage in 60 s.
+        run: |
+          npx jazzer src/fuzz/image-bytes-fuzz.ts \
+            --fuzz_time=60 \
+            src/fuzz/corpus/ \
+            -- -max_total_time=60
+        timeout-minutes: 3
+
+      - name: Upload fuzz artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-crash-artifacts
+          path: plugin/Liquid-Neon-Companion/crash-*
 
   build:
     runs-on: ubuntu-latest
