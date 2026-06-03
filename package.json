@@ -9,6 +9,7 @@
   "author": "SkyyPlayz",
   "license": "MIT",
   "devDependencies": {
+    "clean-css": "^5.3.3",
     "stylelint": "^16.18.0",
     "stylelint-config-recommended": "^14.0.0"
   }

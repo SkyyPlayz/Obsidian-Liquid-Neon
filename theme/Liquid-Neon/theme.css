@@ -343,12 +343,6 @@ settings:
       default: false
       type: class-toggle
    -
-      id: CG-active-background
-      title: Remove Active Page Highlight
-      description: Enable to Removes the active page highlight 
-      default: false
-      type: class-toggle
-   - 
       id: CG-Note
       title: Sidepanel Controls
       type: heading
@@ -1144,7 +1138,6 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     --background-modifier-hover: hsla(var(--color-accent-hsl), 0.15);
     --background-modifier-message: var(--background-tertiary);
     /*Titlebar*/
-    --titlebar-background-focused: var(--background-secondary);
     --titlebar-background: transparent;
     --titlebar-background-focused: transparent;
     /*Tab*/
@@ -1939,16 +1932,16 @@ button:not(.clickable-icon, [aria-label='Sticker']):not(.markdown-rendered butto
 /* #endregion*/
 
 /* #region -------- Scrollbar -------- */
-body:not(.native-scrollbars) ::scrollbar-thumb{
+body:not(.native-scrollbars) ::-webkit-scrollbar-thumb{
     box-shadow: inset 0em 0em 0.55em var(--text-accent);
 }
 /*Scrollbar Hover*/
-body:not(.native-scrollbars) ::scrollbar-thumb:hover {
+body:not(.native-scrollbars) ::-webkit-scrollbar-thumb:hover {
     background: var(--text-selection);
     background-clip: padding-box;
 }
 /*Scrollbar Active*/
-body:not(.native-scrollbars) ::scrollbar-thumb:active {
+body:not(.native-scrollbars) ::-webkit-scrollbar-thumb:active {
     box-shadow: inset 0em 0em 0.5em var(--text-accent);
     background-clip: padding-box;
 }
@@ -1988,7 +1981,6 @@ body:not(.is-phone) .mk-menu-suggestions{
 .menu-item:not(.is-warning):hover, .menu-item-icon:hover, .menu-item.selected:not(.is-label):not(.is-disabled):not(.is-warning), body:not(.is-grabbing) .tree-item-self.is-clickable:hover, .suggestion-item.is-selected:not(.mod-group, .bases-toolbar-menu-item):hover, .graph-control-section .tree-item-self:hover, .workspace-tab-header:hover, body:not(.is-phone) .vertical-tab-nav-item:not(:active):hover, .workspace .mod-root .workspace-tabs.mod-stacked .workspace-tab-container .workspace-tab-header:hover, .suggestion-item.is-selected:not(.mod-group, .bases-toolbar-menu-item), .mk-menu-option:not(.mk-disabled):hover, body:not(.is-grabbing) .nav-file-title:hover, body:not(.is-grabbing) .nav-folder-title:hover, .mk-blink-suggestion:hover, .setting-item.setting-item-heading.style-settings-heading.is-collapsed:hover, .workspace-leaf-content .view-content .setting-item.setting-item-heading.style-settings-heading:not(.is-collapsed):hover, .CG-FileTreeShade2 .tree-item-inner:hover, .bases-toolbar-menu-item .bases-toolbar-menu-item-info:hover, .text-icon-button:hover, .bases-toolbar-menu-container-header .back-button:hover, .is-phone .menu-item:not(.is-label):hover, .query-toolbar-menu .query-toolbar-section-header:hover, .bases-cards-item:hover{
     background-color: var(--hover-bg2);
     box-shadow: inset 0em 0em 1em var(--hover-color);
-    border-radius: var(--radius-s);
     transition:  animation 0.1s, color 0.1s;
     border-radius: 5px;
     color: var(--custom-hovercolor);
@@ -2927,12 +2919,6 @@ body:not(.is-mobile) .workspace-split.mod-left-split {
     border-radius: 0 0 5px 5px;
 }
 
-/*Highlight active page*/
-body:not(.CG-active-background) .workspace-leaf.mod-active:not(:has(table.table-editor)) .node-insert-event:not(.markdown-embed-content, .markdown-preview-view, .is-live-preview, .bases-table-container, .bases-cards-container), body:not(.CG-active-background) .workspace-leaf.mod-active iframe, body:not(.CG-active-background) .workspace-leaf.mod-active .surfing_app_zUmbJa, body:not(.CG-active-background) .workspace-split.mod-right-split .workspace-tabs .workspace-leaf.mod-active .node-insert-event, body:not(.CG-active-background) .workspace-split.mod-root .workspace-leaf.mod-active .view-content, body:not(.CG-active-background) .workspace-split.mod-horizontal .workspace-leaf.mod-active .workspace-leaf-content[data-type="style-settings"], body:not(.CG-active-background) .workspace-leaf.mod-active .mk-path-tree {
-    box-shadow: inset 0em 0em 1.25em hsl(var(--custom-windhighlight-accent));
-    background-color: var(--customewindowhighlightaccent);
-    transition: box-shadow 0.3s, background-color 0.3s;
-}
 
 .sidebar-toggle-button.mod-right .clickable-icon{
         transform: none;
@@ -3231,7 +3217,6 @@ padding-top: 5px;
 /*Styles PDF Toolbar*/
 .pdf-toolbar {
     background-color: var(--background-tertiary);
-    border-bottom: none;
     border-bottom: 2px solid;
     border-image-slice: 1;
     border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
@@ -3465,20 +3450,20 @@ border-image: linear-gradient(to left, transparent, var(--text-accent) 45%,  var
     box-pack: center;
     box-orient: horizontal;
 }
-.metadata-input-longtext::scrollbar{
+.metadata-input-longtext::-webkit-scrollbar{
     display: none;
 }
 
 /*Metadata Calendar*/
-.metadata-property ::calendar-picker-indicator{
+.metadata-property ::-webkit-calendar-picker-indicator{
     padding:3px;
     margin-left:-2px;
 }
-.metadata-property ::calendar-picker-indicator:hover {
+.metadata-property ::-webkit-calendar-picker-indicator:hover {
 border-radius: 3px;
 cursor: var(--cursor-link);
 }
-.metadata-property ::calendar-picker-indicator:active{
+.metadata-property ::-webkit-calendar-picker-indicator:active{
 background-color: var(--text-accent);
 border-radius: 3px;
 }
@@ -3739,7 +3724,7 @@ input.prompt-input, .theme-dark.is-mobile .prompt input.prompt-input, .is-phone 
 }
 
 /*Re-enables graph control scrollbar, vanilla disables it*/
-.graph-controls::scrollbar, .graph-controls::scrollbar-thumb {
+.graph-controls::-webkit-scrollbar, .graph-controls::-webkit-scrollbar-thumb {
     display: block;
 }
 /*Removes border*/
@@ -5513,7 +5498,6 @@ div.chat-view-align-right{
 	filter: blur 120px;
 	backdrop-filter: blur(18px);
 	z-index: 90 !important;
-	border-radius: 5px 5px 0 0;
 	border-image-slice: 1;
 	border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
 	border-bottom: 1px solid;
