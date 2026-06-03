@@ -47,8 +47,11 @@ export function fuzz(data: Buffer): void {
     // Fuzz bytes prepended to each allowed extension (extension spoofing)
     data.toString("latin1") + ".png",
     data.toString("latin1") + ".jpg",
-    // Path traversal attempts using fuzz content as a stem
-    path.join("..", data.slice(0, 64).toString("latin1"), "secret.png"),
+    // Path traversal attempts using fuzz content as a stem.
+    // Use string concatenation (not path.join) so Jazzer.js's built-in
+    // path-traversal detector only fires on real traversal bugs in utils.ts,
+    // not on this intentional test-harness construction.
+    "../" + data.slice(0, 64).toString("latin1") + "/secret.png",
     // NUL-byte injection: glibc truncates at NUL, so foo\0.png reads "foo"
     data.slice(0, 32).toString("latin1") + "\0.png",
     // The actual tmp file path (to exercise the happy-path branch)
