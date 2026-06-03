@@ -1,0 +1,21 @@
+{
+  "name": "liquid-neon-companion",
+  "version": "1.0.0",
+  "description": "Local background picker and contrast-guard scrim for the Liquid Neon theme.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+  },
+  "keywords": ["obsidian", "obsidian-plugin"],
+  "author": "SkyyPlayz",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "builtin-modules": "3.3.0",
+    "esbuild": "0.20.0",
+    "obsidian": "latest",
+    "tslib": "2.6.0",
+    "typescript": "5.3.3"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "liquid-neon-companion",
+  "name": "Liquid Neon Companion",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Local background picker and contrast-guard scrim for the Liquid Neon theme.",
+  "author": "SkyyPlayz",
+  "authorUrl": "https://github.com/SkyyPlayz",
+  "isDesktopOnly": true
+}
