@@ -6757,7 +6757,7 @@ body.LN-reduced-motion *::after {
   --graph-node-attachment:  var(--ln-graph-node-attachment);
   --graph-node-unresolved:  var(--ln-graph-node-unresolved);
   --graph-line:             var(--ln-graph-line);
-  --graph-bg:               transparent;
+  --graph-bg:               var(--color-base-00); /* opaque: canvas needs solid fill to clear between frames (fixes drag afterimage) */
 }
 
 /* ----------------------------------------------------------------
