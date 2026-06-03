@@ -3037,9 +3037,10 @@ body.is-frameless:not(.is-hidden-frameless) .titlebar-button-container.mod-left{
     background-repeat: no-repeat;
     border-radius: 6px;
     background-position: center;
-    background-size: 100%;
+    background-size: 80%;
     background-color: var(--text-accent);
     background-blend-mode: luminosity;
+    background-image: var(--New-Obsidiantoggle);
     width: 27px;
     height: 27px;
     margin: 2px 0 0 10px;
@@ -5387,6 +5388,13 @@ body {
     inset 0 0 0 1px var(--ln-glass-rim) !important;
 }
 
+/* CyberGlow sets margin-top: 45px to push the ribbon below the old titlebar.
+   In hidden-frameless mode the titlebar is window chrome — the ribbon must start
+   at the top of the workspace so the sidebar-toggle logo is visible. */
+body.is-hidden-frameless .workspace-ribbon.side-dock-ribbon {
+  margin-top: 0 !important;
+}
+
 /* Active/pressed ribbon icon */
 .theme-dark .workspace-ribbon .clickable-icon.is-active,
 .theme-dark .workspace-ribbon .clickable-icon.has-active-menu {
@@ -5564,4 +5572,21 @@ body {
 
 /* ================================================================
    END — Liquid Neon Phase 3
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Bug-fix patch (SKY-722)
+   ================================================================ */
+
+/* Tab close afterimage mitigation (SKY-722 bug 2).
+   Forces a GPU compositing layer on the tab container so that when a tab
+   element is removed the compositor discards its layer cleanly.
+   Targets software-rendering environments (WSLg / swiftshader) where
+   paint regions are not automatically invalidated on element removal. */
+.workspace-tab-header-container {
+  transform: translateZ(0);
+}
+
+/* ================================================================
+   END — Liquid Neon bug-fix patch
    ================================================================ */
