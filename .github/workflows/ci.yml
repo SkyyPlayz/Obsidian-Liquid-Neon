@@ -128,17 +128,17 @@ jobs:
 
       - name: Verify all --ln-* tokens are defined
         run: |
-          MISSING=$(node -e "
+          # regex uses --ln-[\w-]+(?=\s*:) to match both indented (readable) and
+          # minified ({--ln-foo:val}) token definitions in theme.css
+          node -e "
             const fs = require('fs');
             const css = fs.readFileSync('theme.css', 'utf8');
             const used = new Set((css.match(/var\(--ln-[\w-]+/g) || []).map(m => m.slice(4)));
-            const defined = new Set((css.match(/^\s+--ln-[\w-]+(?=\s*:)/gm) || []).map(m => m.trim()));
+            const defined = new Set((css.match(/--ln-[\w-]+(?=\s*:)/gm) || []).map(m => m.trim()));
             const missing = [...used].filter(t => !defined.has(t) && !t.endsWith('-'));
-            if (missing.length) { console.log(missing.join('\n')); process.exit(1); }
-          ")
-          if [ $? -ne 0 ]; then
-            echo "ERROR: undefined --ln-* tokens in theme.css:"
-            echo "$MISSING"
-            exit 1
-          fi
+            if (missing.length) {
+              process.stderr.write('ERROR: undefined --ln-* tokens in theme.css:\n' + missing.join('\n') + '\n');
+              process.exit(1);
+            }
+          "
           echo "Token completeness check passed ✓"
