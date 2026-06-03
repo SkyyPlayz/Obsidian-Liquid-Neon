@@ -5,17 +5,23 @@
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "fuzz": "jazzer src/fuzz/image-bytes-fuzz.ts --fuzz_time=60 src/fuzz/corpus/"
   },
   "keywords": ["obsidian", "obsidian-plugin"],
   "author": "SkyyPlayz",
   "license": "MIT",
   "devDependencies": {
+    "@jazzer.js/core": "^2.1.0",
     "@types/node": "^18.0.0",
     "builtin-modules": "3.3.0",
     "esbuild": "0.20.0",
+    "fast-check": "^3.20.0",
     "obsidian": "latest",
     "tslib": "2.6.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "vitest": "^1.6.0"
   }
 }

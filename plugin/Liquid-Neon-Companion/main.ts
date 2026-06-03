@@ -1,4 +1,13 @@
 import { App, Notice, Platform, Plugin, PluginSettingTab, Setting } from "obsidian";
+import {
+  WCAG_AA_RATIO,
+  TEXT_LUMINANCE,
+  sRGBtoLinear,
+  mimeFromExt,
+  extFromPath,
+  computeScrimAlphaFromLum,
+  validateImagePath,
+} from "./src/utils";
 
 interface LiquidNeonSettings {
   imagePath: string;
@@ -9,13 +18,6 @@ const DEFAULT_SETTINGS: LiquidNeonSettings = {
   imagePath: "",
   scrimAlpha: 0,
 };
-
-// WCAG AA minimum contrast ratio for normal body text.
-const WCAG_AA_RATIO = 4.5;
-
-// Relative luminance of Liquid Neon's near-white body text (#e8e8f0 ~ 0.30 rel-lum
-// after gamma; a practical safe value is 0.85 since the theme uses off-white).
-const TEXT_LUMINANCE = 0.85;
 
 export default class LiquidNeonCompanion extends Plugin {
   settings: LiquidNeonSettings;
@@ -69,28 +71,24 @@ export default class LiquidNeonCompanion extends Plugin {
     }
   }
 
-  private async imagePathToObjectUrl(path: string): Promise<string | null> {
+  private async imagePathToObjectUrl(filePath: string): Promise<string | null> {
+    if (!validateImagePath(filePath)) {
+      new Notice("Liquid Neon Companion: Image path is invalid or disallowed.");
+      return null;
+    }
+
     // Node fs is available in the Electron renderer via require().
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const fs = require("fs") as typeof import("fs");
     let buf: Buffer;
     try {
-      buf = fs.readFileSync(path);
+      buf = fs.readFileSync(filePath);
     } catch {
       new Notice("Liquid Neon Companion: Could not read background image.");
       return null;
     }
 
-    const ext = path.split(".").pop()?.toLowerCase() ?? "png";
-    const mime =
-      ext === "jpg" || ext === "jpeg"
-        ? "image/jpeg"
-        : ext === "webp"
-        ? "image/webp"
-        : ext === "gif"
-        ? "image/gif"
-        : "image/png";
-
+    const mime = mimeFromExt(extFromPath(filePath));
     const blob = new Blob([buf], { type: mime });
     return URL.createObjectURL(blob);
   }
@@ -165,25 +163,7 @@ export default class LiquidNeonCompanion extends Plugin {
 
         // 90th-percentile luminance — the representative "bright patch" value.
         const p90Lum = lums[Math.floor(lums.length * 0.9)] ?? 0;
-
-        if (p90Lum < 0.001) return resolve(0); // already near-black
-
-        const requiredBgLum =
-          (TEXT_LUMINANCE + 0.05) / WCAG_AA_RATIO - 0.05;
-
-        if (requiredBgLum < 0) {
-          // Text is so bright any bright background will pass — no scrim needed.
-          return resolve(0);
-        }
-
-        if (p90Lum <= requiredBgLum) {
-          // 90th-percentile patch is already below the threshold — no scrim.
-          return resolve(0);
-        }
-
-        const alpha = 1 - requiredBgLum / p90Lum;
-        // Cap at 0.85 to avoid a total-blackout scrim.
-        resolve(Math.min(0.85, Math.max(0, alpha)));
+        resolve(computeScrimAlphaFromLum(p90Lum));
       };
       img.onerror = () => resolve(0);
       img.src = imageUrl;
@@ -197,12 +177,6 @@ export default class LiquidNeonCompanion extends Plugin {
   async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
   }
-}
-
-// ── Utility ───────────────────────────────────────────────────────────────────
-
-function sRGBtoLinear(c: number): number {
-  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
 
 // ── Settings tab ──────────────────────────────────────────────────────────────
@@ -308,3 +282,6 @@ async function openFilePicker(): Promise<string | null> {
 
   return result.canceled ? null : result.filePaths[0] ?? null;
 }
+
+// Re-export for consumers that may import directly (e.g. the esbuild bundle).
+export { WCAG_AA_RATIO, TEXT_LUMINANCE };
