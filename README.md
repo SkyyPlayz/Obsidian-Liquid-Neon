@@ -16,6 +16,19 @@ A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep
 ### Style Settings
 ![Liquid Neon customization panel](docs/screenshots/style-settings.png)
 
+## Showcase
+
+Short animated loops showing the theme's signature interactions.
+
+### Hover glow — neon-frame on file/tab items
+![Hover glow neon frame on file row](assets/showcase/hover-glow.gif)
+
+### Focus ring — keyboard navigation highlight
+![Neon focus ring on search input](assets/showcase/focus-ring.gif)
+
+### Graph view — neon stars and arcs
+![Graph view with neon node glow and arc connections](assets/showcase/graph-view.gif)
+
 ## Color palette
 
 | Token | Value | Role |
