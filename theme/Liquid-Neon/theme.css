@@ -5919,6 +5919,15 @@ settings:
 
 /* Bridge Style Settings vars to token defaults when user changes them */
 body {
+  /* Phase 2.5 — brand color pickers (must come first; shadows below inherit these) */
+  --ln-cyan:    var(--LN-color-cyan,    #00E5FF);
+  --ln-violet:  var(--LN-color-violet,  #8A2BE2);
+  --ln-magenta: var(--LN-color-magenta, #FF2BD6);
+
+  /* Phase 2.5 — tunable glass surface opacity (0.10–1.00) */
+  --ln-glass-opacity: var(--LN-glass-opacity, 0.72);
+  --ln-glass-bg: rgba(14, 14, 18, var(--ln-glass-opacity));
+
   --ln-blur: var(--LN-glass-blur, 24px);
   --ln-saturate: var(--LN-glass-saturate, 160%);
 
@@ -6239,19 +6248,20 @@ body {
   --ln-hover-border-alpha: var(--LN-hover-border-alpha, 0.8);
   --ln-focus-ring-width: var(--LN-focus-ring-width, 2px);
 
-  /* Computed hover shadow: outer magenta + violet bloom, inner tinted rim */
+  /* Computed hover shadow: outer magenta + violet bloom, inner tinted rim
+     Uses CSS relative color syntax so these track the color picker values. */
   --ln-hover-shadow:
     0 0 calc(18px * var(--ln-hover-glow-str)) var(--ln-magenta),
     0 0 calc(36px * var(--ln-hover-glow-str)) var(--ln-violet),
-    inset 0 0 calc(8px * var(--ln-hover-glow-str)) rgba(255, 43, 214, 0.12),
-    inset 0 0 0 var(--ln-border-width) rgba(255, 43, 214, var(--ln-hover-border-alpha));
+    inset 0 0 calc(8px * var(--ln-hover-glow-str)) rgb(from var(--ln-magenta) r g b / 0.12),
+    inset 0 0 0 var(--ln-border-width) rgb(from var(--ln-magenta) r g b / var(--ln-hover-border-alpha));
 
   /* Computed focus shadow: strong cyan ring + violet bloom */
   --ln-focus-shadow:
-    0 0 0 var(--ln-focus-ring-width) rgba(0, 229, 255, 0.9),
+    0 0 0 var(--ln-focus-ring-width) rgb(from var(--ln-cyan) r g b / 0.9),
     0 0 calc(20px * var(--ln-hover-glow-str)) var(--ln-cyan),
     0 0 calc(40px * var(--ln-hover-glow-str)) var(--ln-violet),
-    inset 0 0 10px rgba(0, 229, 255, 0.12);
+    inset 0 0 10px rgb(from var(--ln-cyan) r g b / 0.12);
 }
 
 /* ----------------------------------------------------------------
@@ -6405,6 +6415,121 @@ body {
    ================================================================ */
 
 /* ================================================================
+   LIQUID NEON — Phase 2.5: Style Settings end-to-end wiring (SKY-313)
+   Brand color pickers, glass opacity, high-contrast, reduced motion.
+   All controls bridge to tokens already used by Phases 1–4 so every
+   knob affects the live UI immediately (no additional selectors needed
+   for the existing chrome — they already reference the bridged vars).
+   ================================================================ */
+
+/* @settings
+name: Liquid Neon
+id: LN
+settings:
+  -
+    id: LN-colors-heading
+    title: Brand Colors
+    type: heading
+    level: 2
+    collapsed: false
+  -
+    id: LN-color-cyan
+    title: Neon Cyan
+    description: Primary accent — tab underlines, focus rings, active file/folder selection, scrollbar.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00E5FF'
+  -
+    id: LN-color-violet
+    title: Neon Violet
+    description: Secondary accent — border gradients, scrollbar thumb, graph edges, hover bloom.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
+  -
+    id: LN-color-magenta
+    title: Neon Magenta
+    description: Tertiary accent — hover frames, gradient endpoint, heading H3.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#FF2BD6'
+  -
+    id: LN-glass-opacity
+    title: Glass surface opacity (0.10 – 1.00)
+    description: Fill opacity of frosted-glass chrome. Lower = more transparency and softness; higher = more contrast and legibility.
+    type: variable-number-slider
+    min: 0.10
+    max: 1.00
+    step: 0.05
+    default: 0.72
+  -
+    id: LN-accessibility-heading
+    title: Accessibility
+    type: heading
+    level: 2
+    collapsed: false
+  -
+    id: LN-high-contrast
+    title: High-contrast mode
+    description: Removes backdrop blur, makes glass surfaces fully opaque, and converts neon glows to solid strokes. Targets WCAG AA body text contrast.
+    type: class-toggle
+    default: false
+  -
+    id: LN-reduced-motion
+    title: Force reduced motion
+    description: Disables all glow-pulse and transition animations regardless of your OS setting.
+    type: class-toggle
+    default: false
+*/
+
+/* ----------------------------------------------------------------
+   2.5.0 — High-contrast mode (.LN-high-contrast on body)
+   Glass goes opaque, blur drops to zero, glows become solid strokes.
+   ---------------------------------------------------------------- */
+body.LN-high-contrast {
+  --ln-glass-bg: var(--ln-glass-bg-solid);
+  --ln-glass-bg-subtle: rgba(18, 18, 20, 0.96);
+  --ln-glass-bg-deep: rgba(12, 12, 16, 0.98);
+  --ln-blur: 0px;
+  --ln-glow-outer: none;
+  --ln-glow-inner: none;
+  --ln-glow-hover: none;
+  --ln-glow-subtle: none;
+  --ln-border-width: 2px;
+  --ln-hover-shadow:
+    inset 0 0 0 2px var(--ln-magenta),
+    0 0 0 1px var(--ln-magenta);
+  --ln-focus-shadow:
+    0 0 0 var(--ln-focus-ring-width) var(--ln-cyan),
+    inset 0 0 0 1px var(--ln-cyan);
+  --ln-nav-active-shadow:
+    0 0 0 1px var(--ln-cyan),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.20);
+  --ln-nav-focus-shadow:
+    0 0 0 2px var(--ln-cyan),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+/* ----------------------------------------------------------------
+   2.5.1 — Reduced-motion override (.LN-reduced-motion on body)
+   Kills all transitions/animations regardless of OS prefers-reduced-motion.
+   ---------------------------------------------------------------- */
+body.LN-reduced-motion *,
+body.LN-reduced-motion *::before,
+body.LN-reduced-motion *::after {
+  transition-duration: 0ms !important;
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 2.5
+   ================================================================ */
+
+/* ================================================================
    LIQUID NEON — Phase 4: Graph View (SKY-292)
    Reskin CyberGlow graph styles → LN --ln-* tokens.
    Canvas caveat (locked): neon colors + light container glow only.
@@ -6433,9 +6558,9 @@ body {
    ---------------------------------------------------------------- */
 .graph-view-content {
   box-shadow:
-    0 0 32px rgba(0, 229, 255, 0.07),
-    0 0 64px rgba(138, 43, 226, 0.05),
-    inset 0 0 0 1px rgba(0, 229, 255, 0.06);
+    0 0 32px rgb(from var(--ln-cyan) r g b / 0.07),
+    0 0 64px rgb(from var(--ln-violet) r g b / 0.05),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.06);
 }
 
 /* ----------------------------------------------------------------
@@ -6515,14 +6640,14 @@ body {
 
   /* Computed active-row glow — scales with user knob */
   --ln-nav-active-shadow:
-    0 0 calc(10px * var(--ln-nav-pill-glow)) rgba(0, 229, 255, 0.35),
-    inset 0 0 calc(6px * var(--ln-nav-pill-glow)) rgba(0, 229, 255, 0.12);
+    0 0 calc(10px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.35),
+    inset 0 0 calc(6px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.12);
 
   /* Stronger version for focused pane */
   --ln-nav-focus-shadow:
     0 0 calc(14px * var(--ln-nav-pill-glow)) var(--ln-cyan),
-    0 0 calc(28px * var(--ln-nav-pill-glow)) rgba(0, 229, 255, 0.25),
-    inset 0 0 calc(8px * var(--ln-nav-pill-glow)) rgba(0, 229, 255, 0.18);
+    0 0 calc(28px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.25),
+    inset 0 0 calc(8px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.18);
 }
 
 /* ----------------------------------------------------------------
@@ -6537,8 +6662,8 @@ body {
   /* Drop Phase 1's all-sides rainbow; restore left+right cyan accent */
   border-top: none !important;
   border-bottom: none !important;
-  border-left: 2px solid !important;
-  border-right: 2px solid !important;
+  border-left: var(--ln-border-width-thick) solid !important;
+  border-right: var(--ln-border-width-thick) solid !important;
   border-image-slice: 1 !important;
   border-image-source: linear-gradient(
     to bottom,
@@ -6549,7 +6674,7 @@ body {
   ) !important;
   /* Cyan-forward glow replaces Phase 1's rainbow glow */
   box-shadow:
-    0 0 14px rgba(0, 229, 255, 0.40),
+    0 0 14px rgb(from var(--ln-cyan) r g b / 0.40),
     var(--ln-glow-inner),
     inset 0 0 0 1px var(--ln-glass-rim) !important;
 }
@@ -6646,8 +6771,8 @@ body {
   border-bottom: var(--ln-tab-underline-width) solid var(--ln-cyan) !important;
   background: var(--ln-glass-bg-subtle) !important;
   box-shadow:
-    0 0 8px rgba(0, 229, 255, 0.25),
-    inset 0 0 6px rgba(0, 229, 255, 0.08);
+    0 0 8px rgb(from var(--ln-cyan) r g b / 0.25),
+    inset 0 0 6px rgb(from var(--ln-cyan) r g b / 0.08);
   border-radius: var(--ln-radius-sm) var(--ln-radius-sm) 0 0;
 }
 
@@ -6657,8 +6782,8 @@ body {
   border-bottom: var(--ln-tab-underline-width) solid var(--ln-cyan) !important;
   box-shadow:
     0 0 14px var(--ln-cyan),
-    0 0 28px rgba(0, 229, 255, 0.20),
-    inset 0 0 8px rgba(0, 229, 255, 0.12) !important;
+    0 0 28px rgb(from var(--ln-cyan) r g b / 0.20),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.12) !important;
 }
 
 /* Tab title + icon: cyan in focused active tab */
@@ -6683,8 +6808,8 @@ body {
   /* Phase 3 shadow replaces CyberGlow's inset var(--activetab-accent) */
   box-shadow:
     0 0 14px var(--ln-cyan),
-    0 0 28px rgba(0, 229, 255, 0.18),
-    inset 0 0 8px rgba(0, 229, 255, 0.10) !important;
+    0 0 28px rgb(from var(--ln-cyan) r g b / 0.18),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.10) !important;
 }
 
 /* Inactive pane tab strip: subtly dimmed + reduced saturation */

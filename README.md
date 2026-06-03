@@ -19,13 +19,67 @@ A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep
 
 ## Style Settings
 
-Install the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) community plugin to unlock the Liquid Neon configuration panel inside **Settings → Style Settings**. Adjustable options include:
+Install the **[Style Settings](https://github.com/mgmeyers/obsidian-style-settings)** community plugin to unlock the Liquid Neon configuration panel.
 
-- **Softness** — how sharp or diffuse the neon glow effect is
-- **Contrast** — scale the text/background contrast ratio
-- **Accent colors** — override each of the three palette tokens
+> The theme ships sensible defaults and works without Style Settings installed — every knob below is optional.
 
-The theme works without Style Settings; the values above are the built-in defaults.
+### Where the controls appear
+
+After installing Style Settings, open **Settings → Style Settings → Liquid Neon**.
+
+### Available controls
+
+#### Glass & Blur
+
+| Control | What it does |
+|---------|-------------|
+| **Glass blur amount** (0–40 px) | Backdrop blur applied to all frosted-glass surfaces — ribbon, sidebars, modals, command palette, status bar. |
+| **Glass backdrop saturation** (80–200 %) | Saturation multiplier applied alongside the blur. |
+| **Glass surface opacity** (0.10–1.00) | Fill opacity of glass chrome. Lower = more transparency; higher = more contrast. |
+
+#### Hover & Focus
+
+| Control | What it does |
+|---------|-------------|
+| **Hover glow strength** (0–3) | Multiplier for the neon frame spread on hover across every interactive surface. 0 = off. |
+| **Hover neon rim opacity** (0–1) | Alpha of the 1 px neon border that appears on hover. |
+| **Keyboard-focus ring width** (1–6 px) | Width of the neon ring shown during Tab-key navigation. |
+
+#### Navigation
+
+| Control | What it does |
+|---------|-------------|
+| **File explorer selection glow** (0–3) | Neon frame intensity for the selected file/folder row. |
+| **Active-tab underline width** (1–4 px) | Thickness of the neon underline under the active tab. |
+
+#### Brand Colors
+
+| Control | Default | What it affects |
+|---------|---------|-----------------|
+| **Neon Cyan** | `#00E5FF` | Tab underlines, focus rings, active selections, scrollbar |
+| **Neon Violet** | `#8A2BE2` | Border gradients, scrollbar thumb, graph edges |
+| **Neon Magenta** | `#FF2BD6` | Hover frames, gradient endpoints, heading H3 |
+
+Changing any color picker updates accent gradients, hover frames, focus rings, and graph node/edge colors in real time.
+
+#### Graph View
+
+Six color pickers for individual graph node types (default, focused, tag, attachment, unresolved) and edge lines.
+
+#### Accessibility
+
+| Control | What it does |
+|---------|-------------|
+| **High-contrast mode** | Removes backdrop blur, makes glass surfaces fully opaque, converts neon glows to solid strokes. Targets WCAG AA body text contrast. |
+| **Force reduced motion** | Disables all glow-pulse and transition animations regardless of your OS setting. Stacks with the OS-level `prefers-reduced-motion` media query. |
+
+### Defaults without Style Settings
+
+All controls fall back to their defaults — the theme is fully functional and styled out of the box. No Style Settings entry will appear in the settings panel, but the visual experience is unchanged.
+
+### Custom backgrounds and contrast guard
+
+Local-file background images and the automatic contrast-guard scrim require the optional **Liquid Neon Companion** plugin (in the `plugin/` folder). See the [Companion plugin](#companion-plugin) section below.
 
 ## Background swap
 
