@@ -6757,6 +6757,8 @@ body.LN-reduced-motion *::after {
   --graph-node-unresolved:  var(--ln-graph-node-unresolved);
   --graph-line:             var(--ln-graph-line);
   --graph-bg:               transparent;
+  /* #000 on neon fills: cyan 14.9:1, violet 5.5:1, magenta 7.8:1 — all pass WCAG AA */
+  --graph-text:             #000000;
 }
 
 /* ----------------------------------------------------------------
