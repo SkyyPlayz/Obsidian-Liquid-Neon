@@ -7,11 +7,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Obsidian-Liquid-Neon is currently in the design/planning phase.
-# These jobs are stubs that pass immediately so branch protection can be
-# configured against required status checks from day one.
-# Each stub must be replaced with real tooling once CSS/JS development begins.
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -34,5 +29,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Build placeholder
-        run: echo "No build step yet — placeholder passes. Replace with the theme's build command once dev begins."
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build self-contained theme.css
+        run: node scripts/build-theme.js
+
+      - name: Verify both theme.css paths are in sync
+        run: |
+          if ! diff -q theme/Liquid-Neon/theme.css theme.css > /dev/null; then
+            echo "ERROR: theme/Liquid-Neon/theme.css and theme.css differ — run 'npm run build:theme' and commit both."
+            exit 1
+          fi
+          echo "theme.css sync check passed ✓"
+
+      - name: Verify all --ln-* tokens are defined
+        run: |
+          MISSING=$(node -e "
+            const fs = require('fs');
+            const css = fs.readFileSync('theme.css', 'utf8');
+            const used = new Set((css.match(/var\(--ln-[\w-]+/g) || []).map(m => m.slice(4)));
+            const defined = new Set((css.match(/^\s+--ln-[\w-]+(?=\s*:)/gm) || []).map(m => m.trim()));
+            const missing = [...used].filter(t => !defined.has(t) && !t.endsWith('-'));
+            if (missing.length) { console.log(missing.join('\n')); process.exit(1); }
+          ")
+          if [ $? -ne 0 ]; then
+            echo "ERROR: undefined --ln-* tokens in theme.css:"
+            echo "$MISSING"
+            exit 1
+          fi
+          echo "Token completeness check passed ✓"

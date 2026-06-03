@@ -1,3 +1,197 @@
+/* === LN TOKENS — GENERATED BEGIN (do not edit; run scripts/build-theme.js) === */
+:root {
+  /* ============================================
+     COLOR PALETTE — Primary Brand Colors
+     ============================================ */
+
+  --ln-cyan: #00F0FF;
+  --ln-cyan-dark: #00C0CC;
+  --ln-cyan-light: #66F8FF;
+
+  --ln-violet: #9B5FFF;
+  --ln-violet-dark: #7040CC;
+  --ln-violet-light: #B98CFF;
+
+  --ln-magenta: #FF4DFF;
+  --ln-magenta-dark: #CC00CC;
+  --ln-magenta-light: #FF99FF;
+
+  /* ============================================
+     SURFACE & BACKGROUND
+     ============================================ */
+
+  --ln-surface-bg: rgba(20, 10, 40, 0.35);
+  --ln-surface-elevated: rgba(40, 20, 80, 0.5);
+  --ln-surface-overlay: rgba(10, 5, 20, 0.75);
+  --ln-surface-scrim: rgba(0, 0, 0, 0.6);
+
+  /* ============================================
+     EFFECTS — Blur, Saturate, Border
+     ============================================ */
+
+  --ln-blur: 24px;
+  --ln-blur-sm: 8px;
+  --ln-blur-lg: 40px;
+
+  --ln-saturate: 160%;
+  --ln-saturate-reduced: 120%;
+
+  --ln-border-width: 1px;
+  --ln-border-width-thick: 2px;
+
+  /* ============================================
+     BORDER RADIUS — Shape Scale
+     ============================================ */
+
+  --ln-radius-sm: 6px;
+  --ln-radius-md: 12px;
+  --ln-radius-lg: 18px;
+  --ln-radius-full: 9999px;
+
+  /* ============================================
+     GLOW EFFECTS — Inner, Outer, Hover
+     ============================================ */
+
+  --ln-glow-outer: 0 0 12px var(--ln-cyan), 0 0 28px var(--ln-violet);
+  --ln-glow-inner: inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+  --ln-glow-hover: 0 0 18px var(--ln-magenta), 0 0 36px var(--ln-violet);
+  --ln-glow-focus: 0 0 20px var(--ln-cyan), 0 0 40px var(--ln-violet), inset 0 0 10px rgb(from var(--ln-cyan) r g b / 0.15);
+  --ln-glow-subtle: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.15);
+
+  /* ============================================
+     SPACING SCALE — 8px base
+     ============================================ */
+
+  --ln-space-xs: 4px;
+  --ln-space-sm: 8px;
+  --ln-space-md: 16px;
+  --ln-space-lg: 24px;
+  --ln-space-xl: 32px;
+  --ln-space-2xl: 48px;
+  --ln-space-3xl: 64px;
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  --ln-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --ln-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+  --ln-text-xs: 0.75rem;
+  --ln-text-sm: 0.875rem;
+  --ln-text-base: 1rem;
+  --ln-text-lg: 1.125rem;
+  --ln-text-xl: 1.25rem;
+  --ln-text-2xl: 1.5rem;
+  --ln-text-3xl: 1.875rem;
+
+  --ln-line-height-tight: 1.25;
+  --ln-line-height-normal: 1.5;
+  --ln-line-height-relaxed: 1.75;
+
+  --ln-font-weight-normal: 400;
+  --ln-font-weight-medium: 500;
+  --ln-font-weight-semibold: 600;
+  --ln-font-weight-bold: 700;
+
+  /* ============================================
+     SHADOWS & ELEVATION
+     ============================================ */
+
+  --ln-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --ln-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --ln-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
+  --ln-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.25);
+
+  /* ============================================
+     OPACITY UTILITIES
+     ============================================ */
+
+  --ln-opacity-0: 0;
+  --ln-opacity-10: 0.1;
+  --ln-opacity-20: 0.2;
+  --ln-opacity-30: 0.3;
+  --ln-opacity-50: 0.5;
+  --ln-opacity-70: 0.7;
+  --ln-opacity-90: 0.9;
+  --ln-opacity-100: 1;
+
+  /* ============================================
+     ANIMATION & TRANSITIONS
+     ============================================ */
+
+  --ln-duration-instant: 0ms;
+  --ln-duration-fast: 100ms;
+  --ln-duration-base: 200ms;
+  --ln-duration-slow: 300ms;
+  --ln-duration-slower: 500ms;
+
+  --ln-easing-linear: linear;
+  --ln-easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --ln-easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --ln-easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ============================================
+     Z-INDEX SCALE
+     ============================================ */
+
+  --ln-z-hide: -1;
+  --ln-z-base: 0;
+  --ln-z-dropdown: 1000;
+  --ln-z-sticky: 1020;
+  --ln-z-fixed: 1030;
+  --ln-z-modal-backdrop: 1040;
+  --ln-z-modal: 1050;
+  --ln-z-tooltip: 1070;
+  --ln-z-notification: 1080;
+
+  /* ============================================
+     INTERACTIVE STATE COLORS
+     ============================================ */
+
+  --ln-state-hover: rgba(255, 255, 255, 0.08);
+  --ln-state-active: rgba(255, 255, 255, 0.12);
+  --ln-state-disabled: rgba(255, 255, 255, 0.3);
+  --ln-state-focus-ring: var(--ln-cyan);
+
+  /* ============================================
+     SEMANTIC COLOR ALIASES
+     ============================================ */
+
+  --ln-color-primary: var(--ln-cyan);
+  --ln-color-secondary: var(--ln-violet);
+  --ln-color-accent: var(--ln-magenta);
+  --ln-color-success: #00FF41;
+  --ln-color-warning: #FFD700;
+  --ln-color-danger: #FF4444;
+  --ln-color-info: var(--ln-cyan);
+
+  /* ============================================
+     GLASS SURFACE — Phase 1 visual foundation
+     ============================================ */
+
+  --ln-glass-bg: rgba(14, 14, 18, 0.72);
+  --ln-glass-bg-solid: rgba(18, 18, 20, 0.92);
+  --ln-glass-bg-subtle: rgba(8, 8, 14, 0.55);
+  --ln-glass-bg-deep: rgba(8, 8, 14, 0.80);
+  --ln-glass-rim: rgba(255, 255, 255, 0.12);
+
+  /* Background image asset — always-on cosmic BG */
+  --ln-bg-image: url("assets/Background1.png");
+
+  /* ============================================
+     ACCESSIBILITY — Reduced Motion
+     ============================================ */
+
+  --ln-transition-enabled: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ln-transition-enabled: 0;
+  }
+}
+/* === LN TOKENS — GENERATED END === */
 /* Cyber Glow for Obsidian built by TheEmperorArt
 /* Please credit me if you modify or take parts for your own theme*/
 /* #region ======= Style Settings ======= 

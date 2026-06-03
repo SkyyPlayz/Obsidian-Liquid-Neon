@@ -1,0 +1,10 @@
+{
+  "name": "obsidian-liquid-neon",
+  "version": "1.0.0",
+  "description": "Liquid Neon — Obsidian theme build tooling",
+  "scripts": {
+    "build:theme": "node scripts/build-theme.js"
+  },
+  "author": "SkyyPlayz",
+  "license": "MIT"
+}
