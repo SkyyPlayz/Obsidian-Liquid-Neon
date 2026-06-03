@@ -2,7 +2,19 @@
 
 A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep-black canvas.
 
-<!-- Screenshots placeholder — will be added after SKY-291 nav chrome merges -->
+## Screenshots
+
+### Hero view
+![Liquid Neon main editor](docs/screenshots/hero.png)
+
+### Navigation and file explorer
+![File explorer with neon-frame hover](docs/screenshots/nav-hover.png)
+
+### Graph view
+![Neon-colored graph nodes and edges](docs/screenshots/graph-view.png)
+
+### Style Settings
+![Liquid Neon customization panel](docs/screenshots/style-settings.png)
 
 ## Color palette
 
