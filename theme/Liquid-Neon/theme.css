@@ -5860,12 +5860,74 @@ settings:
     step: 5
     default: 160
     format: '%'
+  -
+    id: LN-graph
+    title: Graph View
+    type: heading
+    level: 2
+    collapsed: true
+  -
+    id: LN-graph-node
+    title: Node color
+    description: Default node fill color in the graph canvas.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
+  -
+    id: LN-graph-node-focused
+    title: Focused node color
+    description: Selected / highlighted node.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00E5FF'
+  -
+    id: LN-graph-node-tag
+    title: Tag node color
+    description: Tag-type nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#FF2BD6'
+  -
+    id: LN-graph-node-attachment
+    title: Attachment node color
+    description: Attachment-type nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00B8CC'
+  -
+    id: LN-graph-node-unresolved
+    title: Unresolved node color
+    description: Nodes with no matching note (dimmer by convention).
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#6B22A8'
+  -
+    id: LN-graph-line
+    title: Edge line color
+    description: Connection lines between graph nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
 */
 
 /* Bridge Style Settings vars to token defaults when user changes them */
 body {
   --ln-blur: var(--LN-glass-blur, 24px);
   --ln-saturate: var(--LN-glass-saturate, 160%);
+
+  /* Phase 4 — graph canvas token bridges (Style Settings → LN token fallback) */
+  --ln-graph-node:            var(--LN-graph-node, var(--ln-violet));
+  --ln-graph-node-focused:    var(--LN-graph-node-focused, var(--ln-cyan));
+  --ln-graph-node-tag:        var(--LN-graph-node-tag, var(--ln-magenta));
+  --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
+  --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
+  --ln-graph-line:            var(--LN-graph-line, var(--ln-violet));
 }
 
 /* ----------------------------------------------------------------
@@ -6121,4 +6183,71 @@ body:not(.CG-Fullstatus-off) .status-bar {
 
 /* ================================================================
    END — Liquid Neon Phase 1
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Phase 4: Graph View (SKY-292)
+   Reskin CyberGlow graph styles → LN --ln-* tokens.
+   Canvas caveat (locked): neon colors + light container glow only.
+   True per-node bloom is not achievable from CSS on a canvas element.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   4.1 — Graph canvas color variables
+   Override Obsidian's --graph-* vars with LN palette tokens.
+   Style-Settings bridges above let users tune each color.
+   ---------------------------------------------------------------- */
+.theme-dark {
+  --graph-node:             var(--ln-graph-node);
+  --graph-node-focused:     var(--ln-graph-node-focused);
+  --graph-node-tag:         var(--ln-graph-node-tag);
+  --graph-node-attachment:  var(--ln-graph-node-attachment);
+  --graph-node-unresolved:  var(--ln-graph-node-unresolved);
+  --graph-line:             var(--ln-graph-line);
+  --graph-bg:               transparent;
+}
+
+/* ----------------------------------------------------------------
+   4.2 — Light glow on canvas container (ambient starfield feel)
+   box-shadow on the viewport div, not on the canvas element.
+   Intentionally subtle — no heavy bloom, no per-node passes.
+   ---------------------------------------------------------------- */
+.graph-view-content {
+  box-shadow:
+    0 0 32px rgba(0, 229, 255, 0.07),
+    0 0 64px rgba(138, 43, 226, 0.05),
+    inset 0 0 0 1px rgba(0, 229, 255, 0.06);
+}
+
+/* ----------------------------------------------------------------
+   4.3 — Background coherence
+   Leaf content background is transparent so the cosmic body BG
+   (set by Phase 1 via --ln-bg-image on body) reads through.
+   ---------------------------------------------------------------- */
+.workspace-leaf-content[data-type="graph"] .view-content,
+.workspace-leaf-content[data-type="localgraph"] .view-content {
+  background: transparent !important;
+}
+
+/* ----------------------------------------------------------------
+   4.x — Graph controls panel: LN border gradient (extend CyberGlow)
+   CyberGlow already sets .graph-controls background to
+   --background-settings, which Phase 1 maps to --ln-glass-bg.
+   Here we upgrade the border gradient and add a subtle rim glow.
+   ---------------------------------------------------------------- */
+.graph-controls,
+.graph-controls.is-close,
+.graph-controls:not(.is-close),
+.workspace-split:not(.mod-root) .graph-controls.is-close {
+  border-image-source: linear-gradient(
+    180deg,
+    var(--ln-cyan),
+    var(--ln-violet),
+    var(--ln-magenta)
+  ) !important;
+  box-shadow: var(--ln-glow-subtle), inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 4
    ================================================================ */
