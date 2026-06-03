@@ -1292,6 +1292,7 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     --code-background: rgba(30, 30, 30, 0.75);
     --custom-inline: var(--code-background);
     --custom-inlineborder: var(--code-background);
+    --text-muted: #7575D0;
     --text-close-color: #ff909b;
     --background-close-hover: #e6647170;
     --background-close-active: #f2394c8a;
