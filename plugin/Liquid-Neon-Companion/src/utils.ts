@@ -1,6 +1,8 @@
 // Pure utility functions extracted from main.ts so they can be unit/property tested
 // without a DOM or Electron environment.
 
+import { resolve as pathResolve, sep } from "path";
+
 /** WCAG AA minimum contrast ratio for normal body text. */
 export const WCAG_AA_RATIO = 4.5;
 
@@ -61,12 +63,25 @@ export function computeScrimAlphaFromLum(p90Lum: number): number {
  *  - paths that do not end in an allowed image extension
  *
  * Note: this does NOT verify the path resolves inside a specific directory —
- * the caller is responsible for resolving against an allowed root and checking
- * the result starts with that root (path.resolve + startsWith guard).
+ * use resolvedInsideRoot() at the call site for the path.resolve + startsWith guard.
  */
 export function validateImagePath(filePath: string): boolean {
   if (!filePath) return false;
   if (filePath.includes("\0")) return false;
   const ext = extFromPath(filePath);
   return ["png", "jpg", "jpeg", "webp", "gif"].includes(ext);
+}
+
+/**
+ * Returns true if `filePath`, once all `.` and `..` segments are resolved to an
+ * absolute path, falls inside `root`. Prevents path-traversal attacks such as
+ * `../../../../etc/passwd.png` from escaping an allowed directory.
+ *
+ * The comparison uses a separator-terminated prefix so that `/home/user` does not
+ * accidentally match `/home/username/file.png`.
+ */
+export function resolvedInsideRoot(filePath: string, root: string): boolean {
+  const resolved = pathResolve(filePath);
+  const normalizedRoot = root.endsWith(sep) ? root.slice(0, -1) : root;
+  return resolved === normalizedRoot || resolved.startsWith(normalizedRoot + sep);
 }
