@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import fc from "fast-check";
-import { validateImagePath } from "../utils";
+import { validateImagePath, resolvedInsideRoot } from "../utils";
 
 // Mirrors the shape of LiquidNeonSettings without importing from main.ts
 // (which pulls in Obsidian/Electron globals unavailable in Node test env).
@@ -75,7 +75,9 @@ describe("imagePath schema safety", () => {
     const maliciousValues = [
       // Null-byte injection for glibc path splitting
       "/etc/passwd\0.png",
-      // Directory traversal candidates
+      // Directory traversal candidates — validateImagePath alone does NOT block these
+      // (valid extension, no NUL byte). The resolvedInsideRoot guard in imagePathToObjectUrl
+      // closes this gap. See SKY-580 regression suite below.
       "../../../etc/passwd.png",
       "../../../../root/.ssh/id_rsa.jpg",
       // Non-image extensions that could reach fs.readFileSync
@@ -90,13 +92,11 @@ describe("imagePath schema safety", () => {
       // All of these must be caught before being passed to fs.readFileSync.
       const wouldPass = validateImagePath(val);
       if (val === "../../../etc/passwd.png" || val === "../../../../root/.ssh/id_rsa.jpg") {
-        // NOTE: validateImagePath catches the null-byte and extension checks but NOT
-        // directory-traversal via "..". A path.resolve + startsWith guard is still
-        // required at the call site. This is documented as residual risk in SKY-373.
-        // The following assertion would FAIL currently, tracking the open gap:
-        // expect(wouldPass).toBe(false);
-        // For now we just assert no throw:
-        expect(typeof wouldPass).toBe("boolean");
+        // validateImagePath intentionally does not check containment — that is
+        // resolvedInsideRoot's job at the call site. These paths have a valid
+        // extension and no NUL byte, so validateImagePath returns true for them.
+        // The path-traversal gap is closed by resolvedInsideRoot (see SKY-580 suite).
+        expect(wouldPass).toBe(true);
       } else {
         expect(wouldPass).toBe(false);
       }
@@ -118,6 +118,75 @@ describe("imagePath schema safety", () => {
           // return typeof merged.scrimAlpha === "number" && isFinite(merged.scrimAlpha);
           // For now, just verify the test infrastructure itself:
           return merged !== undefined;
+        }
+      )
+    );
+  });
+});
+
+// ── SKY-580 regression: path.resolve + startsWith guard ───────────────────────
+//
+// validateImagePath blocks NUL bytes and bad extensions but NOT directory traversal
+// via "..". resolvedInsideRoot() closes that gap by resolving the path and verifying
+// it stays inside an allowed root directory.
+//
+// These tests must FAIL against the old code (before resolvedInsideRoot was added)
+// and PASS against the new code.
+
+describe("resolvedInsideRoot — path traversal guard (SKY-580)", () => {
+  const root = "/tmp/sky580-test-root";
+
+  it("accepts paths that are directly inside the root", () => {
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/photo.png", root)).toBe(true);
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/backgrounds/hero.jpg", root)).toBe(true);
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/a/b/c/image.webp", root)).toBe(true);
+  });
+
+  it("accepts the root directory itself", () => {
+    expect(resolvedInsideRoot("/tmp/sky580-test-root", root)).toBe(true);
+  });
+
+  it("rejects paths entirely outside the root", () => {
+    expect(resolvedInsideRoot("/etc/passwd.png", root)).toBe(false);
+    expect(resolvedInsideRoot("/tmp/other-dir/image.png", root)).toBe(false);
+    expect(resolvedInsideRoot("/root/.ssh/id_rsa.jpg", root)).toBe(false);
+  });
+
+  it("rejects traversal via .. that escapes the root", () => {
+    // These are the exact payload patterns from the SKY-373 residual risk inventory.
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/../../etc/passwd.png", root)).toBe(false);
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/../../../root/.ssh/id_rsa.jpg", root)).toBe(false);
+    expect(resolvedInsideRoot("/tmp/sky580-test-root/subdir/../../other/file.png", root)).toBe(false);
+  });
+
+  it("prevents root prefix collision (/home/user vs /home/username)", () => {
+    const narrowRoot = "/home/user";
+    expect(resolvedInsideRoot("/home/username/photo.png", narrowRoot)).toBe(false);
+    expect(resolvedInsideRoot("/home/user/photo.png", narrowRoot)).toBe(true);
+    expect(resolvedInsideRoot("/home/user2/photo.png", narrowRoot)).toBe(false);
+  });
+
+  it("combined: validateImagePath passes traversal paths that resolvedInsideRoot rejects", () => {
+    // This is the exact exploit vector: extension check passes, but traversal must be caught.
+    const traversalPayloads = [
+      "/tmp/sky580-test-root/../../etc/passwd.png",
+      "/tmp/sky580-test-root/../../../root/.ssh/id_rsa.jpg",
+      "/etc/shadow.png",
+    ];
+    for (const filePath of traversalPayloads) {
+      expect(validateImagePath(filePath)).toBe(true);        // extension is valid — passes first gate
+      expect(resolvedInsideRoot(filePath, root)).toBe(false); // but traversal guard rejects it
+    }
+  });
+
+  it("property: any path that resolves outside root is rejected regardless of extension", () => {
+    fc.assert(
+      fc.property(
+        fc.constantFrom("png", "jpg", "jpeg", "webp", "gif"),
+        (ext) => {
+          // Outside-root absolute paths must always be rejected.
+          const outsidePath = `/etc/secret.${ext}`;
+          return resolvedInsideRoot(outsidePath, root) === false;
         }
       )
     );

@@ -7,6 +7,7 @@ import {
   extFromPath,
   computeScrimAlphaFromLum,
   validateImagePath,
+  resolvedInsideRoot,
 } from "./src/utils";
 
 interface LiquidNeonSettings {
@@ -74,6 +75,16 @@ export default class LiquidNeonCompanion extends Plugin {
   private async imagePathToObjectUrl(filePath: string): Promise<string | null> {
     if (!validateImagePath(filePath)) {
       new Notice("Liquid Neon Companion: Image path is invalid or disallowed.");
+      return null;
+    }
+
+    // Resolve all .. segments and verify the result stays inside the user's home
+    // directory. This closes the path-traversal gap left by validateImagePath, which
+    // checks extension and NUL bytes but not directory containment (SKY-580).
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const os = require("os") as typeof import("os");
+    if (!resolvedInsideRoot(filePath, os.homedir())) {
+      new Notice("Liquid Neon Companion: Image must be inside your home directory.");
       return null;
     }
 
