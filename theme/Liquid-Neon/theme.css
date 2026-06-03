@@ -5874,7 +5874,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#8A2BE2'
+    default: '#9B5FFF'
   -
     id: LN-graph-node-focused
     title: Focused node color
@@ -5882,7 +5882,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#00E5FF'
+    default: '#00F0FF'
   -
     id: LN-graph-node-tag
     title: Tag node color
@@ -5890,7 +5890,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#FF2BD6'
+    default: '#FF4DFF'
   -
     id: LN-graph-node-attachment
     title: Attachment node color
@@ -5898,7 +5898,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#00B8CC'
+    default: '#00C0CC'
   -
     id: LN-graph-node-unresolved
     title: Unresolved node color
@@ -5906,7 +5906,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#6B22A8'
+    default: '#7040CC'
   -
     id: LN-graph-line
     title: Edge line color
@@ -5914,15 +5914,15 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#8A2BE2'
+    default: '#9B5FFF'
 */
 
 /* Bridge Style Settings vars to token defaults when user changes them */
 body {
   /* Phase 2.5 — brand color pickers (must come first; shadows below inherit these) */
-  --ln-cyan:    var(--LN-color-cyan,    #00E5FF);
-  --ln-violet:  var(--LN-color-violet,  #8A2BE2);
-  --ln-magenta: var(--LN-color-magenta, #FF2BD6);
+  --ln-cyan:    var(--LN-color-cyan,    #00F0FF);
+  --ln-violet:  var(--LN-color-violet,  #9B5FFF);
+  --ln-magenta: var(--LN-color-magenta, #FF4DFF);
 
   /* Phase 2.5 — tunable glass surface opacity (0.10–1.00) */
   --ln-glass-opacity: var(--LN-glass-opacity, 0.72);
@@ -5938,6 +5938,20 @@ body {
   --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line:            var(--LN-graph-line, var(--ln-violet));
+
+  /* SKY-541 — Glow tokens: tokens.css defines these but Obsidian only loads theme.css.
+     Define here so var(--ln-glow-*) references in Phase 1–3 resolve at runtime.
+     Uses CSS relative color so glow tracks the user's Style Settings color pickers. */
+  --ln-glow-outer: 0 0 12px var(--ln-cyan), 0 0 28px var(--ln-violet);
+  --ln-glow-inner: inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+  --ln-glow-hover: 0 0 18px var(--ln-magenta), 0 0 36px var(--ln-violet);
+  --ln-glow-subtle: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.15);
+  --ln-glow-focus: 0 0 20px var(--ln-cyan), 0 0 40px var(--ln-violet), inset 0 0 10px rgb(from var(--ln-cyan) r g b / 0.15);
+
+  /* SKY-541 — Bridge CyberGlow tab accent vars to Liquid Neon tokens.
+     Replaces hsl(var(--color-accent-hsl)) indirection with direct --ln-cyan reference. */
+  --activetab-accent: var(--ln-cyan);
+  --activetab-bg: rgb(from var(--ln-cyan) r g b / 0.15);
 }
 
 /* ----------------------------------------------------------------
@@ -6439,7 +6453,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#00E5FF'
+    default: '#00F0FF'
   -
     id: LN-color-violet
     title: Neon Violet
@@ -6447,7 +6461,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#8A2BE2'
+    default: '#9B5FFF'
   -
     id: LN-color-magenta
     title: Neon Magenta
@@ -6455,7 +6469,7 @@ settings:
     type: variable-color
     opacity: false
     format: hex
-    default: '#FF2BD6'
+    default: '#FF4DFF'
   -
     id: LN-glass-opacity
     title: Glass surface opacity (0.10 – 1.00)

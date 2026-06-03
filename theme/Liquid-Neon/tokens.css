@@ -3,17 +3,17 @@
      COLOR PALETTE — Primary Brand Colors
      ============================================ */
 
-  --ln-cyan: #00E5FF;
-  --ln-cyan-dark: #00B8CC;
-  --ln-cyan-light: #66F3FF;
+  --ln-cyan: #00F0FF;
+  --ln-cyan-dark: #00C0CC;
+  --ln-cyan-light: #66F8FF;
 
-  --ln-violet: #8A2BE2;
-  --ln-violet-dark: #6B22A8;
-  --ln-violet-light: #A855F7;
+  --ln-violet: #9B5FFF;
+  --ln-violet-dark: #7040CC;
+  --ln-violet-light: #B98CFF;
 
-  --ln-magenta: #FF2BD6;
-  --ln-magenta-dark: #EC0676;
-  --ln-magenta-light: #FF66E8;
+  --ln-magenta: #FF4DFF;
+  --ln-magenta-dark: #CC00CC;
+  --ln-magenta-light: #FF99FF;
 
   /* ============================================
      SURFACE & BACKGROUND
@@ -52,10 +52,10 @@
      ============================================ */
 
   --ln-glow-outer: 0 0 12px var(--ln-cyan), 0 0 28px var(--ln-violet);
-  --ln-glow-inner: inset 0 0 8px rgba(0, 229, 255, 0.25);
+  --ln-glow-inner: inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
   --ln-glow-hover: 0 0 18px var(--ln-magenta), 0 0 36px var(--ln-violet);
-  --ln-glow-focus: 0 0 20px var(--ln-cyan), 0 0 40px var(--ln-violet), inset 0 0 10px rgba(0, 229, 255, 0.15);
-  --ln-glow-subtle: 0 0 8px rgba(0, 229, 255, 0.15);
+  --ln-glow-focus: 0 0 20px var(--ln-cyan), 0 0 40px var(--ln-violet), inset 0 0 10px rgb(from var(--ln-cyan) r g b / 0.15);
+  --ln-glow-subtle: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.15);
 
   /* ============================================
      SPACING SCALE — 8px base
