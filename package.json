@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Liquid Neon — Obsidian theme build tooling",
   "scripts": {
-    "build:theme": "node scripts/build-theme.js"
+    "build:theme": "node scripts/build-theme.js",
+    "lint:css": "stylelint \"theme/**/*.css\" theme.css"
   },
   "author": "SkyyPlayz",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "stylelint": "^16.18.0",
+    "stylelint-config-recommended": "^14.0.0"
+  }
 }
