@@ -5827,3 +5827,1033 @@ border: none;
 .bases-cards-item {
     box-shadow: none;
 }
+
+
+/* ================================================================
+   LIQUID NEON — Phase 1: Visual Foundation (SKY-289)
+   Reskin from CyberGlow base → Liquid Neon --ln-* tokens.
+   All color / glow / surface values reference tokens.css.
+   Never inline literal hex or rgba values here.
+   ================================================================ */
+
+/* @settings
+name: Liquid Neon
+id: LN
+collapsed: false
+settings:
+  -
+    id: LN-glass-blur
+    title: Glass blur amount (px, max 40)
+    description: Backdrop blur applied to frosted-glass chrome surfaces.
+    type: variable-number-slider
+    min: 0
+    max: 40
+    step: 1
+    default: 24
+    format: px
+  -
+    id: LN-glass-saturate
+    title: Glass backdrop saturation (%)
+    description: Saturation multiplier applied alongside the blur.
+    type: variable-number-slider
+    min: 80
+    max: 200
+    step: 5
+    default: 160
+    format: '%'
+  -
+    id: LN-graph
+    title: Graph View
+    type: heading
+    level: 2
+    collapsed: true
+  -
+    id: LN-graph-node
+    title: Node color
+    description: Default node fill color in the graph canvas.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
+  -
+    id: LN-graph-node-focused
+    title: Focused node color
+    description: Selected / highlighted node.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00E5FF'
+  -
+    id: LN-graph-node-tag
+    title: Tag node color
+    description: Tag-type nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#FF2BD6'
+  -
+    id: LN-graph-node-attachment
+    title: Attachment node color
+    description: Attachment-type nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00B8CC'
+  -
+    id: LN-graph-node-unresolved
+    title: Unresolved node color
+    description: Nodes with no matching note (dimmer by convention).
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#6B22A8'
+  -
+    id: LN-graph-line
+    title: Edge line color
+    description: Connection lines between graph nodes.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
+*/
+
+/* Bridge Style Settings vars to token defaults when user changes them */
+body {
+  /* Phase 2.5 — brand color pickers (must come first; shadows below inherit these) */
+  --ln-cyan:    var(--LN-color-cyan,    #00E5FF);
+  --ln-violet:  var(--LN-color-violet,  #8A2BE2);
+  --ln-magenta: var(--LN-color-magenta, #FF2BD6);
+
+  /* Phase 2.5 — tunable glass surface opacity (0.10–1.00) */
+  --ln-glass-opacity: var(--LN-glass-opacity, 0.72);
+  --ln-glass-bg: rgba(14, 14, 18, var(--ln-glass-opacity));
+
+  --ln-blur: var(--LN-glass-blur, 24px);
+  --ln-saturate: var(--LN-glass-saturate, 160%);
+
+  /* Phase 4 — graph canvas token bridges (Style Settings → LN token fallback) */
+  --ln-graph-node:            var(--LN-graph-node, var(--ln-violet));
+  --ln-graph-node-focused:    var(--LN-graph-node-focused, var(--ln-cyan));
+  --ln-graph-node-tag:        var(--LN-graph-node-tag, var(--ln-magenta));
+  --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
+  --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
+  --ln-graph-line:            var(--LN-graph-line, var(--ln-violet));
+}
+
+/* ----------------------------------------------------------------
+   1.0 — Remap Obsidian base-color variables to Liquid Neon palette
+   Dark theme only; light theme inherits CyberGlow defaults.
+   ---------------------------------------------------------------- */
+.theme-dark {
+  /* Accent → cyan primary */
+  --color-accent: var(--ln-cyan);
+  --text-accent: var(--ln-cyan);
+  --text-on-accent: var(--ln-cyan);
+  --interactive-accent: var(--ln-cyan);
+  --interactive-accent-hover: var(--ln-violet);
+  --icon-color-active: var(--ln-cyan);
+  --icon-color-focused: var(--ln-cyan);
+  --scrollbar-thumb-bg: var(--ln-violet);
+  --scrollbar-active-thumb-bg: var(--ln-cyan);
+
+  /* Deep-space base palette */
+  --color-base-00: #08080e;
+  --color-base-05: #0c0c12;
+  --color-base-10: #0e0e14;
+  --color-base-20: #121218;
+  --color-base-25: #16161c;
+  --color-base-30: #1a1a22;
+  --color-base-35: #1e1e28;
+  --color-base-40: #252535;
+  --color-base-50: #2e2e48;
+  --color-base-60: #3d3d60;
+  --color-base-70: #5555a0;
+  --color-base-100: #ddddf5;
+
+  /* Background layers — glass token so the cosmic image bleeds through */
+  --background-primary: var(--ln-glass-bg);
+  --background-secondary: var(--ln-glass-bg);
+  --background-tertiary: rgba(12, 12, 16, 0.60);
+  --background-primary-alt: rgba(14, 14, 18, 0.55);
+  --background-settings: var(--ln-glass-bg);
+  --background-settings-alt: rgba(12, 12, 16, 0.55);
+  --background-settings-2: rgba(255, 255, 255, 0.06);
+  --background-settings-3: rgba(12, 12, 16, 0.40);
+
+  /* bg-primary / bg-secondary referenced by CyberGlow rgba() expressions */
+  --bg-primary: 14, 14, 18;
+  --bg-secondary: 18, 18, 20;
+
+  /* Heading glows → LN palette */
+  --h1-glow: var(--ln-cyan);
+  --h2-glow: var(--ln-violet);
+  --h3-glow: var(--ln-magenta);
+  --h4-glow: var(--ln-violet);
+  --h5-glow: var(--ln-cyan);
+  --h6-glow: var(--ln-magenta);
+}
+
+/* ----------------------------------------------------------------
+   1.1 — Always-on cosmic background at body level
+   body carries Background1.png; panes are transparent.
+   ---------------------------------------------------------------- */
+
+body.theme-dark {
+  background-image: var(--ln-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #08080e;
+}
+
+/* Remove CyberGlow's opaque overlay from the app shell */
+.obsidian-app {
+  background: transparent !important;
+  background-blend-mode: normal !important;
+}
+
+/* Transparent panes so the body background bleeds through */
+.workspace,
+.workspace-tab-header-container,
+.workspace-tabs .workspace-leaf,
+.mod-root .workspace-tabs .workspace-leaf {
+  background: transparent !important;
+}
+
+/* ----------------------------------------------------------------
+   1.2 / 1.3 — Glass surface base applied to all chrome
+   Each surface:
+     • rgba(14,14,18,0.72) fill          → --ln-glass-bg
+     • backdrop blur ≤ 40 px             → --ln-blur
+     • 1 px gradient border cyan→violet→magenta
+     • 1 px inner rim rgba(255,255,255,0.12) → --ln-glass-rim
+     • outer + inner glow               → --ln-glow-outer / --ln-glow-inner
+   ---------------------------------------------------------------- */
+
+/* — Ribbon — */
+.workspace-ribbon.side-dock-ribbon {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(180deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* — Left sidebar — */
+.workspace-split.mod-left-split .workspace-leaf-content,
+:not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border-right: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(180deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* — Right sidebar — */
+.workspace-split.mod-right-split .workspace-leaf-content {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border-left: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(180deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* — Tab strip / view headers — */
+:is(.is-focused .workspace-leaf.mod-active .view-header, .view-header),
+.workspace-split.mod-right-split .workspace-tabs .nav-header,
+.workspace-split.mod-left-split .workspace-tabs .nav-header {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate)) !important;
+  border-bottom: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(90deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta)) !important;
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* Tab strip container */
+.workspace-split.mod-horizontal .workspace-tab-header-container,
+.mod-root .workspace-tab-header-container-inner {
+  background-color: var(--ln-glass-bg-subtle) !important;
+}
+
+/* — Status bar — */
+.status-bar,
+body:not(.CG-Fullstatus-off) .status-bar {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border-top: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(90deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* — Modals — */
+.modal {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(135deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* — Settings dialog — */
+.modal.mod-settings {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(135deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+.modal.mod-settings .vertical-tab-nav {
+  background-color: var(--ln-glass-bg-deep) !important;
+  border-right: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(180deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+}
+
+/* — Command palette — */
+.prompt,
+.mk-palette.mk-blink-modal {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate)) !important;
+  border: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(180deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta)) !important;
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-outer),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim) !important;
+}
+
+/* Menus and suggestion dropdowns */
+.menu,
+.suggestion-container {
+  background-color: var(--ln-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate));
+  border: var(--ln-border-width) solid;
+  border-image-source: linear-gradient(135deg, var(--ln-cyan), var(--ln-violet), var(--ln-magenta));
+  border-image-slice: 1;
+  box-shadow:
+    var(--ln-glow-subtle),
+    inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* ----------------------------------------------------------------
+   Opaque fallback — when backdrop-filter is unsupported
+   rgba(18,18,20,0.92) → --ln-glass-bg-solid
+   ---------------------------------------------------------------- */
+@supports not (backdrop-filter: blur(1px)) {
+  .workspace-ribbon.side-dock-ribbon,
+  .workspace-split.mod-left-split .workspace-leaf-content,
+  :not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile,
+  .workspace-split.mod-right-split .workspace-leaf-content,
+  :is(.is-focused .workspace-leaf.mod-active .view-header, .view-header),
+  .workspace-split.mod-right-split .workspace-tabs .nav-header,
+  .workspace-split.mod-left-split .workspace-tabs .nav-header,
+  .status-bar,
+  body:not(.CG-Fullstatus-off) .status-bar,
+  .modal,
+  .modal.mod-settings,
+  .modal.mod-settings .vertical-tab-nav,
+  .prompt,
+  .mk-palette.mk-blink-modal,
+  .menu,
+  .suggestion-container {
+    background-color: var(--ln-glass-bg-solid) !important;
+    backdrop-filter: none;
+  }
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 1
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Phase 2: Interaction States (SKY-290)
+   Transform CyberGlow hover/focus/active → --ln-* tokens.
+   Keep CyberGlow selectors; replace glow/fill/ring visual values.
+   Never inline literal hex or rgba here.
+   ================================================================ */
+
+/* @settings
+name: Liquid Neon
+id: LN
+settings:
+  -
+    id: LN-hover-glow-strength
+    title: Hover glow strength (0–3)
+    description: Multiplier for the neon frame spread on hover. 0 = off, 1 = default, 3 = intense.
+    type: variable-number-slider
+    min: 0
+    max: 3
+    step: 0.25
+    default: 1
+  -
+    id: LN-hover-border-alpha
+    title: Hover neon rim opacity (0–1)
+    description: Alpha of the 1 px neon border that appears on hover.
+    type: variable-number-slider
+    min: 0
+    max: 1
+    step: 0.05
+    default: 0.8
+  -
+    id: LN-focus-ring-width
+    title: Keyboard-focus ring width (px, 1–6)
+    description: Width of the neon focus ring shown during Tab-key navigation (a11y).
+    type: variable-number-slider
+    min: 1
+    max: 6
+    step: 1
+    default: 2
+    format: px
+*/
+
+/* ----------------------------------------------------------------
+   2.0 — Bridge Style Settings → runtime tokens
+   --ln-hover-glow-str: tunable multiplier (0–3, default 1)
+   --ln-hover-border-alpha: tunable rim opacity (0–1, default 0.8)
+   --ln-focus-ring-width: tunable focus ring px (1–6, default 2px)
+   --ln-hover-shadow / --ln-focus-shadow: computed from the above
+   ---------------------------------------------------------------- */
+body {
+  --ln-hover-glow-str: var(--LN-hover-glow-strength, 1);
+  --ln-hover-border-alpha: var(--LN-hover-border-alpha, 0.8);
+  --ln-focus-ring-width: var(--LN-focus-ring-width, 2px);
+
+  /* Computed hover shadow: outer magenta + violet bloom, inner tinted rim
+     Uses CSS relative color syntax so these track the color picker values. */
+  --ln-hover-shadow:
+    0 0 calc(18px * var(--ln-hover-glow-str)) var(--ln-magenta),
+    0 0 calc(36px * var(--ln-hover-glow-str)) var(--ln-violet),
+    inset 0 0 calc(8px * var(--ln-hover-glow-str)) rgb(from var(--ln-magenta) r g b / 0.12),
+    inset 0 0 0 var(--ln-border-width) rgb(from var(--ln-magenta) r g b / var(--ln-hover-border-alpha));
+
+  /* Computed focus shadow: strong cyan ring + violet bloom */
+  --ln-focus-shadow:
+    0 0 0 var(--ln-focus-ring-width) rgb(from var(--ln-cyan) r g b / 0.9),
+    0 0 calc(20px * var(--ln-hover-glow-str)) var(--ln-cyan),
+    0 0 calc(40px * var(--ln-hover-glow-str)) var(--ln-violet),
+    inset 0 0 10px rgb(from var(--ln-cyan) r g b / 0.12);
+}
+
+/* ----------------------------------------------------------------
+   2.1 — Neon-frame hover: buttons + dropdowns
+   CyberGlow: box-shadow var(--text-accent) → LN: --ln-hover-shadow
+   Phase 1 remaps --text-accent → --ln-cyan; Phase 2 promotes to
+   the full magenta+violet hover frame.
+   ---------------------------------------------------------------- */
+.theme-dark button:not(
+  .clickable-icon,
+  [aria-label='Sticker'],
+  .mod-warning
+):not(
+  .markdown-rendered button.copy-code-button,
+  .excalidraw .color-picker__button,
+  button.context-menu-item,
+  .excalidraw .help-icon,
+  .excalidraw .dropdown-menu-button,
+  .excalidraw .ToolIcon_type_button--show
+):hover,
+.theme-dark .dropdown:hover,
+.theme-dark .style-settings-export:hover,
+.theme-dark .style-settings-import:hover,
+.theme-dark .metadata-container .metadata-add-button:hover {
+  box-shadow: var(--ln-hover-shadow);
+  background-color: var(--ln-state-hover);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Copy code / code-block flair hover */
+.theme-dark .markdown-rendered button.copy-code-button:hover,
+.theme-dark .markdown-source-view.mod-cm6 .code-block-flair:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* ----------------------------------------------------------------
+   2.2 — Apply neon frame to all interactive surfaces
+   ---------------------------------------------------------------- */
+
+/* Settings headings, tree items, menu items, nav items */
+.theme-dark .setting-item.setting-item-heading.style-settings-heading:hover,
+.theme-dark .tree-item-self.is-clickable:hover,
+.theme-dark .menu-item:hover,
+.theme-dark .vertical-tab-nav-item:hover,
+.theme-dark .community-item:hover {
+  box-shadow: var(--ln-hover-shadow);
+  background-color: var(--ln-state-hover);
+  transition:
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Workspace tabs */
+.theme-dark .workspace .mod-root .workspace-tab-header:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* File-explorer rows */
+.theme-dark .nav-file-title:hover,
+.theme-dark .nav-folder-title:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Ribbon icons */
+.theme-dark .workspace-ribbon.side-dock-ribbon .clickable-icon:hover,
+.theme-dark .workspace-ribbon .side-dock-ribbon-action:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Callout pills (collapsible callout title hover) */
+.theme-dark .callout.is-collapsible .callout-title:hover {
+  box-shadow: var(--ln-hover-shadow);
+  transition: box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* ----------------------------------------------------------------
+   2.3 — Keyboard-focus ring (a11y)
+   CyberGlow has no focus-visible handling; Liquid Neon adds a
+   strong neon ring so Tab navigation is visible on every surface.
+   ---------------------------------------------------------------- */
+
+/* Universal :focus-visible neon ring */
+.theme-dark :focus-visible {
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 2px;
+  box-shadow: var(--ln-focus-shadow);
+  transition:
+    outline var(--ln-duration-fast) var(--ln-easing-out),
+    box-shadow var(--ln-duration-fast) var(--ln-easing-out);
+}
+
+/* Suppress browser default outline when :focus-visible handles it */
+.theme-dark :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* File-explorer keyboard focus (.has-focus class — Obsidian's own pattern) */
+.theme-dark .workspace-leaf.mod-active .tree-item-self.has-focus {
+  box-shadow: var(--ln-focus-shadow);
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Input / textarea focus */
+.theme-dark textarea:focus-visible,
+.theme-dark input[type='text']:focus-visible,
+.theme-dark input[type='search']:focus-visible,
+.theme-dark input[type='email']:focus-visible,
+.theme-dark input[type='password']:focus-visible,
+.theme-dark input[type='number']:focus-visible,
+.theme-dark select:focus-visible {
+  outline: var(--ln-focus-ring-width) solid var(--ln-state-focus-ring);
+  outline-offset: 0;
+  box-shadow: var(--ln-focus-shadow);
+}
+
+/* ----------------------------------------------------------------
+   2.4 — Reduced motion: disable glow transitions, keep static glow
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark :focus-visible,
+  .theme-dark button:hover,
+  .theme-dark .clickable-icon:hover,
+  .theme-dark .menu-item:hover,
+  .theme-dark .nav-file-title:hover,
+  .theme-dark .nav-folder-title:hover,
+  .theme-dark .tree-item-self.is-clickable:hover,
+  .theme-dark .workspace-tab-header:hover,
+  .theme-dark .callout.is-collapsible .callout-title:hover {
+    transition: none;
+  }
+}
+
+.theme-dark.CG-disableAni :focus-visible,
+.theme-dark .CG-disableAni button:hover,
+.theme-dark .CG-disableAni .menu-item:hover,
+.theme-dark .CG-disableAni .tree-item-self.is-clickable:hover {
+  transition: none;
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 2
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Phase 2.5: Style Settings end-to-end wiring (SKY-313)
+   Brand color pickers, glass opacity, high-contrast, reduced motion.
+   All controls bridge to tokens already used by Phases 1–4 so every
+   knob affects the live UI immediately (no additional selectors needed
+   for the existing chrome — they already reference the bridged vars).
+   ================================================================ */
+
+/* @settings
+name: Liquid Neon
+id: LN
+settings:
+  -
+    id: LN-colors-heading
+    title: Brand Colors
+    type: heading
+    level: 2
+    collapsed: false
+  -
+    id: LN-color-cyan
+    title: Neon Cyan
+    description: Primary accent — tab underlines, focus rings, active file/folder selection, scrollbar.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#00E5FF'
+  -
+    id: LN-color-violet
+    title: Neon Violet
+    description: Secondary accent — border gradients, scrollbar thumb, graph edges, hover bloom.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#8A2BE2'
+  -
+    id: LN-color-magenta
+    title: Neon Magenta
+    description: Tertiary accent — hover frames, gradient endpoint, heading H3.
+    type: variable-color
+    opacity: false
+    format: hex
+    default: '#FF2BD6'
+  -
+    id: LN-glass-opacity
+    title: Glass surface opacity (0.10 – 1.00)
+    description: Fill opacity of frosted-glass chrome. Lower = more transparency and softness; higher = more contrast and legibility.
+    type: variable-number-slider
+    min: 0.10
+    max: 1.00
+    step: 0.05
+    default: 0.72
+  -
+    id: LN-accessibility-heading
+    title: Accessibility
+    type: heading
+    level: 2
+    collapsed: false
+  -
+    id: LN-high-contrast
+    title: High-contrast mode
+    description: Removes backdrop blur, makes glass surfaces fully opaque, and converts neon glows to solid strokes. Targets WCAG AA body text contrast.
+    type: class-toggle
+    default: false
+  -
+    id: LN-reduced-motion
+    title: Force reduced motion
+    description: Disables all glow-pulse and transition animations regardless of your OS setting.
+    type: class-toggle
+    default: false
+*/
+
+/* ----------------------------------------------------------------
+   2.5.0 — High-contrast mode (.LN-high-contrast on body)
+   Glass goes opaque, blur drops to zero, glows become solid strokes.
+   ---------------------------------------------------------------- */
+body.LN-high-contrast {
+  --ln-glass-bg: var(--ln-glass-bg-solid);
+  --ln-glass-bg-subtle: rgba(18, 18, 20, 0.96);
+  --ln-glass-bg-deep: rgba(12, 12, 16, 0.98);
+  --ln-blur: 0px;
+  --ln-glow-outer: none;
+  --ln-glow-inner: none;
+  --ln-glow-hover: none;
+  --ln-glow-subtle: none;
+  --ln-border-width: 2px;
+  --ln-hover-shadow:
+    inset 0 0 0 2px var(--ln-magenta),
+    0 0 0 1px var(--ln-magenta);
+  --ln-focus-shadow:
+    0 0 0 var(--ln-focus-ring-width) var(--ln-cyan),
+    inset 0 0 0 1px var(--ln-cyan);
+  --ln-nav-active-shadow:
+    0 0 0 1px var(--ln-cyan),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.20);
+  --ln-nav-focus-shadow:
+    0 0 0 2px var(--ln-cyan),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+/* ----------------------------------------------------------------
+   2.5.1 — Reduced-motion override (.LN-reduced-motion on body)
+   Kills all transitions/animations regardless of OS prefers-reduced-motion.
+   ---------------------------------------------------------------- */
+body.LN-reduced-motion *,
+body.LN-reduced-motion *::before,
+body.LN-reduced-motion *::after {
+  transition-duration: 0ms !important;
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 2.5
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Phase 4: Graph View (SKY-292)
+   Reskin CyberGlow graph styles → LN --ln-* tokens.
+   Canvas caveat (locked): neon colors + light container glow only.
+   True per-node bloom is not achievable from CSS on a canvas element.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   4.1 — Graph canvas color variables
+   Override Obsidian's --graph-* vars with LN palette tokens.
+   Style-Settings bridges above let users tune each color.
+   ---------------------------------------------------------------- */
+.theme-dark {
+  --graph-node:             var(--ln-graph-node);
+  --graph-node-focused:     var(--ln-graph-node-focused);
+  --graph-node-tag:         var(--ln-graph-node-tag);
+  --graph-node-attachment:  var(--ln-graph-node-attachment);
+  --graph-node-unresolved:  var(--ln-graph-node-unresolved);
+  --graph-line:             var(--ln-graph-line);
+  --graph-bg:               transparent;
+}
+
+/* ----------------------------------------------------------------
+   4.2 — Light glow on canvas container (ambient starfield feel)
+   box-shadow on the viewport div, not on the canvas element.
+   Intentionally subtle — no heavy bloom, no per-node passes.
+   ---------------------------------------------------------------- */
+.graph-view-content {
+  box-shadow:
+    0 0 32px rgb(from var(--ln-cyan) r g b / 0.07),
+    0 0 64px rgb(from var(--ln-violet) r g b / 0.05),
+    inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.06);
+}
+
+/* ----------------------------------------------------------------
+   4.3 — Background coherence
+   Leaf content background is transparent so the cosmic body BG
+   (set by Phase 1 via --ln-bg-image on body) reads through.
+   ---------------------------------------------------------------- */
+.workspace-leaf-content[data-type="graph"] .view-content,
+.workspace-leaf-content[data-type="localgraph"] .view-content {
+  background: transparent !important;
+}
+
+/* ----------------------------------------------------------------
+   4.x — Graph controls panel: LN border gradient (extend CyberGlow)
+   CyberGlow already sets .graph-controls background to
+   --background-settings, which Phase 1 maps to --ln-glass-bg.
+   Here we upgrade the border gradient and add a subtle rim glow.
+   ---------------------------------------------------------------- */
+.graph-controls,
+.graph-controls.is-close,
+.graph-controls:not(.is-close),
+.workspace-split:not(.mod-root) .graph-controls.is-close {
+  border-image-source: linear-gradient(
+    180deg,
+    var(--ln-cyan),
+    var(--ln-violet),
+    var(--ln-magenta)
+  ) !important;
+  box-shadow: var(--ln-glow-subtle), inset 0 0 0 1px var(--ln-glass-rim);
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 4
+   ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Phase 3: Navigation (SKY-291)
+   Reskin CyberGlow navigation chrome → --ln-* tokens.
+   Approach: transform existing selectors, not clean-room rebuild.
+   Deps: Phase 1 (glass base + --text-accent → --ln-cyan remap),
+         Phase 2 (hover neon frames on nav rows + ribbon icons).
+   Never inline literal hex or rgba here.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   3.0 — Style Settings: nav-specific user knobs
+   ---------------------------------------------------------------- */
+
+/* @settings
+name: Liquid Neon
+id: LN
+settings:
+  -
+    id: LN-nav-pill-glow
+    title: File explorer selection glow (0–3)
+    description: Neon frame intensity for the selected file/folder row.
+    type: variable-number-slider
+    min: 0
+    max: 3
+    step: 0.25
+    default: 1
+  -
+    id: LN-tab-underline-width
+    title: Active-tab underline width (px, 1–4)
+    description: Thickness of the neon underline drawn below the active tab.
+    type: variable-number-slider
+    min: 1
+    max: 4
+    step: 1
+    default: 2
+    format: px
+*/
+
+body {
+  --ln-nav-pill-glow: var(--LN-nav-pill-glow, 1);
+  --ln-tab-underline-width: var(--LN-tab-underline-width, 2px);
+
+  /* Computed active-row glow — scales with user knob */
+  --ln-nav-active-shadow:
+    0 0 calc(10px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.35),
+    inset 0 0 calc(6px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.12);
+
+  /* Stronger version for focused pane */
+  --ln-nav-focus-shadow:
+    0 0 calc(14px * var(--ln-nav-pill-glow)) var(--ln-cyan),
+    0 0 calc(28px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.25),
+    inset 0 0 calc(8px * var(--ln-nav-pill-glow)) rgb(from var(--ln-cyan) r g b / 0.18);
+}
+
+/* ----------------------------------------------------------------
+   3.1 — Left Rail (workspace-ribbon / side-dock-ribbon)
+   CyberGlow's blue vertical accent lines → --ln-cyan gradient.
+   Phase 1 applied a 4-sided rainbow border; here we restore the
+   directional 2-sided cyan accent that mirrors CyberGlow's intent.
+   Glass fill + blur from Phase 1 are inherited (not redeclared).
+   ---------------------------------------------------------------- */
+
+.theme-dark .workspace-ribbon.side-dock-ribbon {
+  /* Drop Phase 1's all-sides rainbow; restore left+right cyan accent */
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: var(--ln-border-width-thick) solid !important;
+  border-right: var(--ln-border-width-thick) solid !important;
+  border-image-slice: 1 !important;
+  border-image-source: linear-gradient(
+    to bottom,
+    transparent,
+    var(--ln-cyan) 20%,
+    var(--ln-cyan) 80%,
+    transparent
+  ) !important;
+  /* Cyan-forward glow replaces Phase 1's rainbow glow */
+  box-shadow:
+    0 0 14px rgb(from var(--ln-cyan) r g b / 0.40),
+    var(--ln-glow-inner),
+    inset 0 0 0 1px var(--ln-glass-rim) !important;
+}
+
+/* Active/pressed ribbon icon */
+.theme-dark .workspace-ribbon .clickable-icon.is-active,
+.theme-dark .workspace-ribbon .clickable-icon.has-active-menu {
+  background: var(--ln-surface-bg) !important;
+  box-shadow: inset 0 0 8px var(--ln-cyan), var(--ln-glow-subtle) !important;
+  border-radius: var(--ln-radius-sm);
+  color: var(--ln-cyan) !important;
+}
+
+/* ----------------------------------------------------------------
+   3.2 — File Explorer Items
+   Base: transparent pill border; hover handled by Phase 2.
+   Selected/active: solid neon-pill border + glow.
+   Focused pane: stronger frame (Phase 2 focus-shadow on has-focus
+   is preserved; this extends to the selection state).
+   ---------------------------------------------------------------- */
+
+/* Base row: smooth pill shape on all nav rows */
+.theme-dark .nav-files-container .tree-item-self.is-clickable {
+  border-radius: var(--ln-radius-md);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-image: none;
+  transition:
+    border-color var(--ln-duration-base) var(--ln-easing-out),
+    box-shadow var(--ln-duration-base) var(--ln-easing-out),
+    background-color var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Hover: nudge shape to pill, strip the CyberGlow top/bottom border-image */
+.theme-dark body:not(.is-grabbing) .nav-file-title:hover,
+.theme-dark body:not(.is-grabbing) .nav-folder-title:hover {
+  border-image: none !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  border-radius: var(--ln-radius-md) !important;
+  /* Phase 2 hover-shadow already applies --ln-hover-shadow here */
+}
+
+/* Selected/active: neon-pill border + glow */
+.theme-dark .nav-file-title.is-active,
+.theme-dark .workspace-leaf-content[data-type="file-explorer"] .tree-item-self.is-active {
+  background-color: var(--ln-surface-bg) !important;
+  border: 1px solid var(--ln-cyan) !important;
+  border-image: none !important;
+  border-radius: var(--ln-radius-full) !important;
+  box-shadow: var(--ln-nav-active-shadow);
+  color: var(--ln-cyan) !important;
+  transition:
+    background-color var(--ln-duration-base) var(--ln-easing-out),
+    box-shadow var(--ln-duration-base) var(--ln-easing-out);
+}
+
+/* Active row in focused pane: stronger neon frame */
+.theme-dark .workspace-leaf.mod-active .nav-file-title.is-active,
+.theme-dark .workspace-leaf.mod-active
+  .workspace-leaf-content[data-type="file-explorer"]
+  .tree-item-self.is-active {
+  box-shadow: var(--ln-nav-focus-shadow) !important;
+}
+
+/* File/folder icon: cyan on hover + active state */
+.theme-dark .workspace-leaf-content[data-type="file-explorer"]
+  .nav-file-title.is-active
+  .nav-file-title-content::before,
+.theme-dark .workspace-leaf-content[data-type="file-explorer"]
+  .nav-folder-title.is-active
+  .nav-folder-title-content::before {
+  background-color: var(--ln-cyan) !important;
+}
+
+/* ----------------------------------------------------------------
+   3.3 — Tab Bar
+   Glass tabs via Phase 1 (already applied to tab-header-container).
+   Active tab: drop CyberGlow's left/right gradient borders;
+               add a neon-cyan underline on the active tab.
+   Active pane: sharp underline + glow.
+   Inactive pane tab strip: dimmed + blur-saturate reduction.
+   ---------------------------------------------------------------- */
+
+/* Reset CyberGlow's left/right gradient border on active tabs */
+.theme-dark .workspace-tab-header.is-active,
+.theme-dark .mod-left-split .workspace-tab-header.is-active,
+.theme-dark .mod-right-split .workspace-tab-header.is-active,
+.theme-dark .mod-left-split .workspace-tab-header.has-active-menu,
+.theme-dark .mod-right-split .workspace-tab-header.has-active-menu {
+  border: none !important;
+  border-image: none !important;
+  /* Neon underline: primary nav indicator */
+  border-bottom: var(--ln-tab-underline-width) solid var(--ln-cyan) !important;
+  background: var(--ln-glass-bg-subtle) !important;
+  box-shadow:
+    0 0 8px rgb(from var(--ln-cyan) r g b / 0.25),
+    inset 0 0 6px rgb(from var(--ln-cyan) r g b / 0.08);
+  border-radius: var(--ln-radius-sm) var(--ln-radius-sm) 0 0;
+}
+
+/* Active tab in focused pane: sharper underline + stronger glow */
+.theme-dark .is-focused .mod-active .workspace-tab-header.is-active,
+.theme-dark .workspace-tab-header.is-active.mod-active {
+  border-bottom: var(--ln-tab-underline-width) solid var(--ln-cyan) !important;
+  box-shadow:
+    0 0 14px var(--ln-cyan),
+    0 0 28px rgb(from var(--ln-cyan) r g b / 0.20),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.12) !important;
+}
+
+/* Tab title + icon: cyan in focused active tab */
+.theme-dark .is-focused .mod-active .workspace-tab-header.is-active
+  .workspace-tab-header-inner-title,
+.theme-dark .is-focused .mod-active .workspace-tab-header.is-active
+  .workspace-tab-header-inner-icon,
+.theme-dark .workspace-tab-header.is-active.mod-active
+  .workspace-tab-header-inner-title,
+.theme-dark .workspace-tab-header.is-active.mod-active
+  .workspace-tab-header-inner-icon {
+  color: var(--ln-cyan) !important;
+}
+
+/* Kill CyberGlow's inset glow animation override for the active+mod-active state */
+.theme-dark .workspace-tab-header.is-active.mod-active,
+.theme-dark .workspace-tab-header.tappable.is-active:hover,
+.theme-dark .workspace .mod-root .workspace-tabs.mod-stacked
+  .workspace-tab-container
+  .workspace-tab-header.is-active {
+  background: var(--ln-glass-bg-subtle) !important;
+  /* Phase 3 shadow replaces CyberGlow's inset var(--activetab-accent) */
+  box-shadow:
+    0 0 14px var(--ln-cyan),
+    0 0 28px rgb(from var(--ln-cyan) r g b / 0.18),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.10) !important;
+}
+
+/* Inactive pane tab strip: subtly dimmed + reduced saturation */
+.theme-dark .workspace-tab-header-container:not(
+  :has(.workspace-tab-header.mod-active)
+) {
+  opacity: 0.55;
+  filter: saturate(70%);
+  transition:
+    opacity var(--ln-duration-slow) var(--ln-easing-out),
+    filter var(--ln-duration-slow) var(--ln-easing-out);
+}
+
+/* Recover on hover so inactive-pane tabs are still readable */
+.theme-dark .workspace-tab-header-container:not(
+  :has(.workspace-tab-header.mod-active)
+):hover {
+  opacity: 0.85;
+  filter: saturate(100%);
+}
+
+/* Stacked tabs: pill corners + glass */
+.theme-dark .workspace .mod-root .workspace-tabs.mod-stacked
+  .workspace-tab-container
+  .workspace-tab-header {
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate));
+  border-radius: var(--ln-radius-sm) 0 0 var(--ln-radius-sm);
+}
+
+/* ----------------------------------------------------------------
+   3.4 — Reduced motion: strip glow transitions
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark .nav-file-title.is-active,
+  .theme-dark .workspace-leaf-content[data-type="file-explorer"]
+    .tree-item-self.is-active,
+  .theme-dark .workspace-tab-header.is-active,
+  .theme-dark .workspace-tab-header-container:not(
+    :has(.workspace-tab-header.mod-active)
+  ) {
+    transition: none;
+  }
+}
+
+/* ================================================================
+   END — Liquid Neon Phase 3
+   ================================================================ */
