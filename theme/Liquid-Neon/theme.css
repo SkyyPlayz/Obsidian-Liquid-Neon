@@ -6223,6 +6223,18 @@ body.theme-dark {
   background-color: var(--ln-glass-bg) !important;
 }
 
+/* SKY-1322 (LN-27): Extend SKY-723 coverage to sidebar panes.
+   Left/right split containers already get --ln-glass-bg from Phase 1,
+   but the inner .view-content is not directly targeted. Community plugins
+   that inject their own background on .view-content (e.g. Calendar, Git,
+   Dataview custom panes) could surface white/light fills in the sidebar.
+   Set --ln-glass-bg as the base without !important so graph/canvas
+   transparent overrides still win. */
+.theme-dark .workspace-split.mod-left-split .workspace-leaf-content .view-content,
+.theme-dark .workspace-split.mod-right-split .workspace-leaf-content .view-content {
+  background-color: var(--ln-glass-bg);
+}
+
 /* ----------------------------------------------------------------
    1.2 / 1.3 — Glass surface base applied to all chrome
    Each surface:
@@ -6390,6 +6402,49 @@ body:not(.CG-Fullstatus-off) .status-bar {
   .suggestion-container {
     background-color: var(--ln-glass-bg-solid) !important;
     backdrop-filter: none;
+  }
+}
+
+/* ----------------------------------------------------------------
+   SKY-1323 — Active pane indicator (replaces SKY-720 filter removal)
+   Approach: cyan bottom-border + subtle glass tint on the active
+   .view-header. Content area is untouched — non-disruptive during
+   sustained writing. Inactive headers revert to neutral glass.
+
+   Design lenses:
+   • WCAG 1.4.1: border geometry (shape) + color — not color alone
+   • Von Restorff: active pane distinct in both dimensions
+   • Doherty Threshold: 200 ms transitions (< 400 ms perceptible)
+   • Cognitive Load: header-only signal, writing surface unchanged
+   • Proximity (Gestalt): border at the natural pane-identity strip
+   ---------------------------------------------------------------- */
+
+/* Active pane header — cyan bottom-border + subtle cyan tint */
+.theme-dark .workspace-leaf.mod-active .view-header {
+  background-color: rgb(from var(--ln-cyan) r g b / 0.06) !important;
+  border-bottom: 2px solid var(--ln-cyan) !important;
+  border-image: none !important;
+  box-shadow:
+    0 0 12px rgb(from var(--ln-cyan) r g b / 0.22),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.08),
+    inset 0 0 0 1px var(--ln-glass-rim) !important;
+  transition: background-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+/* Inactive pane headers — neutral glass, no cyan border */
+.theme-dark .workspace-leaf:not(.mod-active) .view-header {
+  background-color: var(--ln-glass-bg) !important;
+  border-bottom: var(--ln-border-width) solid transparent !important;
+  border-image: none !important;
+  box-shadow: inset 0 0 0 1px var(--ln-glass-rim) !important;
+  transition: background-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+/* Honour prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark .workspace-leaf.mod-active .view-header,
+  .theme-dark .workspace-leaf:not(.mod-active) .view-header {
+    transition: none !important;
   }
 }
 
