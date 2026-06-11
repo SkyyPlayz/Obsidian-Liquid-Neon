@@ -5446,6 +5446,121 @@ div.chat-view-align-right{
 }
 /*#endregion*/
 
+/*#region ---- Calendar Plugin (SKY-1329 / LN-28) ---- */
+
+/* Root container — transparent so parent glass bg shows through */
+.theme-dark .calendar {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* Navigation header — title text uses LN cyan */
+.theme-dark .calendar .nav .title h3 {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.40);
+  background: transparent;
+}
+
+/* Nav arrow buttons */
+.theme-dark .calendar .nav .right-nav .clickable-icon {
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.theme-dark .calendar .nav .right-nav .clickable-icon:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.10);
+}
+
+/* Weekday header row */
+.theme-dark .calendar .day-of-week {
+  color: var(--text-faint);
+  background: transparent;
+}
+
+/* Week number column */
+.theme-dark .calendar .week-num {
+  color: var(--text-faint);
+  background: transparent;
+  border-right: 1px solid rgb(from var(--ln-violet) r g b / 0.25);
+}
+
+.theme-dark .calendar .week-num:hover {
+  color: var(--ln-violet);
+  background: rgb(from var(--ln-violet) r g b / 0.10);
+  cursor: pointer;
+}
+
+/* Day cells — base */
+.theme-dark .calendar td.day {
+  color: var(--text-muted);
+  background: transparent;
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+
+.theme-dark .calendar td.day:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.35);
+}
+
+/* Adjacent-month days — dimmed */
+.theme-dark .calendar td.day.adjacent-month {
+  color: var(--text-faint);
+  opacity: 0.35;
+}
+
+/* TODAY — LN cyan with glow ring */
+.theme-dark .calendar td.day.today {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.12);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 8px rgb(from var(--ln-cyan) r g b / 0.30);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+.theme-dark .calendar td.day.today:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.20);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 12px rgb(from var(--ln-cyan) r g b / 0.45);
+}
+
+/* Has-note — neon magenta accent */
+.theme-dark .calendar td.day.has-note {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.07);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-magenta) r g b / 0.40);
+}
+
+.theme-dark .calendar td.day.has-note:hover {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.15);
+  box-shadow: inset 0 0 0 1px var(--ln-magenta),
+              0 0 8px rgb(from var(--ln-magenta) r g b / 0.30);
+}
+
+/* Today + has-note — cyan wins, magenta accent hint */
+.theme-dark .calendar td.day.today.has-note {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.14);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 10px rgb(from var(--ln-cyan) r g b / 0.35),
+              2px 2px 0 rgb(from var(--ln-magenta) r g b / 0.45);
+}
+
+/* Active/selected day — violet highlight */
+.theme-dark .calendar td.day.active {
+  color: var(--text-on-accent);
+  background: rgb(from var(--ln-violet) r g b / 0.30);
+  box-shadow: inset 0 0 0 1px var(--ln-violet),
+              0 0 10px rgb(from var(--ln-violet) r g b / 0.40);
+}
+
+/*#endregion*/
+
 
     /*#endregion*/
 
