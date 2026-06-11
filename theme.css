@@ -1051,4 +1051,8 @@ settings:
 :has(.workspace-tab-header.mod-active)
 ):hover{opacity:.85;filter:saturate(100%)}.theme-dark .workspace .mod-root .workspace-tabs.mod-stacked .workspace-tab-container .workspace-tab-header{backdrop-filter:blur(var(--ln-blur-sm)) saturate(var(--ln-saturate));border-radius:var(--ln-radius-sm) 0 0 var(--ln-radius-sm)}@media (prefers-reduced-motion:reduce){.theme-dark .nav-file-title.is-active,.theme-dark .workspace-leaf-content[data-type=file-explorer] .tree-item-self.is-active,.theme-dark .workspace-tab-header-container:not(
 :has(.workspace-tab-header.mod-active)
-),.theme-dark .workspace-tab-header.is-active{transition:none}}
+),.theme-dark .workspace-tab-header.is-active{transition:none}}.workspace-tab-header-container{transform:translateZ(0)}.theme-dark button:not(
+.clickable-icon,[aria-label=Sticker],.mod-warning,[disabled]
+){will-change:box-shadow}.theme-dark .markdown-rendered button.copy-code-button,.theme-dark .markdown-source-view.mod-cm6 .code-block-flair{will-change:box-shadow}.theme-dark .community-item,.theme-dark .menu-item,.theme-dark .setting-item.setting-item-heading.style-settings-heading,.theme-dark .tree-item-self.is-clickable,.theme-dark .vertical-tab-nav-item{will-change:box-shadow}.theme-dark .workspace .mod-root .workspace-tab-header{will-change:box-shadow}.theme-dark .nav-file-title,.theme-dark .nav-folder-title{will-change:box-shadow}.theme-dark .workspace-ribbon .side-dock-ribbon-action,.theme-dark .workspace-ribbon.side-dock-ribbon .clickable-icon{will-change:box-shadow}.theme-dark .callout.is-collapsible .callout-title{will-change:box-shadow}.theme-dark .workspace-tab-header-container:not(
+:has(.workspace-tab-header.mod-active)
+){will-change:opacity,filter}

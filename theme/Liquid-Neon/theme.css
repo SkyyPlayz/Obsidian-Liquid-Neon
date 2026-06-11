@@ -7114,3 +7114,147 @@ body {
 /* ================================================================
    END — Liquid Neon Phase 3
    ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Compositing Pre-flight (SKY-1324)
+   Promote interactive and glow-animated surfaces to GPU compositing
+   layers BEFORE state changes to prevent afterimage / render-trail
+   artifacts. All three afterimage root causes in the LN design:
+     1. tab removal paint residue     → translateZ(0) on container
+     2. box-shadow glow transitions   → will-change: box-shadow
+     3. opacity + filter transitions  → will-change: opacity, filter
+
+   Rules:
+   • will-change is set on the BASE selector (not :hover/:focus/:active)
+     so the compositor pre-allocates a layer before the transition fires.
+   • Use specific properties — never will-change: all.
+   • Intentional omissions are documented inline.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   C.1 — Tab container: GPU layer (restores SKY-722 translateZ fix
+   that was dropped in the SKY-720 squash merge)
+   translateZ(0) promotes the tab-header-container to its own layer
+   so the compositor cleanly discards child layers when a tab is
+   removed, preventing paint residue on close in software-render
+   environments (WSLg / SwiftShader).
+   Note: will-change is NOT used here because the container itself
+   never transitions — its children do. Promoting via will-change
+   would create a new stacking context and break z-index on dropdowns.
+   ---------------------------------------------------------------- */
+.workspace-tab-header-container {
+  transform: translateZ(0);
+}
+
+/* ----------------------------------------------------------------
+   C.2 — Button / clickable-icon hover targets (Phase 2.1)
+   Phase 2 transitions box-shadow on :hover. Setting will-change on
+   the base state tells the compositor to pre-allocate a layer before
+   the hover fires, so the glow transition paints off the main thread.
+   ---------------------------------------------------------------- */
+.theme-dark button:not(
+  .clickable-icon,
+  [aria-label='Sticker'],
+  .mod-warning,
+  [disabled]
+) {
+  will-change: box-shadow;
+}
+
+.theme-dark .markdown-rendered button.copy-code-button,
+.theme-dark .markdown-source-view.mod-cm6 .code-block-flair {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.3 — List / tree / nav item hover targets (Phase 2.2)
+   ---------------------------------------------------------------- */
+.theme-dark .setting-item.setting-item-heading.style-settings-heading,
+.theme-dark .tree-item-self.is-clickable,
+.theme-dark .menu-item,
+.theme-dark .vertical-tab-nav-item,
+.theme-dark .community-item {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.4 — Workspace tab headers (Phase 2.2 + 3.3)
+   ---------------------------------------------------------------- */
+.theme-dark .workspace .mod-root .workspace-tab-header {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.5 — File-explorer rows (Phase 2.2 + 3.2)
+   ---------------------------------------------------------------- */
+.theme-dark .nav-file-title,
+.theme-dark .nav-folder-title {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.6 — Ribbon icon buttons (Phase 2.2 + 3.1)
+   Note: the ribbon chrome container (.workspace-ribbon.side-dock-ribbon)
+   is static glass and intentionally omitted — see omissions below.
+   ---------------------------------------------------------------- */
+.theme-dark .workspace-ribbon.side-dock-ribbon .clickable-icon,
+.theme-dark .workspace-ribbon .side-dock-ribbon-action {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.7 — Callout collapsible pill headers (Phase 2.2)
+   ---------------------------------------------------------------- */
+.theme-dark .callout.is-collapsible .callout-title {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.8 — Inactive tab strip (Phase 3.3)
+   Phase 3 transitions opacity and filter on the inactive tab strip.
+   Both are GPU-compositable; will-change pre-allocates a texture
+   so the saturation fade stays off the main thread.
+   ---------------------------------------------------------------- */
+.theme-dark .workspace-tab-header-container:not(
+  :has(.workspace-tab-header.mod-active)
+) {
+  will-change: opacity, filter;
+}
+
+/* ----------------------------------------------------------------
+   Intentional omissions (documented for audit completeness):
+
+   • .workspace-ribbon.side-dock-ribbon — static glass chrome;
+     backdrop-filter + box-shadow painted once and never change.
+     No will-change needed; adding it wastes a compositor layer.
+
+   • .workspace-split .workspace-leaf-content — same: static glass.
+
+   • .view-header, .status-bar, .modal, .prompt, .menu,
+     .suggestion-container — static glass; appear/disappear via
+     JS class changes (layout recalc), not CSS transitions on these
+     elements. No transition hints needed.
+
+   • .graph-view-content — static ambient glow on a canvas container.
+     The canvas manages its own GPU surfaces; a CSS layer hint here
+     would duplicate, not help.
+
+   • :focus-visible (universal) — adding will-change to every
+     focusable element would over-promote hundreds of layers and waste
+     GPU memory. The focus transition is brief (--ln-duration-fast);
+     the box-shadow on :focus-visible itself is acceptable without
+     pre-promotion.
+
+   • CyberGlow @keyframes animation targets — CyberGlow manages its
+     own layer budget; interfering here risks doubling layers.
+     Animation engine auto-promotes compositable keyframes.
+
+   • .workspace-tabs.mod-stacked .workspace-tab-header — backdrop-
+     filter is static; hover transitions are already covered by the
+     broader tab-header rule in C.4 above.
+   ---------------------------------------------------------------- */
+
+/* ================================================================
+   END — Liquid Neon compositing pre-flight
+   ================================================================ */
+
