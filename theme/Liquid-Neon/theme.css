@@ -7373,3 +7373,201 @@ body {
    END — Liquid Neon compositing pre-flight
    ================================================================ */
 
+/* ================================================================
+   SKY-1328 — Dataview plugin: dark-theme surface coverage (LN-28.5)
+
+   Static analysis of Dataview v0.5.x DOM + bundled FullCalendar v6:
+
+   TABLE / LIST / TASK: inherit Obsidian vars (--background-primary,
+   --background-secondary) which the theme already maps to --ln-glass-bg.
+   Risk: low. Defensive header/border overrides added for safety.
+
+   CALENDAR: FullCalendar v6 bundles its own CSS with light defaults:
+     --fc-border-color: #ddd      → white-ish cell borders (FAIL)
+     .fc-button: hardcoded blue   → light button surfaces (FAIL)
+   All fc-* variables are overridden at .theme-dark scope.
+
+   ERROR: .dataview-error-box — light bg in some Dataview versions.
+   ================================================================ */
+
+/* — TABLE: defensive header + border overrides — */
+.theme-dark .dataview.table-view-table,
+.theme-dark .dataview.dataview-container table {
+  background: transparent;
+  border-collapse: collapse;
+}
+
+.theme-dark .dataview.table-view-table > thead > tr > th,
+.theme-dark .dataview.table-view-table > .dataview.table-view-thead > .dataview.table-view-tr-header > .dataview.table-view-th {
+  background-color: var(--ln-glass-bg-solid);
+  color: var(--ln-cyan);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr {
+  background-color: transparent;
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr:nth-child(odd) {
+  background-color: rgb(from var(--ln-violet) r g b / 0.05);
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr:hover {
+  background-color: var(--ln-state-hover);
+}
+
+.theme-dark .dataview.table-view-table td,
+.theme-dark .dataview.table-view-table th {
+  border-color: rgb(from var(--ln-violet) r g b / 0.18);
+}
+
+/* — LIST / TASK: transparent containers — */
+.theme-dark .dataview.dataview-container,
+.theme-dark .block-language-dataview {
+  background: transparent;
+}
+
+.theme-dark .dataview.list-view-ul,
+.theme-dark .dataview.dataview-result-list-root {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* — ERROR / LOADING states — */
+.theme-dark .dataview-error-box {
+  background: var(--ln-glass-bg);
+  border: 1px solid rgb(from var(--ln-magenta) r g b / 0.55);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  padding: var(--ln-space-sm) var(--ln-space-md);
+}
+
+.theme-dark .dataview.dataview-pre-error {
+  background: transparent;
+  color: var(--ln-magenta);
+}
+
+/* — CALENDAR query: FullCalendar v6 dark overrides —
+   FullCalendar bundles its own CSS variables with light defaults.
+   Set all --fc-* variables at the dataview-calendar root so they
+   cascade to every FullCalendar element in this scope. */
+.theme-dark .dataview-calendar .fc,
+.theme-dark .block-language-dataview .fc {
+  --fc-border-color:             rgb(from var(--ln-violet) r g b / 0.22);
+  --fc-daygrid-event-dot-width:  8px;
+  --fc-event-bg-color:           rgb(from var(--ln-violet) r g b / 0.28);
+  --fc-event-border-color:       var(--ln-violet);
+  --fc-event-text-color:         var(--text-normal);
+  --fc-event-selected-overlay-color: rgb(from var(--ln-cyan) r g b / 0.18);
+  --fc-more-link-bg-color:       var(--ln-glass-bg);
+  --fc-more-link-text-color:     var(--ln-cyan);
+  --fc-non-business-color:       rgb(from var(--ln-surface-bg) r g b / 0.40);
+  --fc-bg-event-color:           var(--ln-violet);
+  --fc-bg-event-opacity:         0.12;
+  --fc-highlight-color:          rgb(from var(--ln-cyan) r g b / 0.12);
+  --fc-today-bg-color:           rgb(from var(--ln-cyan) r g b / 0.08);
+  --fc-neutral-bg-color:         var(--ln-glass-bg);
+  --fc-neutral-text-color:       var(--text-muted);
+  --fc-page-bg-color:            transparent;
+  --fc-button-text-color:        var(--text-normal);
+  --fc-button-bg-color:          var(--ln-glass-bg);
+  --fc-button-border-color:      rgb(from var(--ln-cyan) r g b / 0.28);
+  --fc-button-hover-bg-color:    var(--ln-state-hover);
+  --fc-button-hover-border-color: var(--ln-cyan);
+  --fc-button-active-bg-color:   rgb(from var(--ln-cyan) r g b / 0.15);
+  --fc-button-active-border-color: var(--ln-cyan);
+  --fc-list-event-hover-bg-color: var(--ln-state-hover);
+  color: var(--text-normal);
+  background: transparent;
+}
+
+/* FullCalendar toolbar */
+.theme-dark .block-language-dataview .fc-toolbar-title {
+  color: var(--ln-cyan);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+/* Column headers (weekday names) */
+.theme-dark .block-language-dataview .fc-col-header-cell {
+  background: var(--ln-glass-bg-solid);
+  color: var(--ln-cyan);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.25);
+}
+
+.theme-dark .block-language-dataview .fc-col-header-cell-cushion {
+  color: var(--ln-cyan);
+}
+
+/* Day cells */
+.theme-dark .block-language-dataview .fc-daygrid-day {
+  background: transparent;
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-day.fc-day-today {
+  background: var(--fc-today-bg-color) !important;
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.40);
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-day-number {
+  color: var(--text-muted);
+}
+
+.theme-dark .block-language-dataview .fc-day-today .fc-daygrid-day-number {
+  color: var(--ln-cyan);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+/* Events */
+.theme-dark .block-language-dataview .fc-daygrid-event,
+.theme-dark .block-language-dataview .fc-list-event {
+  background: rgb(from var(--ln-violet) r g b / 0.30);
+  border-color: var(--ln-violet);
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-event:hover,
+.theme-dark .block-language-dataview .fc-list-event:hover td {
+  background: rgb(from var(--ln-violet) r g b / 0.45);
+  border-color: var(--ln-magenta);
+}
+
+/* Scrollgrid container */
+.theme-dark .block-language-dataview .fc-scrollgrid {
+  border-color: var(--fc-border-color);
+  background: transparent;
+}
+
+.theme-dark .block-language-dataview .fc-scrollgrid-section-liquid > td {
+  background: transparent;
+}
+
+/* Buttons — direct property overrides supplement the CSS vars above
+   because FullCalendar v5 and some v6 builds use direct values, not vars */
+.theme-dark .block-language-dataview .fc-button {
+  background-color: var(--ln-glass-bg);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.28);
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .block-language-dataview .fc-button:hover {
+  background-color: var(--ln-state-hover);
+  border-color: var(--ln-cyan);
+  color: var(--ln-cyan);
+}
+
+.theme-dark .block-language-dataview .fc-button.fc-button-active,
+.theme-dark .block-language-dataview .fc-button:active {
+  background-color: rgb(from var(--ln-cyan) r g b / 0.15) !important;
+  border-color: var(--ln-cyan) !important;
+  color: var(--ln-cyan) !important;
+  box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+}
+
+/* ================================================================
+   END — SKY-1328 Dataview coverage
+   ================================================================ */
+
