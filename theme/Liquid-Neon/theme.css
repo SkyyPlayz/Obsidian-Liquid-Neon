@@ -5561,6 +5561,234 @@ div.chat-view-align-right{
 
 /*#endregion*/
 
+/*#region ---- Obsidian Git Plugin (SKY-1330 / LN-30) ---- */
+
+/* Container — glass bg already applied by LN-27 sidebar rule; ensure children are transparent */
+.workspace-leaf-content[data-type="git"] .nav-header,
+.workspace-leaf-content[data-type="git"] .git-source-control-view,
+.workspace-leaf-content[data-type="git"] .git-toolbar,
+.workspace-leaf-content[data-type="git-history"] .nav-header {
+  background: transparent;
+}
+
+/* Toolbar action buttons (push, pull, refresh, stage-all) */
+.workspace-leaf-content[data-type="git"] .git-toolbar .clickable-icon,
+.workspace-leaf-content[data-type="git"] .git-toolbar button,
+.workspace-leaf-content[data-type="git"] .view-action {
+  color: var(--text-muted);
+  background: transparent;
+  transition: color var(--ln-duration-fast) ease,
+              background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-toolbar .clickable-icon:hover,
+.workspace-leaf-content[data-type="git"] .git-toolbar button:hover,
+.workspace-leaf-content[data-type="git"] .view-action:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+
+/* Section headers: Staged / Unstaged / Untracked */
+.workspace-leaf-content[data-type="git"] .git-section-header,
+.workspace-leaf-content[data-type="git"] .git-staged-changes-header,
+.workspace-leaf-content[data-type="git"] .git-unstaged-changes-header,
+.workspace-leaf-content[data-type="git"] .git-untracked-changes-header {
+  color: var(--text-faint);
+  background: transparent;
+  border-bottom: 1px solid rgb(from var(--ln-violet) r g b / 0.20);
+  font-size: var(--font-ui-smaller);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* File list group containers */
+.workspace-leaf-content[data-type="git"] .git-files,
+.workspace-leaf-content[data-type="git"] .git-staged-changes,
+.workspace-leaf-content[data-type="git"] .git-unstaged-changes,
+.workspace-leaf-content[data-type="git"] .git-untracked-changes {
+  background: transparent;
+}
+
+/* Individual file rows */
+.workspace-leaf-content[data-type="git"] .git-file-item,
+.workspace-leaf-content[data-type="git"] .gitfile,
+.workspace-leaf-content[data-type="git"] .nav-file-title {
+  background: transparent;
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-file-item:hover,
+.workspace-leaf-content[data-type="git"] .gitfile:hover,
+.workspace-leaf-content[data-type="git"] .nav-file-title:hover {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+}
+
+/* Status badge — shared style */
+.workspace-leaf-content[data-type="git"] .git-file-item .status,
+.workspace-leaf-content[data-type="git"] .gitfile .type,
+.workspace-leaf-content[data-type="git"] .git-status-icon,
+.workspace-leaf-content[data-type="git"] .git-file-status {
+  font-weight: var(--ln-font-weight-semibold);
+  font-size: var(--font-ui-smaller);
+  min-width: 1.25em;
+  text-align: center;
+  font-family: var(--font-monospace);
+}
+
+/* Added / Untracked (A, ?) — cyan: new content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="A"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="?"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-A .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-untracked .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-added,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-untracked,
+.workspace-leaf-content[data-type="git"] .gitfile.type-A .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-untracked .type {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.50);
+}
+
+/* Modified (M) — violet: changed content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="M"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-M .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-modified .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-modified,
+.workspace-leaf-content[data-type="git"] .gitfile.type-M .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-modified .type {
+  color: var(--ln-violet);
+  text-shadow: 0 0 6px rgb(from var(--ln-violet) r g b / 0.50);
+}
+
+/* Deleted (D) — magenta: removed content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="D"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-D .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-deleted .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-deleted,
+.workspace-leaf-content[data-type="git"] .gitfile.type-D .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-deleted .type {
+  color: var(--ln-magenta);
+  text-shadow: 0 0 6px rgb(from var(--ln-magenta) r g b / 0.50);
+}
+
+/* Renamed (R) — violet: variant of modification */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="R"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-R .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-renamed,
+.workspace-leaf-content[data-type="git"] .gitfile.type-R .type {
+  color: var(--ln-violet);
+  text-shadow: 0 0 6px rgb(from var(--ln-violet) r g b / 0.40);
+}
+
+/* Commit message textarea */
+.workspace-leaf-content[data-type="git"] .git-commit-msg,
+.workspace-leaf-content[data-type="git"] .git-commit-msg-input,
+.workspace-leaf-content[data-type="git"] .git-commit-input,
+.workspace-leaf-content[data-type="git"] textarea[class*="git"] {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.25);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  transition: border-color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-msg:focus,
+.workspace-leaf-content[data-type="git"] .git-commit-msg-input:focus,
+.workspace-leaf-content[data-type="git"] .git-commit-input:focus,
+.workspace-leaf-content[data-type="git"] textarea[class*="git"]:focus {
+  border-color: var(--ln-cyan);
+  box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+  outline: none;
+}
+
+/* Primary action buttons: Commit, Stage-all, Unstage-all */
+.workspace-leaf-content[data-type="git"] .git-commit-button,
+.workspace-leaf-content[data-type="git"] .git-button.mod-cta,
+.workspace-leaf-content[data-type="git"] button.mod-cta {
+  background: rgb(from var(--ln-cyan) r g b / 0.12);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.40);
+  color: var(--ln-cyan);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-button:hover,
+.workspace-leaf-content[data-type="git"] .git-button.mod-cta:hover,
+.workspace-leaf-content[data-type="git"] button.mod-cta:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.20);
+  box-shadow: 0 0 10px rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+/* History view container */
+.workspace-leaf-content[data-type="git"] .git-history-view,
+.workspace-leaf-content[data-type="git-history"] .view-content {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* Individual commit entries in history timeline */
+.workspace-leaf-content[data-type="git"] .git-commit-entry,
+.workspace-leaf-content[data-type="git"] .git-history-view .git-commit,
+.workspace-leaf-content[data-type="git-history"] .git-commit-entry,
+.workspace-leaf-content[data-type="git-history"] .tree-item-self {
+  background: transparent;
+  border-bottom: 1px solid rgb(from var(--ln-violet) r g b / 0.15);
+  transition: background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-entry:hover,
+.workspace-leaf-content[data-type="git"] .git-history-view .git-commit:hover,
+.workspace-leaf-content[data-type="git-history"] .git-commit-entry:hover,
+.workspace-leaf-content[data-type="git-history"] .tree-item-self:hover {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+}
+
+/* Commit hash — LN cyan, monospace */
+.workspace-leaf-content[data-type="git"] .git-commit-hash,
+.workspace-leaf-content[data-type="git-history"] .git-commit-hash {
+  color: var(--ln-cyan);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}
+
+/* Author and date — muted */
+.workspace-leaf-content[data-type="git"] .git-commit-author,
+.workspace-leaf-content[data-type="git"] .git-commit-date,
+.workspace-leaf-content[data-type="git-history"] .git-commit-author,
+.workspace-leaf-content[data-type="git-history"] .git-commit-date {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+}
+
+/* Branch / tag chips on history entries */
+.workspace-leaf-content[data-type="git"] .git-commit-tag,
+.workspace-leaf-content[data-type="git-history"] .git-commit-tag {
+  background: rgb(from var(--ln-magenta) r g b / 0.15);
+  border: 1px solid rgb(from var(--ln-magenta) r g b / 0.35);
+  color: var(--ln-magenta);
+  border-radius: var(--ln-radius-sm);
+  font-size: var(--font-ui-smaller);
+  padding: 1px 5px;
+}
+
+/* Diff view (plugin inline diff pane) */
+.workspace-leaf-content[data-type="diff"] .view-content,
+.workspace-leaf-content[data-type="git"] .git-diff-view {
+  background: transparent;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}
+.workspace-leaf-content[data-type="diff"] .diff-added,
+.workspace-leaf-content[data-type="git"] .git-diff-view .diff-added {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+.workspace-leaf-content[data-type="diff"] .diff-removed,
+.workspace-leaf-content[data-type="git"] .git-diff-view .diff-removed {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.08);
+}
+
+/*#endregion*/
+
 /*#region ---- Advanced Tables Plugin (SKY-1331 / LN-29) ---- */
 
 /* Toolbar container above tables in edit mode — prevent white/light bg */
