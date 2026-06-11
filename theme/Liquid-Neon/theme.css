@@ -5561,6 +5561,65 @@ div.chat-view-align-right{
 
 /*#endregion*/
 
+/*#region ---- Advanced Tables Plugin (SKY-1331 / LN-29) ---- */
+
+/* Toolbar container above tables in edit mode — prevent white/light bg */
+.theme-dark .at-toolbar {
+  background: rgb(from var(--ln-cyan) r g b / 0.04);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.18);
+  padding: 4px 6px;
+}
+
+/* Toolbar rows */
+.theme-dark .at-toolbar-row {
+  gap: 2px;
+}
+
+/* Toolbar buttons — base state */
+.theme-dark .at-toolbar-button {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ln-radius-sm);
+  transition: color 0.15s ease, box-shadow 0.15s ease,
+              border-color 0.15s ease, background 0.15s ease;
+  will-change: box-shadow;
+}
+
+.theme-dark .at-toolbar-button svg {
+  color: inherit;
+  fill: currentColor;
+}
+
+/* Hover / focus: LN neon frame — cyan glow */
+.theme-dark .at-toolbar-button:hover,
+.theme-dark .at-toolbar-button:focus-visible {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.07);
+  border-color: rgb(from var(--ln-cyan) r g b / 0.45);
+  box-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.40),
+              inset 0 0 4px rgb(from var(--ln-cyan) r g b / 0.12);
+}
+
+/* Sort / align settings popup */
+.theme-dark .at-sort-and-align-settings {
+  background: var(--background-settings);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.35);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 14px rgb(from var(--ln-violet) r g b / 0.22);
+  color: var(--text-muted);
+}
+
+.theme-dark .at-sort-and-align-settings button:hover,
+.theme-dark .at-sort-and-align-settings .at-setting:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+
+/*#endregion*/
+
 
     /*#endregion*/
 
