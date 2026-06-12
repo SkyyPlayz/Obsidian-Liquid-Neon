@@ -5446,6 +5446,408 @@ div.chat-view-align-right{
 }
 /*#endregion*/
 
+/*#region ---- Calendar Plugin (SKY-1329 / LN-28) ---- */
+
+/* Root container — transparent so parent glass bg shows through */
+.theme-dark .calendar {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* Navigation header — title text uses LN cyan */
+.theme-dark .calendar .nav .title h3 {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.40);
+  background: transparent;
+}
+
+/* Nav arrow buttons */
+.theme-dark .calendar .nav .right-nav .clickable-icon {
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.theme-dark .calendar .nav .right-nav .clickable-icon:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.10);
+}
+
+/* Weekday header row */
+.theme-dark .calendar .day-of-week {
+  color: var(--text-faint);
+  background: transparent;
+}
+
+/* Week number column */
+.theme-dark .calendar .week-num {
+  color: var(--text-faint);
+  background: transparent;
+  border-right: 1px solid rgb(from var(--ln-violet) r g b / 0.25);
+}
+
+.theme-dark .calendar .week-num:hover {
+  color: var(--ln-violet);
+  background: rgb(from var(--ln-violet) r g b / 0.10);
+  cursor: pointer;
+}
+
+/* Day cells — base */
+.theme-dark .calendar td.day {
+  color: var(--text-muted);
+  background: transparent;
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+
+.theme-dark .calendar td.day:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.35);
+}
+
+/* Adjacent-month days — dimmed */
+.theme-dark .calendar td.day.adjacent-month {
+  color: var(--text-faint);
+  opacity: 0.35;
+}
+
+/* TODAY — LN cyan with glow ring */
+.theme-dark .calendar td.day.today {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.12);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 8px rgb(from var(--ln-cyan) r g b / 0.30);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+.theme-dark .calendar td.day.today:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.20);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 12px rgb(from var(--ln-cyan) r g b / 0.45);
+}
+
+/* Has-note — neon magenta accent */
+.theme-dark .calendar td.day.has-note {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.07);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-magenta) r g b / 0.40);
+}
+
+.theme-dark .calendar td.day.has-note:hover {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.15);
+  box-shadow: inset 0 0 0 1px var(--ln-magenta),
+              0 0 8px rgb(from var(--ln-magenta) r g b / 0.30);
+}
+
+/* Today + has-note — cyan wins, magenta accent hint */
+.theme-dark .calendar td.day.today.has-note {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.14);
+  box-shadow: inset 0 0 0 1px var(--ln-cyan),
+              0 0 10px rgb(from var(--ln-cyan) r g b / 0.35),
+              2px 2px 0 rgb(from var(--ln-magenta) r g b / 0.45);
+}
+
+/* Active/selected day — violet highlight */
+.theme-dark .calendar td.day.active {
+  color: var(--text-on-accent);
+  background: rgb(from var(--ln-violet) r g b / 0.30);
+  box-shadow: inset 0 0 0 1px var(--ln-violet),
+              0 0 10px rgb(from var(--ln-violet) r g b / 0.40);
+}
+
+/*#endregion*/
+
+/*#region ---- Obsidian Git Plugin (SKY-1330 / LN-30) ---- */
+
+/* Container — glass bg already applied by LN-27 sidebar rule; ensure children are transparent */
+.workspace-leaf-content[data-type="git"] .nav-header,
+.workspace-leaf-content[data-type="git"] .git-source-control-view,
+.workspace-leaf-content[data-type="git"] .git-toolbar,
+.workspace-leaf-content[data-type="git-history"] .nav-header {
+  background: transparent;
+}
+
+/* Toolbar action buttons (push, pull, refresh, stage-all) */
+.workspace-leaf-content[data-type="git"] .git-toolbar .clickable-icon,
+.workspace-leaf-content[data-type="git"] .git-toolbar button,
+.workspace-leaf-content[data-type="git"] .view-action {
+  color: var(--text-muted);
+  background: transparent;
+  transition: color var(--ln-duration-fast) ease,
+              background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-toolbar .clickable-icon:hover,
+.workspace-leaf-content[data-type="git"] .git-toolbar button:hover,
+.workspace-leaf-content[data-type="git"] .view-action:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+
+/* Section headers: Staged / Unstaged / Untracked */
+.workspace-leaf-content[data-type="git"] .git-section-header,
+.workspace-leaf-content[data-type="git"] .git-staged-changes-header,
+.workspace-leaf-content[data-type="git"] .git-unstaged-changes-header,
+.workspace-leaf-content[data-type="git"] .git-untracked-changes-header {
+  color: var(--text-faint);
+  background: transparent;
+  border-bottom: 1px solid rgb(from var(--ln-violet) r g b / 0.20);
+  font-size: var(--font-ui-smaller);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* File list group containers */
+.workspace-leaf-content[data-type="git"] .git-files,
+.workspace-leaf-content[data-type="git"] .git-staged-changes,
+.workspace-leaf-content[data-type="git"] .git-unstaged-changes,
+.workspace-leaf-content[data-type="git"] .git-untracked-changes {
+  background: transparent;
+}
+
+/* Individual file rows */
+.workspace-leaf-content[data-type="git"] .git-file-item,
+.workspace-leaf-content[data-type="git"] .gitfile,
+.workspace-leaf-content[data-type="git"] .nav-file-title {
+  background: transparent;
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-file-item:hover,
+.workspace-leaf-content[data-type="git"] .gitfile:hover,
+.workspace-leaf-content[data-type="git"] .nav-file-title:hover {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+}
+
+/* Status badge — shared style */
+.workspace-leaf-content[data-type="git"] .git-file-item .status,
+.workspace-leaf-content[data-type="git"] .gitfile .type,
+.workspace-leaf-content[data-type="git"] .git-status-icon,
+.workspace-leaf-content[data-type="git"] .git-file-status {
+  font-weight: var(--ln-font-weight-semibold);
+  font-size: var(--font-ui-smaller);
+  min-width: 1.25em;
+  text-align: center;
+  font-family: var(--font-monospace);
+}
+
+/* Added / Untracked (A, ?) — cyan: new content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="A"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="?"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-A .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-untracked .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-added,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-untracked,
+.workspace-leaf-content[data-type="git"] .gitfile.type-A .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-untracked .type {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.50);
+}
+
+/* Modified (M) — violet: changed content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="M"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-M .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-modified .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-modified,
+.workspace-leaf-content[data-type="git"] .gitfile.type-M .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-modified .type {
+  color: var(--ln-violet);
+  text-shadow: 0 0 6px rgb(from var(--ln-violet) r g b / 0.50);
+}
+
+/* Deleted (D) — magenta: removed content */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="D"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-D .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-deleted .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-deleted,
+.workspace-leaf-content[data-type="git"] .gitfile.type-D .type,
+.workspace-leaf-content[data-type="git"] .gitfile.type-deleted .type {
+  color: var(--ln-magenta);
+  text-shadow: 0 0 6px rgb(from var(--ln-magenta) r g b / 0.50);
+}
+
+/* Renamed (R) — violet: variant of modification */
+.workspace-leaf-content[data-type="git"] .git-file-item[data-type="R"] .status,
+.workspace-leaf-content[data-type="git"] .git-file-item.type-R .status,
+.workspace-leaf-content[data-type="git"] .git-status-icon.status-renamed,
+.workspace-leaf-content[data-type="git"] .gitfile.type-R .type {
+  color: var(--ln-violet);
+  text-shadow: 0 0 6px rgb(from var(--ln-violet) r g b / 0.40);
+}
+
+/* Commit message textarea */
+.workspace-leaf-content[data-type="git"] .git-commit-msg,
+.workspace-leaf-content[data-type="git"] .git-commit-msg-input,
+.workspace-leaf-content[data-type="git"] .git-commit-input,
+.workspace-leaf-content[data-type="git"] textarea[class*="git"] {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.25);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  transition: border-color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-msg:focus,
+.workspace-leaf-content[data-type="git"] .git-commit-msg-input:focus,
+.workspace-leaf-content[data-type="git"] .git-commit-input:focus,
+.workspace-leaf-content[data-type="git"] textarea[class*="git"]:focus {
+  border-color: var(--ln-cyan);
+  box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+  outline: none;
+}
+
+/* Primary action buttons: Commit, Stage-all, Unstage-all */
+.workspace-leaf-content[data-type="git"] .git-commit-button,
+.workspace-leaf-content[data-type="git"] .git-button.mod-cta,
+.workspace-leaf-content[data-type="git"] button.mod-cta {
+  background: rgb(from var(--ln-cyan) r g b / 0.12);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.40);
+  color: var(--ln-cyan);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-button:hover,
+.workspace-leaf-content[data-type="git"] .git-button.mod-cta:hover,
+.workspace-leaf-content[data-type="git"] button.mod-cta:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.20);
+  box-shadow: 0 0 10px rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+/* History view container */
+.workspace-leaf-content[data-type="git"] .git-history-view,
+.workspace-leaf-content[data-type="git-history"] .view-content {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* Individual commit entries in history timeline */
+.workspace-leaf-content[data-type="git"] .git-commit-entry,
+.workspace-leaf-content[data-type="git"] .git-history-view .git-commit,
+.workspace-leaf-content[data-type="git-history"] .git-commit-entry,
+.workspace-leaf-content[data-type="git-history"] .tree-item-self {
+  background: transparent;
+  border-bottom: 1px solid rgb(from var(--ln-violet) r g b / 0.15);
+  transition: background var(--ln-duration-fast) ease;
+}
+.workspace-leaf-content[data-type="git"] .git-commit-entry:hover,
+.workspace-leaf-content[data-type="git"] .git-history-view .git-commit:hover,
+.workspace-leaf-content[data-type="git-history"] .git-commit-entry:hover,
+.workspace-leaf-content[data-type="git-history"] .tree-item-self:hover {
+  background: rgb(from var(--ln-violet) r g b / 0.07);
+}
+
+/* Commit hash — LN cyan, monospace */
+.workspace-leaf-content[data-type="git"] .git-commit-hash,
+.workspace-leaf-content[data-type="git-history"] .git-commit-hash {
+  color: var(--ln-cyan);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}
+
+/* Author and date — muted */
+.workspace-leaf-content[data-type="git"] .git-commit-author,
+.workspace-leaf-content[data-type="git"] .git-commit-date,
+.workspace-leaf-content[data-type="git-history"] .git-commit-author,
+.workspace-leaf-content[data-type="git-history"] .git-commit-date {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+}
+
+/* Branch / tag chips on history entries */
+.workspace-leaf-content[data-type="git"] .git-commit-tag,
+.workspace-leaf-content[data-type="git-history"] .git-commit-tag {
+  background: rgb(from var(--ln-magenta) r g b / 0.15);
+  border: 1px solid rgb(from var(--ln-magenta) r g b / 0.35);
+  color: var(--ln-magenta);
+  border-radius: var(--ln-radius-sm);
+  font-size: var(--font-ui-smaller);
+  padding: 1px 5px;
+}
+
+/* Diff view (plugin inline diff pane) */
+.workspace-leaf-content[data-type="diff"] .view-content,
+.workspace-leaf-content[data-type="git"] .git-diff-view {
+  background: transparent;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}
+.workspace-leaf-content[data-type="diff"] .diff-added,
+.workspace-leaf-content[data-type="git"] .git-diff-view .diff-added {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+.workspace-leaf-content[data-type="diff"] .diff-removed,
+.workspace-leaf-content[data-type="git"] .git-diff-view .diff-removed {
+  color: var(--ln-magenta);
+  background: rgb(from var(--ln-magenta) r g b / 0.08);
+}
+
+/*#endregion*/
+
+/*#region ---- Advanced Tables Plugin (SKY-1331 / LN-29) ---- */
+
+/* Toolbar container above tables in edit mode — prevent white/light bg */
+.theme-dark .at-toolbar {
+  background: rgb(from var(--ln-cyan) r g b / 0.04);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.18);
+  padding: 4px 6px;
+}
+
+/* Toolbar rows */
+.theme-dark .at-toolbar-row {
+  gap: 2px;
+}
+
+/* Toolbar buttons — base state */
+.theme-dark .at-toolbar-button {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ln-radius-sm);
+  transition: color 0.15s ease, box-shadow 0.15s ease,
+              border-color 0.15s ease, background 0.15s ease;
+  will-change: box-shadow;
+}
+
+.theme-dark .at-toolbar-button svg {
+  color: inherit;
+  fill: currentColor;
+}
+
+/* Hover / focus: LN neon frame — cyan glow */
+.theme-dark .at-toolbar-button:hover,
+.theme-dark .at-toolbar-button:focus-visible {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.07);
+  border-color: rgb(from var(--ln-cyan) r g b / 0.45);
+  box-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.40),
+              inset 0 0 4px rgb(from var(--ln-cyan) r g b / 0.12);
+}
+
+/* Sort / align settings popup */
+.theme-dark .at-sort-and-align-settings {
+  background: var(--background-settings);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.35);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 14px rgb(from var(--ln-violet) r g b / 0.22);
+  color: var(--text-muted);
+}
+
+.theme-dark .at-sort-and-align-settings button:hover,
+.theme-dark .at-sort-and-align-settings .at-setting:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+
+/*#endregion*/
+
 
     /*#endregion*/
 
@@ -6223,6 +6625,18 @@ body.theme-dark {
   background-color: var(--ln-glass-bg) !important;
 }
 
+/* SKY-1322 (LN-27): Extend SKY-723 coverage to sidebar panes.
+   Left/right split containers already get --ln-glass-bg from Phase 1,
+   but the inner .view-content is not directly targeted. Community plugins
+   that inject their own background on .view-content (e.g. Calendar, Git,
+   Dataview custom panes) could surface white/light fills in the sidebar.
+   Set --ln-glass-bg as the base without !important so graph/canvas
+   transparent overrides still win. */
+.theme-dark .workspace-split.mod-left-split .workspace-leaf-content .view-content,
+.theme-dark .workspace-split.mod-right-split .workspace-leaf-content .view-content {
+  background-color: var(--ln-glass-bg);
+}
+
 /* ----------------------------------------------------------------
    1.2 / 1.3 — Glass surface base applied to all chrome
    Each surface:
@@ -6390,6 +6804,49 @@ body:not(.CG-Fullstatus-off) .status-bar {
   .suggestion-container {
     background-color: var(--ln-glass-bg-solid) !important;
     backdrop-filter: none;
+  }
+}
+
+/* ----------------------------------------------------------------
+   SKY-1323 — Active pane indicator (replaces SKY-720 filter removal)
+   Approach: cyan bottom-border + subtle glass tint on the active
+   .view-header. Content area is untouched — non-disruptive during
+   sustained writing. Inactive headers revert to neutral glass.
+
+   Design lenses:
+   • WCAG 1.4.1: border geometry (shape) + color — not color alone
+   • Von Restorff: active pane distinct in both dimensions
+   • Doherty Threshold: 200 ms transitions (< 400 ms perceptible)
+   • Cognitive Load: header-only signal, writing surface unchanged
+   • Proximity (Gestalt): border at the natural pane-identity strip
+   ---------------------------------------------------------------- */
+
+/* Active pane header — cyan bottom-border + subtle cyan tint */
+.theme-dark .workspace-leaf.mod-active .view-header {
+  background-color: rgb(from var(--ln-cyan) r g b / 0.06) !important;
+  border-bottom: 2px solid var(--ln-cyan) !important;
+  border-image: none !important;
+  box-shadow:
+    0 0 12px rgb(from var(--ln-cyan) r g b / 0.22),
+    inset 0 0 8px rgb(from var(--ln-cyan) r g b / 0.08),
+    inset 0 0 0 1px var(--ln-glass-rim) !important;
+  transition: background-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+/* Inactive pane headers — neutral glass, no cyan border */
+.theme-dark .workspace-leaf:not(.mod-active) .view-header {
+  background-color: var(--ln-glass-bg) !important;
+  border-bottom: var(--ln-border-width) solid transparent !important;
+  border-image: none !important;
+  box-shadow: inset 0 0 0 1px var(--ln-glass-rim) !important;
+  transition: background-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+/* Honour prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark .workspace-leaf.mod-active .view-header,
+  .theme-dark .workspace-leaf:not(.mod-active) .view-header {
+    transition: none !important;
   }
 }
 
@@ -7059,3 +7516,345 @@ body {
 /* ================================================================
    END — Liquid Neon Phase 3
    ================================================================ */
+
+/* ================================================================
+   LIQUID NEON — Compositing Pre-flight (SKY-1324)
+   Promote interactive and glow-animated surfaces to GPU compositing
+   layers BEFORE state changes to prevent afterimage / render-trail
+   artifacts. All three afterimage root causes in the LN design:
+     1. tab removal paint residue     → translateZ(0) on container
+     2. box-shadow glow transitions   → will-change: box-shadow
+     3. opacity + filter transitions  → will-change: opacity, filter
+
+   Rules:
+   • will-change is set on the BASE selector (not :hover/:focus/:active)
+     so the compositor pre-allocates a layer before the transition fires.
+   • Use specific properties — never will-change: all.
+   • Intentional omissions are documented inline.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   C.1 — Tab container: GPU layer (restores SKY-722 translateZ fix
+   that was dropped in the SKY-720 squash merge)
+   translateZ(0) promotes the tab-header-container to its own layer
+   so the compositor cleanly discards child layers when a tab is
+   removed, preventing paint residue on close in software-render
+   environments (WSLg / SwiftShader).
+   Note: will-change is NOT used here because the container itself
+   never transitions — its children do. Promoting via will-change
+   would create a new stacking context and break z-index on dropdowns.
+   ---------------------------------------------------------------- */
+.workspace-tab-header-container {
+  transform: translateZ(0);
+}
+
+/* ----------------------------------------------------------------
+   C.2 — Button / clickable-icon hover targets (Phase 2.1)
+   Phase 2 transitions box-shadow on :hover. Setting will-change on
+   the base state tells the compositor to pre-allocate a layer before
+   the hover fires, so the glow transition paints off the main thread.
+   ---------------------------------------------------------------- */
+.theme-dark button:not(
+  .clickable-icon,
+  [aria-label='Sticker'],
+  .mod-warning,
+  [disabled]
+) {
+  will-change: box-shadow;
+}
+
+.theme-dark .markdown-rendered button.copy-code-button,
+.theme-dark .markdown-source-view.mod-cm6 .code-block-flair {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.3 — List / tree / nav item hover targets (Phase 2.2)
+   ---------------------------------------------------------------- */
+.theme-dark .setting-item.setting-item-heading.style-settings-heading,
+.theme-dark .tree-item-self.is-clickable,
+.theme-dark .menu-item,
+.theme-dark .vertical-tab-nav-item,
+.theme-dark .community-item {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.4 — Workspace tab headers (Phase 2.2 + 3.3)
+   ---------------------------------------------------------------- */
+.theme-dark .workspace .mod-root .workspace-tab-header {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.5 — File-explorer rows (Phase 2.2 + 3.2)
+   ---------------------------------------------------------------- */
+.theme-dark .nav-file-title,
+.theme-dark .nav-folder-title {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.6 — Ribbon icon buttons (Phase 2.2 + 3.1)
+   Note: the ribbon chrome container (.workspace-ribbon.side-dock-ribbon)
+   is static glass and intentionally omitted — see omissions below.
+   ---------------------------------------------------------------- */
+.theme-dark .workspace-ribbon.side-dock-ribbon .clickable-icon,
+.theme-dark .workspace-ribbon .side-dock-ribbon-action {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.7 — Callout collapsible pill headers (Phase 2.2)
+   ---------------------------------------------------------------- */
+.theme-dark .callout.is-collapsible .callout-title {
+  will-change: box-shadow;
+}
+
+/* ----------------------------------------------------------------
+   C.8 — Inactive tab strip (Phase 3.3)
+   Phase 3 transitions opacity and filter on the inactive tab strip.
+   Both are GPU-compositable; will-change pre-allocates a texture
+   so the saturation fade stays off the main thread.
+   ---------------------------------------------------------------- */
+.theme-dark .workspace-tab-header-container:not(
+  :has(.workspace-tab-header.mod-active)
+) {
+  will-change: opacity, filter;
+}
+
+/* ----------------------------------------------------------------
+   Intentional omissions (documented for audit completeness):
+
+   • .workspace-ribbon.side-dock-ribbon — static glass chrome;
+     backdrop-filter + box-shadow painted once and never change.
+     No will-change needed; adding it wastes a compositor layer.
+
+   • .workspace-split .workspace-leaf-content — same: static glass.
+
+   • .view-header, .status-bar, .modal, .prompt, .menu,
+     .suggestion-container — static glass; appear/disappear via
+     JS class changes (layout recalc), not CSS transitions on these
+     elements. No transition hints needed.
+
+   • .graph-view-content — static ambient glow on a canvas container.
+     The canvas manages its own GPU surfaces; a CSS layer hint here
+     would duplicate, not help.
+
+   • :focus-visible (universal) — adding will-change to every
+     focusable element would over-promote hundreds of layers and waste
+     GPU memory. The focus transition is brief (--ln-duration-fast);
+     the box-shadow on :focus-visible itself is acceptable without
+     pre-promotion.
+
+   • CyberGlow @keyframes animation targets — CyberGlow manages its
+     own layer budget; interfering here risks doubling layers.
+     Animation engine auto-promotes compositable keyframes.
+
+   • .workspace-tabs.mod-stacked .workspace-tab-header — backdrop-
+     filter is static; hover transitions are already covered by the
+     broader tab-header rule in C.4 above.
+   ---------------------------------------------------------------- */
+
+/* ================================================================
+   END — Liquid Neon compositing pre-flight
+   ================================================================ */
+
+/* ================================================================
+   SKY-1328 — Dataview plugin: dark-theme surface coverage (LN-28.5)
+
+   Static analysis of Dataview v0.5.x DOM + bundled FullCalendar v6:
+
+   TABLE / LIST / TASK: inherit Obsidian vars (--background-primary,
+   --background-secondary) which the theme already maps to --ln-glass-bg.
+   Risk: low. Defensive header/border overrides added for safety.
+
+   CALENDAR: FullCalendar v6 bundles its own CSS with light defaults:
+     --fc-border-color: #ddd      → white-ish cell borders (FAIL)
+     .fc-button: hardcoded blue   → light button surfaces (FAIL)
+   All fc-* variables are overridden at .theme-dark scope.
+
+   ERROR: .dataview-error-box — light bg in some Dataview versions.
+   ================================================================ */
+
+/* — TABLE: defensive header + border overrides — */
+.theme-dark .dataview.table-view-table,
+.theme-dark .dataview.dataview-container table {
+  background: transparent;
+  border-collapse: collapse;
+}
+
+.theme-dark .dataview.table-view-table > thead > tr > th,
+.theme-dark .dataview.table-view-table > .dataview.table-view-thead > .dataview.table-view-tr-header > .dataview.table-view-th {
+  background-color: var(--ln-glass-bg-solid);
+  color: var(--ln-cyan);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.30);
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr {
+  background-color: transparent;
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr:nth-child(odd) {
+  background-color: rgb(from var(--ln-violet) r g b / 0.05);
+}
+
+.theme-dark .dataview.table-view-table > tbody > tr:hover {
+  background-color: var(--ln-state-hover);
+}
+
+.theme-dark .dataview.table-view-table td,
+.theme-dark .dataview.table-view-table th {
+  border-color: rgb(from var(--ln-violet) r g b / 0.18);
+}
+
+/* — LIST / TASK: transparent containers — */
+.theme-dark .dataview.dataview-container,
+.theme-dark .block-language-dataview {
+  background: transparent;
+}
+
+.theme-dark .dataview.list-view-ul,
+.theme-dark .dataview.dataview-result-list-root {
+  background: transparent;
+  color: var(--text-normal);
+}
+
+/* — ERROR / LOADING states — */
+.theme-dark .dataview-error-box {
+  background: var(--ln-glass-bg);
+  border: 1px solid rgb(from var(--ln-magenta) r g b / 0.55);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  padding: var(--ln-space-sm) var(--ln-space-md);
+}
+
+.theme-dark .dataview.dataview-pre-error {
+  background: transparent;
+  color: var(--ln-magenta);
+}
+
+/* — CALENDAR query: FullCalendar v6 dark overrides —
+   FullCalendar bundles its own CSS variables with light defaults.
+   Set all --fc-* variables at the dataview-calendar root so they
+   cascade to every FullCalendar element in this scope. */
+.theme-dark .dataview-calendar .fc,
+.theme-dark .block-language-dataview .fc {
+  --fc-border-color:             rgb(from var(--ln-violet) r g b / 0.22);
+  --fc-daygrid-event-dot-width:  8px;
+  --fc-event-bg-color:           rgb(from var(--ln-violet) r g b / 0.28);
+  --fc-event-border-color:       var(--ln-violet);
+  --fc-event-text-color:         var(--text-normal);
+  --fc-event-selected-overlay-color: rgb(from var(--ln-cyan) r g b / 0.18);
+  --fc-more-link-bg-color:       var(--ln-glass-bg);
+  --fc-more-link-text-color:     var(--ln-cyan);
+  --fc-non-business-color:       rgb(from var(--ln-surface-bg) r g b / 0.40);
+  --fc-bg-event-color:           var(--ln-violet);
+  --fc-bg-event-opacity:         0.12;
+  --fc-highlight-color:          rgb(from var(--ln-cyan) r g b / 0.12);
+  --fc-today-bg-color:           rgb(from var(--ln-cyan) r g b / 0.08);
+  --fc-neutral-bg-color:         var(--ln-glass-bg);
+  --fc-neutral-text-color:       var(--text-muted);
+  --fc-page-bg-color:            transparent;
+  --fc-button-text-color:        var(--text-normal);
+  --fc-button-bg-color:          var(--ln-glass-bg);
+  --fc-button-border-color:      rgb(from var(--ln-cyan) r g b / 0.28);
+  --fc-button-hover-bg-color:    var(--ln-state-hover);
+  --fc-button-hover-border-color: var(--ln-cyan);
+  --fc-button-active-bg-color:   rgb(from var(--ln-cyan) r g b / 0.15);
+  --fc-button-active-border-color: var(--ln-cyan);
+  --fc-list-event-hover-bg-color: var(--ln-state-hover);
+  color: var(--text-normal);
+  background: transparent;
+}
+
+/* FullCalendar toolbar */
+.theme-dark .block-language-dataview .fc-toolbar-title {
+  color: var(--ln-cyan);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+/* Column headers (weekday names) */
+.theme-dark .block-language-dataview .fc-col-header-cell {
+  background: var(--ln-glass-bg-solid);
+  color: var(--ln-cyan);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.25);
+}
+
+.theme-dark .block-language-dataview .fc-col-header-cell-cushion {
+  color: var(--ln-cyan);
+}
+
+/* Day cells */
+.theme-dark .block-language-dataview .fc-daygrid-day {
+  background: transparent;
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-day.fc-day-today {
+  background: var(--fc-today-bg-color) !important;
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.40);
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-day-number {
+  color: var(--text-muted);
+}
+
+.theme-dark .block-language-dataview .fc-day-today .fc-daygrid-day-number {
+  color: var(--ln-cyan);
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+/* Events */
+.theme-dark .block-language-dataview .fc-daygrid-event,
+.theme-dark .block-language-dataview .fc-list-event {
+  background: rgb(from var(--ln-violet) r g b / 0.30);
+  border-color: var(--ln-violet);
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+}
+
+.theme-dark .block-language-dataview .fc-daygrid-event:hover,
+.theme-dark .block-language-dataview .fc-list-event:hover td {
+  background: rgb(from var(--ln-violet) r g b / 0.45);
+  border-color: var(--ln-magenta);
+}
+
+/* Scrollgrid container */
+.theme-dark .block-language-dataview .fc-scrollgrid {
+  border-color: var(--fc-border-color);
+  background: transparent;
+}
+
+.theme-dark .block-language-dataview .fc-scrollgrid-section-liquid > td {
+  background: transparent;
+}
+
+/* Buttons — direct property overrides supplement the CSS vars above
+   because FullCalendar v5 and some v6 builds use direct values, not vars */
+.theme-dark .block-language-dataview .fc-button {
+  background-color: var(--ln-glass-bg);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.28);
+  color: var(--text-normal);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .block-language-dataview .fc-button:hover {
+  background-color: var(--ln-state-hover);
+  border-color: var(--ln-cyan);
+  color: var(--ln-cyan);
+}
+
+.theme-dark .block-language-dataview .fc-button.fc-button-active,
+.theme-dark .block-language-dataview .fc-button:active {
+  background-color: rgb(from var(--ln-cyan) r g b / 0.15) !important;
+  border-color: var(--ln-cyan) !important;
+  color: var(--ln-cyan) !important;
+  box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+}
+
+/* ================================================================
+   END — SKY-1328 Dataview coverage
+   ================================================================ */
+
