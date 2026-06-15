@@ -4,17 +4,17 @@ A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep
 
 ## Screenshots
 
-### Hero view
-![Liquid Neon main editor](docs/screenshots/hero.png)
+### Hero view — deep-black canvas with neon prose
+![Editor pane showing cyan-accented links, violet headings, and frosted-glass sidebar against a near-black background](docs/screenshots/hero.png)
 
-### Navigation and file explorer
-![File explorer with neon-frame hover](docs/screenshots/nav-hover.png)
+### Navigation and file explorer — neon frame on hover
+![File-explorer tree with electric-cyan hover frame and magenta accent on the active file row](docs/screenshots/nav-hover.png)
 
-### Graph view
-![Neon-colored graph nodes and edges](docs/screenshots/graph-view.png)
+### Graph view — neon node glow and edge arcs
+![Graph view showing cyan-glowing node clusters connected by violet edge arcs on a starfield canvas](docs/screenshots/graph-view.png)
 
-### Style Settings
-![Liquid Neon customization panel](docs/screenshots/style-settings.png)
+### Style Settings — real-time neon customization
+![Style Settings panel with color pickers for Cyan, Violet, and Magenta plus Glass and Accessibility controls](docs/screenshots/style-settings.png)
 
 ## Showcase
 
@@ -81,9 +81,9 @@ After installing Style Settings, open **Settings → Style Settings → Liquid N
 
 | Control | Default | What it affects |
 |---------|---------|-----------------|
-| **Neon Cyan** | `#00E5FF` | Tab underlines, focus rings, active selections, scrollbar |
-| **Neon Violet** | `#8A2BE2` | Border gradients, scrollbar thumb, graph edges |
-| **Neon Magenta** | `#FF2BD6` | Hover frames, gradient endpoints, heading H3 |
+| **Neon Cyan** | `#00F0FF` | Tab underlines, focus rings, active selections, scrollbar |
+| **Neon Violet** | `#9B5FFF` | Border gradients, scrollbar thumb, graph edges |
+| **Neon Magenta** | `#FF4DFF` | Hover frames, gradient endpoints, heading H3 |
 
 Changing any color picker updates accent gradients, hover frames, focus rings, and graph node/edge colors in real time.
 
