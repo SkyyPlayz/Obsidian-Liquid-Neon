@@ -181,6 +181,8 @@
   --ln-glass-bg-solid: rgba(18, 18, 20, 0.92);
   --ln-glass-bg-subtle: rgba(8, 8, 14, 0.55);
   --ln-glass-bg-deep: rgba(8, 8, 14, 0.80);
+  --ln-topbar-glass-bg: rgba(8, 8, 14, 0.42);
+  --ln-topbar-glass-bg-focused: rgba(14, 14, 18, 0.58);
   --ln-glass-rim: rgba(255, 255, 255, 0.12);
 
   /* Background image asset — always-on cosmic BG */

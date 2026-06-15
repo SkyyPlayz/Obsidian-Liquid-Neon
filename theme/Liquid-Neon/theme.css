@@ -182,6 +182,8 @@
   --ln-glass-bg-solid: rgba(18, 18, 20, 0.92);
   --ln-glass-bg-subtle: rgba(8, 8, 14, 0.55);
   --ln-glass-bg-deep: rgba(8, 8, 14, 0.80);
+  --ln-topbar-glass-bg: rgba(8, 8, 14, 0.42);
+  --ln-topbar-glass-bg-focused: rgba(14, 14, 18, 0.58);
   --ln-glass-rim: rgba(255, 255, 255, 0.12);
 
   /* Background image asset — always-on cosmic BG */
@@ -1348,6 +1350,8 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     --color-accent-faint: hsl(var(--accent-h), calc(var(--accent-s) + 10%), calc(var(--accent-l) - 4%));
     --color-accent-active: hsla(var(--accent-h), calc(var(--accent-s) - 13%), calc(var(--accent-l) + 10%), 0.65);
     --color-accent-active2: hsla(var(--accent-h), calc(var(--accent-s) - 13%), calc(var(--accent-l) + 10%), 0.45);
+    --ln-topbar-glass-bg: rgba(246, 244, 244, 0.42);
+    --ln-topbar-glass-bg-focused: rgba(246, 244, 244, 0.58);
     --color-glow: hsl(calc(var(--accent-h) + 1), calc(var(--accent-s) - 36%), calc(var(--accent-l) - 25%));
     --color-accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
     --color-accent:hsl(var(--accent-h), calc(var(--accent-s) - 20%), calc(var(--accent-l) - 10%));
@@ -6648,6 +6652,29 @@ body.theme-dark {
 .workspace-split.mod-horizontal .workspace-tab-header-container,
 .mod-root .workspace-tab-header-container-inner {
   background-color: var(--ln-glass-bg-subtle) !important;
+}
+
+/* SKY-1557 / LN-34: top chrome should stay glassy, not opaque/bright.
+   This covers both default-frame titlebars and frameless tab-strip chrome. */
+.titlebar,
+.titlebar-inner,
+.workspace-tabs.mod-top .workspace-tab-header-container,
+.workspace-tabs.mod-top.mod-top-left-space .workspace-tab-header-container,
+.workspace-tabs.mod-top.mod-top-right-space .workspace-tab-header-container,
+.mod-root .workspace-tabs.mod-top .workspace-tab-header-container-inner,
+.tab-bar {
+  background: var(--ln-topbar-glass-bg) !important;
+  background-color: var(--ln-topbar-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced)) !important;
+  -webkit-backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced)) !important;
+}
+
+body.is-focused .titlebar,
+body.is-focused .titlebar-inner,
+.workspace-tabs.mod-top.mod-active .workspace-tab-header-container,
+.mod-root .workspace-tabs.mod-top.mod-active .workspace-tab-header-container-inner {
+  background: var(--ln-topbar-glass-bg-focused) !important;
+  background-color: var(--ln-topbar-glass-bg-focused) !important;
 }
 
 /* — Status bar — */
