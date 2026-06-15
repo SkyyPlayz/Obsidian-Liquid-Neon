@@ -4,17 +4,25 @@
      COLOR PALETTE — Primary Brand Colors
      ============================================ */
 
-  --ln-cyan: #00F0FF;
+  --ln-cyan: var(--LN-color-cyan, #00F0FF);
   --ln-cyan-dark: #00C0CC;
   --ln-cyan-light: #66F8FF;
 
-  --ln-violet: #9B5FFF;
+  --ln-violet: var(--LN-color-violet, #9B5FFF);
   --ln-violet-dark: #7040CC;
   --ln-violet-light: #B98CFF;
 
-  --ln-magenta: #FF4DFF;
+  --ln-magenta: var(--LN-color-magenta, #FF4DFF);
   --ln-magenta-dark: #CC00CC;
   --ln-magenta-light: #FF99FF;
+
+  /* Graph canvas colors — Style Settings picker bridges */
+  --ln-graph-node: var(--LN-graph-node, var(--ln-violet));
+  --ln-graph-node-focused: var(--LN-graph-node-focused, var(--ln-cyan));
+  --ln-graph-node-tag: var(--LN-graph-node-tag, var(--ln-magenta));
+  --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
+  --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
+  --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
 
   /* ============================================
      SURFACE & BACKGROUND
