@@ -40,7 +40,7 @@ Short animated loops showing the theme's signature interactions.
 | `--ln-bg-1` | `#0F0F18` | Surface (notes, panels) |
 | `--ln-bg-2` | `#161626` | Elevated surface (modals, sidebars) |
 | `--ln-text` | `#E0E0FF` | Body text |
-| `--ln-muted` | `#6060AA` | Dimmed text, metadata |
+| `--ln-muted` | `#7878C8` | Dimmed text, metadata (WCAG AA: 4.9:1) |
 
 ## Style Settings
 
