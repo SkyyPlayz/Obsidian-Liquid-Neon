@@ -230,25 +230,21 @@ Per README, high-contrast mode:
 
 ## Failures Found & Remediation
 
-### Failure 1: Muted Text (#6060AA) Fails AA on All Dark Backgrounds
+### ~~Failure 1: Muted Text (#6060AA) Fails AA on All Dark Backgrounds~~ — ✅ FIXED (SKY-1585)
 
 **Affected surfaces:**
 - Sidebar metadata, timestamps, settings labels, breadcrumbs, table headers
 - Status bar secondary text
 - Disabled state text
 
-**Problem:** Current muted text is 3.4–3.5:1 contrast. WCAG AA requires 4.5:1 for body text.
-
-**Proposed fix:** Lighten muted text from `#6060AA` to `#7575D0`
+**Fix applied:** Added `--ln-muted: #7878C8` token to `tokens.css`; `--text-muted` now set via `var(--ln-muted)` in `.theme-dark`.
 
 | Muted Text Color | Glass 72% | Canvas | Change | Status |
 |----------|----------|-----------|---------|-------|
-| Current: #6060AA | 3.5:1 | 3.4:1 | — | ❌ FAIL |
-| Proposed: #7575D0 | 4.84:1 | 4.77:1 | +1.3:1 | ✅ PASS |
+| Was: #6060AA | 3.5:1 | 3.4:1 | — | ❌ FAIL |
+| Now: #7878C8 | 4.9:1 | 4.9:1 | +1.4–1.5:1 | ✅ PASS |
 
-**Design impact:** The new color is slightly lighter and less saturated, but remains purple-toned and visually distinct from body text. Still "muted" in appearance relative to bright neon accents.
-
-**Effort:** Update one CSS variable in `theme.css`.
+**Design impact:** Color is lighter and slightly less saturated, but remains purple-toned and visually distinct from body text (#E0E0FF). Muted appearance is preserved relative to bright neon accents.
 
 ---
 
@@ -275,19 +271,16 @@ Per README, high-contrast mode:
 
 ## Recommendations
 
-### Required Changes (To Meet AA)
+### ✅ All Required Changes Applied
 
-1. **Update muted text color** (`--ln-muted`)
-   - From: `#6060AA`
-   - To: `#7575D0`
-   - File: `theme.css`, line ~173
-   - Impact: Improves readability of secondary text (metadata, timestamps, disabled states)
+1. **Muted text color** (`--ln-muted`) — ✅ **DONE (SKY-1585)**
+   - Was: `#6060AA` → Now: `#7878C8`
+   - File: `theme/Liquid-Neon/tokens.css` (`--ln-muted`); `theme/Liquid-Neon/theme.css` (`--text-muted: var(--ln-muted)`)
+   - Result: 4.9:1 contrast on all dark surfaces (glass + canvas)
 
-2. **Update graph node label color**
-   - From: body text (#E0E0FF)
-   - To: black (#000000)
-   - File: Likely `plugin/Liquid-Neon-Companion/` or canvas rendering logic
-   - Impact: Makes node labels readable on bright neon backgrounds
+2. **Graph node label color** — ✅ **DONE (SKY-1586)**
+   - Was: body text (#E0E0FF) → Now: `#111118` (near-black) via `--ln-graph-text`
+   - Contrast: 4.9–13.3:1 on all neon node fills
 
 ### No Changes to Primary Neon Palette
 
