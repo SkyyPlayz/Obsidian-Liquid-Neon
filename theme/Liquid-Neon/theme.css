@@ -4,17 +4,30 @@
      COLOR PALETTE — Primary Brand Colors
      ============================================ */
 
-  --ln-cyan: #00F0FF;
+  --ln-cyan: var(--LN-color-cyan, #00F0FF);
   --ln-cyan-dark: #00C0CC;
   --ln-cyan-light: #66F8FF;
 
-  --ln-violet: #9B5FFF;
+  --ln-violet: var(--LN-color-violet, #9B5FFF);
   --ln-violet-dark: #7040CC;
   --ln-violet-light: #B98CFF;
 
-  --ln-magenta: #FF4DFF;
+  --ln-magenta: var(--LN-color-magenta, #FF4DFF);
   --ln-magenta-dark: #CC00CC;
   --ln-magenta-light: #FF99FF;
+
+  /* Graph canvas colors — Style Settings picker bridges */
+  --ln-graph-node: var(--LN-graph-node, var(--ln-violet));
+  --ln-graph-node-focused: var(--LN-graph-node-focused, var(--ln-cyan));
+  --ln-graph-node-tag: var(--LN-graph-node-tag, var(--ln-magenta));
+  --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
+  --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
+  --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
+
+  /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
+  --ln-sidebar-icon: var(--ln-cyan);
+  --ln-sidebar-icon-hover: var(--ln-violet);
+  --ln-sidebar-icon-active: var(--ln-magenta);
 
   /* ============================================
      SURFACE & BACKGROUND
@@ -174,6 +187,8 @@
   --ln-glass-bg-solid: rgba(18, 18, 20, 0.92);
   --ln-glass-bg-subtle: rgba(8, 8, 14, 0.55);
   --ln-glass-bg-deep: rgba(8, 8, 14, 0.80);
+  --ln-topbar-glass-bg: rgba(8, 8, 14, 0.42);
+  --ln-topbar-glass-bg-focused: rgba(14, 14, 18, 0.58);
   --ln-glass-rim: rgba(255, 255, 255, 0.12);
 
   /* Background image asset — always-on cosmic BG */
@@ -196,8 +211,8 @@
 /* Please credit me if you modify or take parts for your own theme*/
 /* #region ======= Style Settings ======= 
 /* @settings
-name: Cyber Glow Tweakbox
-id: CG
+name: Liquid Neon
+id: LN
 collapsed: false
 settings:
    - 
@@ -537,7 +552,7 @@ settings:
 		title: Show Header Indication
 		description: Enabling this will show the small header indicator next to headers, such as H1, H2, etc.
 		type: class-toggle
-		default: true
+		default: false
    -
       id: CG-hr
       title: Heading Dividing Line (---)
@@ -1340,6 +1355,8 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     --color-accent-faint: hsl(var(--accent-h), calc(var(--accent-s) + 10%), calc(var(--accent-l) - 4%));
     --color-accent-active: hsla(var(--accent-h), calc(var(--accent-s) - 13%), calc(var(--accent-l) + 10%), 0.65);
     --color-accent-active2: hsla(var(--accent-h), calc(var(--accent-s) - 13%), calc(var(--accent-l) + 10%), 0.45);
+    --ln-topbar-glass-bg: rgba(246, 244, 244, 0.42);
+    --ln-topbar-glass-bg-focused: rgba(246, 244, 244, 0.58);
     --color-glow: hsl(calc(var(--accent-h) + 1), calc(var(--accent-s) - 36%), calc(var(--accent-l) - 25%));
     --color-accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
     --color-accent:hsl(var(--accent-h), calc(var(--accent-s) - 20%), calc(var(--accent-l) - 10%));
@@ -1483,6 +1500,124 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     border-radius: var(--radius-s);
     transition: animation 0.3s, color 0.3s !important;
     color: var(--icon-color-hover);
+}
+
+/* Liquid Neon ribbon/sidebar icon tinting */
+.workspace-ribbon .clickable-icon,
+.workspace-ribbon .side-dock-ribbon-action,
+.workspace-ribbon .side-dock-ribbon-tab,
+.mod-left-split .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header-inner-icon,
+.mod-left-split .workspace-tab-header .clickable-icon,
+.mod-right-split .workspace-tab-header .clickable-icon,
+.sidebar-toggle-button.mod-left,
+.sidebar-toggle-button.mod-right,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon {
+    color: var(--ln-sidebar-icon);
+    transition: color 0.2s ease, filter 0.2s ease;
+}
+
+.workspace-ribbon .clickable-icon svg,
+.workspace-ribbon .side-dock-ribbon-action svg,
+.workspace-ribbon .side-dock-ribbon-tab svg,
+.mod-left-split .workspace-tab-header-inner-icon svg,
+.mod-right-split .workspace-tab-header-inner-icon svg,
+.mod-left-split .workspace-tab-header .clickable-icon svg,
+.mod-right-split .workspace-tab-header .clickable-icon svg,
+.sidebar-toggle-button.mod-left svg,
+.sidebar-toggle-button.mod-right svg,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg {
+    color: currentColor;
+    stroke: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg *,
+.workspace-ribbon .side-dock-ribbon-action svg *,
+.workspace-ribbon .side-dock-ribbon-tab svg *,
+.mod-left-split .workspace-tab-header-inner-icon svg *,
+.mod-right-split .workspace-tab-header-inner-icon svg *,
+.mod-left-split .workspace-tab-header .clickable-icon svg *,
+.mod-right-split .workspace-tab-header .clickable-icon svg *,
+.sidebar-toggle-button.mod-left svg *,
+.sidebar-toggle-button.mod-right svg *,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg *,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg *,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg *,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg * {
+    stroke: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg:not([fill="none"]) *,
+.workspace-ribbon .side-dock-ribbon-action svg:not([fill="none"]) *,
+.workspace-ribbon .side-dock-ribbon-tab svg:not([fill="none"]) *,
+.mod-left-split .workspace-tab-header-inner-icon svg:not([fill="none"]) *,
+.mod-right-split .workspace-tab-header-inner-icon svg:not([fill="none"]) *,
+.mod-left-split .workspace-tab-header .clickable-icon svg:not([fill="none"]) *,
+.mod-right-split .workspace-tab-header .clickable-icon svg:not([fill="none"]) *,
+.sidebar-toggle-button.mod-left svg:not([fill="none"]) *,
+.sidebar-toggle-button.mod-right svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg:not([fill="none"]) * {
+    fill: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg [fill]:not([fill="none"]),
+.workspace-ribbon .side-dock-ribbon-action svg [fill]:not([fill="none"]),
+.workspace-ribbon .side-dock-ribbon-tab svg [fill]:not([fill="none"]),
+.mod-left-split .workspace-tab-header-inner-icon svg [fill]:not([fill="none"]),
+.mod-right-split .workspace-tab-header-inner-icon svg [fill]:not([fill="none"]),
+.mod-left-split .workspace-tab-header .clickable-icon svg [fill]:not([fill="none"]),
+.mod-right-split .workspace-tab-header .clickable-icon svg [fill]:not([fill="none"]),
+.sidebar-toggle-button.mod-left svg [fill]:not([fill="none"]),
+.sidebar-toggle-button.mod-right svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg [fill]:not([fill="none"]) {
+    fill: currentColor;
+}
+
+.workspace-ribbon .clickable-icon:hover,
+.workspace-ribbon .side-dock-ribbon-action:hover,
+.workspace-ribbon .side-dock-ribbon-tab:hover,
+.mod-left-split .workspace-tab-header:hover .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header:hover .workspace-tab-header-inner-icon,
+.mod-left-split .workspace-tab-header .clickable-icon:hover,
+.mod-right-split .workspace-tab-header .clickable-icon:hover,
+.sidebar-toggle-button.mod-left:hover,
+.sidebar-toggle-button.mod-right:hover,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button:hover,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button:hover,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self:hover .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self:hover .tree-item-icon {
+    color: var(--ln-sidebar-icon-hover);
+    filter: drop-shadow(0 0 6px rgb(from var(--ln-sidebar-icon-hover) r g b / 0.65));
+}
+
+.workspace-ribbon .clickable-icon.is-active,
+.workspace-ribbon .clickable-icon:active,
+.workspace-ribbon .side-dock-ribbon-action.is-active,
+.workspace-ribbon .side-dock-ribbon-action:active,
+.workspace-ribbon .side-dock-ribbon-tab.is-active,
+.workspace-ribbon .side-dock-ribbon-tab:active,
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.sidebar-toggle-button.mod-left:active,
+.sidebar-toggle-button.mod-right:active,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button:active,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button:active,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self.is-active .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self.is-active .tree-item-icon {
+    color: var(--ln-sidebar-icon-active);
+    filter: drop-shadow(0 0 8px rgb(from var(--ln-sidebar-icon-active) r g b / 0.7));
 }
 
 
@@ -3301,109 +3436,46 @@ span.cm-html-embed, u {
 /*#endregion*/
 
 /*#region -------- Heading Styling -------- */
-/* Heading Line Reader */
-.markdown-preview-view hr {
+/* Heading Line Reader / Live Preview */
+.markdown-rendered hr,
+.markdown-preview-view hr,
+.cm-line hr {
+    position: relative;
+    display: block;
+    height: 2px;
     margin-block-start: 3em;
-    border: solid 0px transparent;
-    height: 0;
-    border-bottom: 2.25px solid;
-    border-image-slice: 1;
-    border-image: linear-gradient(to left, transparent, var(--text-accent) 45%, transparent 45%, transparent 55%, var(--text-accent) 5%, transparent) 3;
-    text-align: center;
     margin-block-end: 2.5em;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--ln-cyan) 22%, var(--ln-magenta) 50%, var(--ln-cyan) 78%, transparent 100%);
+    box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.75), 0 0 16px rgb(from var(--ln-magenta) r g b / 0.55);
+    text-align: center;
 }
-/* Heading Line Preview */
-.hr.cm-line hr {
+
+.hr.cm-line hr,
+.cm-line hr {
     margin-block-start: 2em;
     margin-block-end: 0.8em;
-    border-top: 2.25px solid !important;
-    border-image-slice: 1;
-    border-width: 1px;
-    text-align: center;
-    border-image: linear-gradient(to left, transparent, var(--text-accent) 45%, transparent 45%, transparent 55%, var(--text-accent) 5%, transparent) 3;
-}
-/*New Default CyberGlow Heading*/
-.CG-NewObsidian-hr .markdown-preview-view hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .markdown-preview-view hr::after, .CG-NewObsidian-hr .hr.cm-line hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .hr.cm-line hr::after, .CG-ClassicObsidian-hr .markdown-preview-view hr::after, .CG-ClassicObsidian-hr .hr.cm-line hr::after, .CG-Apple-hr .markdown-preview-view hr::after, .CG-Apple-hr .hr.cm-line hr::after, .CG-Windows-hr .markdown-preview-view hr::after, .CG-Windows-hr .hr.cm-line hr::after   {
-    content: ' ';
-    display: inline-block;
-    background-color: var(--text-accent);
-    position: absolute;
-    padding: 1rem;
-    mask-repeat: no-repeat;
 }
 
-.CG-NewObsidian-hr .markdown-preview-view hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .markdown-preview-view hr::after {
-    mask-image: var(--newoutlined-logo);
-    mask-size: 100%;
-    transform: translate(-45%, -50%);
-}
-.CG-NewObsidian-hr .hr.cm-line hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .hr.cm-line hr::after {
-    mask-image: var(--newoutlined-logo);
-    mask-size: 80%;
-    transform: translate(-40%, -33%);
-
-}
-/*Classic Obsidian Logo Heading*/
-.CG-ClassicObsidian-hr .markdown-preview-view hr::after {
-    mask-image: var(--outlined-logo);
-    mask-size: 65%;
-    transform: translate(-35%, -50%);
-}
-.CG-ClassicObsidian-hr .hr.cm-line hr::after{
-    mask-image: var(--outlined-logo);
-    mask-size: 60%;
-    transform: translate(-30%, -35%);
-}
-/*Custom Heading Shiekal*/
-.CG-OG-hr .markdown-preview-view hr::after {
-    content: '₪';
+/* Source mode horizontal-rule marker */
+.cm-hr {
     display: inline-block;
-    font-size: 1.65rem;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transform-origin: 5% 50%;
-    padding: 0.5rem;
-    color: white;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ffaa00, 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00;
-}
-.CG-OG-hr .hr.cm-line hr::after {
-    content: '₪';
-    display: inline-block;
-    font-size: 1.65rem;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    transform-origin: 5% 50%;
-    margin-top: -0.2rem;
-    color: white;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ffaa00, 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00;
-}
-/*Custom Heading Apple*/
-.CG-Apple-hr .markdown-preview-view hr::after {
-    mask-image: var(--appleLogo);
-    mask-size: 109%;
-    transform: translate(-50%, -55%);
-}
-.CG-Apple-hr .hr.cm-line hr::after {
-    mask-image: var(--appleLogo);
-    mask-size: 120%;
-    transform: translate(-58%, -45%);
-}
-/*Custom Heading Microsoft*/
-.CG-Windows-hr .markdown-preview-view hr::after {
-    mask-image: var(--windowsLogo);
-    mask-size: 65%;
-    transform: translate(-35%, -50%);
-}
-.CG-Windows-hr .hr.cm-line hr::after {
-    mask-image:var(--windowsLogo);
-    mask-size: 80%;
-    transform: translate(-35%, -30%);
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--ln-cyan) 22%, var(--ln-magenta) 50%, var(--ln-cyan) 78%, transparent 100%);
+    box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.75), 0 0 16px rgb(from var(--ln-magenta) r g b / 0.55);
+    color: transparent;
+    vertical-align: middle;
 }
 
-.CG-None-hr .hr.cm-line hr, .CG-None-hr .markdown-preview-view hr{
-    content: ' ';
-border-image: linear-gradient(to left, transparent, var(--text-accent) 45%,  var(--text-accent) 5%, transparent) 3 !important;
+/* Remove the old centered logo/symbol treatment for all HR style-setting classes. */
+.markdown-rendered hr::after,
+.markdown-preview-view hr::after,
+.cm-line hr::after {
+    content: none;
+    display: none;
 }
 
 .HyperMD-header :is(.cm-header-1, .cm-header-2, .cm-header-3, .cm-header-4, .cm-header-5, .cm-header-6), .markdown-rendered :is(h1, h2, h3, h4, h5, h6){
@@ -3637,8 +3709,6 @@ textarea:active, textarea:focus, input[type='text']:active, input[type='search']
     margin-left: -45px;
     margin-right: 25px;
     text-shadow: none;
-    content: 'HH';
-    color: transparent;
 }
 
 
@@ -3831,16 +3901,16 @@ a.tag:hover {
 /* -------- Style Setting's Workspace: Background Images -------- */
 /*Applies the theme's Community Background*/
 .obsidian-app.CG-workspace-background {
-    --Obsidianbg: var(--bgimage);
+    --Obsidianbg: var(--bgimage, var(--ln-bg-image));
     --CGworkspace-background-image: var(--Obsidianbg);
 }
 /*Applies the custom image to the background*/
 .obsidian-app.CG-workspace-background.CG-workspace-background-image-custom{
-    --CGworkspace-background-image: var(--CG-workspace-background-image-custom-option);
+    --CGworkspace-background-image: var(--CG-workspace-background-image-custom-option, var(--ln-bg-image));
 }
 /*Applies the background colors as overlay for superior transparency to background image*/
 .obsidian-app{
-    background: var(--CGworkspace-background-image);
+    background: var(--CGworkspace-background-image, var(--ln-bg-image));
     background-color: var(--background-primary);
     background-blend-mode: overlay;
     background-size: 100% 100%;
@@ -6705,6 +6775,29 @@ body.theme-dark {
 .workspace-split.mod-horizontal .workspace-tab-header-container,
 .mod-root .workspace-tab-header-container-inner {
   background-color: var(--ln-glass-bg-subtle) !important;
+}
+
+/* SKY-1557 / LN-34: top chrome should stay glassy, not opaque/bright.
+   This covers both default-frame titlebars and frameless tab-strip chrome. */
+.titlebar,
+.titlebar-inner,
+.workspace-tabs.mod-top .workspace-tab-header-container,
+.workspace-tabs.mod-top.mod-top-left-space .workspace-tab-header-container,
+.workspace-tabs.mod-top.mod-top-right-space .workspace-tab-header-container,
+.mod-root .workspace-tabs.mod-top .workspace-tab-header-container-inner,
+.tab-bar {
+  background: var(--ln-topbar-glass-bg) !important;
+  background-color: var(--ln-topbar-glass-bg) !important;
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced)) !important;
+  -webkit-backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced)) !important;
+}
+
+body.is-focused .titlebar,
+body.is-focused .titlebar-inner,
+.workspace-tabs.mod-top.mod-active .workspace-tab-header-container,
+.mod-root .workspace-tabs.mod-top.mod-active .workspace-tab-header-container-inner {
+  background: var(--ln-topbar-glass-bg-focused) !important;
+  background-color: var(--ln-topbar-glass-bg-focused) !important;
 }
 
 /* — Status bar — */

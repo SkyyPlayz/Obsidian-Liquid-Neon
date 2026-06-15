@@ -3,17 +3,30 @@
      COLOR PALETTE — Primary Brand Colors
      ============================================ */
 
-  --ln-cyan: #00F0FF;
+  --ln-cyan: var(--LN-color-cyan, #00F0FF);
   --ln-cyan-dark: #00C0CC;
   --ln-cyan-light: #66F8FF;
 
-  --ln-violet: #9B5FFF;
+  --ln-violet: var(--LN-color-violet, #9B5FFF);
   --ln-violet-dark: #7040CC;
   --ln-violet-light: #B98CFF;
 
-  --ln-magenta: #FF4DFF;
+  --ln-magenta: var(--LN-color-magenta, #FF4DFF);
   --ln-magenta-dark: #CC00CC;
   --ln-magenta-light: #FF99FF;
+
+  /* Graph canvas colors — Style Settings picker bridges */
+  --ln-graph-node: var(--LN-graph-node, var(--ln-violet));
+  --ln-graph-node-focused: var(--LN-graph-node-focused, var(--ln-cyan));
+  --ln-graph-node-tag: var(--LN-graph-node-tag, var(--ln-magenta));
+  --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
+  --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
+  --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
+
+  /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
+  --ln-sidebar-icon: var(--ln-cyan);
+  --ln-sidebar-icon-hover: var(--ln-violet);
+  --ln-sidebar-icon-active: var(--ln-magenta);
 
   /* ============================================
      SURFACE & BACKGROUND
@@ -173,6 +186,8 @@
   --ln-glass-bg-solid: rgba(18, 18, 20, 0.92);
   --ln-glass-bg-subtle: rgba(8, 8, 14, 0.55);
   --ln-glass-bg-deep: rgba(8, 8, 14, 0.80);
+  --ln-topbar-glass-bg: rgba(8, 8, 14, 0.42);
+  --ln-topbar-glass-bg-focused: rgba(14, 14, 18, 0.58);
   --ln-glass-rim: rgba(255, 255, 255, 0.12);
 
   /* Background image asset — always-on cosmic BG */

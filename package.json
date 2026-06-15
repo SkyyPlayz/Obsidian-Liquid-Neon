@@ -5,6 +5,10 @@
   "scripts": {
     "build:theme": "node scripts/build-theme.js",
     "lint:css": "stylelint \"theme/**/*.css\" theme.css",
+    "test:hr": "node scripts/test-hr-separator-styling.js",
+    "test:headings": "node scripts/test-heading-indicator-default.js",
+    "test:topbar": "node scripts/test-topbar-glass-styling.js",
+    "test:icons": "node scripts/test-ribbon-icon-tinting.js",
     "test:corner-logo": "node scripts/test-corner-logo-css.js"
   },
   "author": "SkyyPlayz",
