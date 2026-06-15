@@ -3309,109 +3309,46 @@ span.cm-html-embed, u {
 /*#endregion*/
 
 /*#region -------- Heading Styling -------- */
-/* Heading Line Reader */
-.markdown-preview-view hr {
+/* Heading Line Reader / Live Preview */
+.markdown-rendered hr,
+.markdown-preview-view hr,
+.cm-line hr {
+    position: relative;
+    display: block;
+    height: 2px;
     margin-block-start: 3em;
-    border: solid 0px transparent;
-    height: 0;
-    border-bottom: 2.25px solid;
-    border-image-slice: 1;
-    border-image: linear-gradient(to left, transparent, var(--text-accent) 45%, transparent 45%, transparent 55%, var(--text-accent) 5%, transparent) 3;
-    text-align: center;
     margin-block-end: 2.5em;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--ln-cyan) 22%, var(--ln-magenta) 50%, var(--ln-cyan) 78%, transparent 100%);
+    box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.75), 0 0 16px rgb(from var(--ln-magenta) r g b / 0.55);
+    text-align: center;
 }
-/* Heading Line Preview */
-.hr.cm-line hr {
+
+.hr.cm-line hr,
+.cm-line hr {
     margin-block-start: 2em;
     margin-block-end: 0.8em;
-    border-top: 2.25px solid !important;
-    border-image-slice: 1;
-    border-width: 1px;
-    text-align: center;
-    border-image: linear-gradient(to left, transparent, var(--text-accent) 45%, transparent 45%, transparent 55%, var(--text-accent) 5%, transparent) 3;
-}
-/*New Default CyberGlow Heading*/
-.CG-NewObsidian-hr .markdown-preview-view hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .markdown-preview-view hr::after, .CG-NewObsidian-hr .hr.cm-line hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .hr.cm-line hr::after, .CG-ClassicObsidian-hr .markdown-preview-view hr::after, .CG-ClassicObsidian-hr .hr.cm-line hr::after, .CG-Apple-hr .markdown-preview-view hr::after, .CG-Apple-hr .hr.cm-line hr::after, .CG-Windows-hr .markdown-preview-view hr::after, .CG-Windows-hr .hr.cm-line hr::after   {
-    content: ' ';
-    display: inline-block;
-    background-color: var(--text-accent);
-    position: absolute;
-    padding: 1rem;
-    mask-repeat: no-repeat;
 }
 
-.CG-NewObsidian-hr .markdown-preview-view hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .markdown-preview-view hr::after {
-    mask-image: var(--newoutlined-logo);
-    mask-size: 100%;
-    transform: translate(-45%, -50%);
-}
-.CG-NewObsidian-hr .hr.cm-line hr::after, body:not(.CG-OG-hr, .CG-Hyrule-hr, .CG-Apple-hr, .CG-Windows-hr, .CG-Lorule-hr, .CG-ClassicObsidian-hr, .CG-None-hr) .hr.cm-line hr::after {
-    mask-image: var(--newoutlined-logo);
-    mask-size: 80%;
-    transform: translate(-40%, -33%);
-
-}
-/*Classic Obsidian Logo Heading*/
-.CG-ClassicObsidian-hr .markdown-preview-view hr::after {
-    mask-image: var(--outlined-logo);
-    mask-size: 65%;
-    transform: translate(-35%, -50%);
-}
-.CG-ClassicObsidian-hr .hr.cm-line hr::after{
-    mask-image: var(--outlined-logo);
-    mask-size: 60%;
-    transform: translate(-30%, -35%);
-}
-/*Custom Heading Shiekal*/
-.CG-OG-hr .markdown-preview-view hr::after {
-    content: '₪';
+/* Source mode horizontal-rule marker */
+.cm-hr {
     display: inline-block;
-    font-size: 1.65rem;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transform-origin: 5% 50%;
-    padding: 0.5rem;
-    color: white;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ffaa00, 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00;
-}
-.CG-OG-hr .hr.cm-line hr::after {
-    content: '₪';
-    display: inline-block;
-    font-size: 1.65rem;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    transform-origin: 5% 50%;
-    margin-top: -0.2rem;
-    color: white;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ffaa00, 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00;
-}
-/*Custom Heading Apple*/
-.CG-Apple-hr .markdown-preview-view hr::after {
-    mask-image: var(--appleLogo);
-    mask-size: 109%;
-    transform: translate(-50%, -55%);
-}
-.CG-Apple-hr .hr.cm-line hr::after {
-    mask-image: var(--appleLogo);
-    mask-size: 120%;
-    transform: translate(-58%, -45%);
-}
-/*Custom Heading Microsoft*/
-.CG-Windows-hr .markdown-preview-view hr::after {
-    mask-image: var(--windowsLogo);
-    mask-size: 65%;
-    transform: translate(-35%, -50%);
-}
-.CG-Windows-hr .hr.cm-line hr::after {
-    mask-image:var(--windowsLogo);
-    mask-size: 80%;
-    transform: translate(-35%, -30%);
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--ln-cyan) 22%, var(--ln-magenta) 50%, var(--ln-cyan) 78%, transparent 100%);
+    box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.75), 0 0 16px rgb(from var(--ln-magenta) r g b / 0.55);
+    color: transparent;
+    vertical-align: middle;
 }
 
-.CG-None-hr .hr.cm-line hr, .CG-None-hr .markdown-preview-view hr{
-    content: ' ';
-border-image: linear-gradient(to left, transparent, var(--text-accent) 45%,  var(--text-accent) 5%, transparent) 3 !important;
+/* Remove the old centered logo/symbol treatment for all HR style-setting classes. */
+.markdown-rendered hr::after,
+.markdown-preview-view hr::after,
+.cm-line hr::after {
+    content: none;
+    display: none;
 }
 
 .HyperMD-header :is(.cm-header-1, .cm-header-2, .cm-header-3, .cm-header-4, .cm-header-5, .cm-header-6), .markdown-rendered :is(h1, h2, h3, h4, h5, h6){
