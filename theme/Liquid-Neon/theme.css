@@ -23,6 +23,8 @@
   --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
+  /* Near-black label: 13:1 on cyan, 4.9:1 on violet, 6.9:1 on magenta — all > 3:1 AA (SKY-1586) */
+  --ln-graph-text: var(--LN-graph-text, #111118);
 
   /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
   --ln-sidebar-icon: var(--ln-cyan);
@@ -178,6 +180,9 @@
   --ln-color-warning: #FFD700;
   --ln-color-danger: #FF4444;
   --ln-color-info: var(--ln-cyan);
+
+  /* Text — LN-30: #7878C8 passes WCAG AA (4.9:1 on darkest glass, 4.9:1 on canvas) */
+  --ln-muted: #7878C8;
 
   /* ============================================
      GLASS SURFACE — Phase 1 visual foundation
@@ -1280,7 +1285,7 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     --code-background: rgba(30, 30, 30, 0.75);
     --custom-inline: var(--code-background);
     --custom-inlineborder: var(--code-background);
-    --text-muted: #7575D0;
+    --text-muted: var(--ln-muted);
     --text-close-color: #ff909b;
     --background-close-hover: #e6647170;
     --background-close-active: #f2394c8a;
@@ -6569,6 +6574,8 @@ body {
   --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line:            var(--LN-graph-line, var(--ln-violet));
+  /* Near-black label: 13:1 on cyan, 4.9:1 on violet, 6.9:1 on magenta — all > 3:1 AA (SKY-1586) */
+  --ln-graph-text:            var(--LN-graph-text, #111118);
 
   /* SKY-541 — Glow tokens: tokens.css defines these but Obsidian only loads theme.css.
      Define here so var(--ln-glow-*) references in Phase 1–3 resolve at runtime.
@@ -7281,6 +7288,7 @@ body.LN-reduced-motion *::after {
   --graph-node-unresolved:  var(--ln-graph-node-unresolved);
   --graph-line:             var(--ln-graph-line);
   --graph-bg:               var(--color-base-00); /* opaque: canvas needs solid fill to clear between frames (fixes drag afterimage) */
+  --graph-text:             var(--ln-graph-text); /* near-black: WCAG AA on all neon fills (SKY-1586) */
 }
 
 /* ----------------------------------------------------------------
@@ -7928,6 +7936,74 @@ body {
 }
 
 /* ================================================================
-   END — SKY-1328 Dataview coverage
+   END — SKY-1328 Dataview dark coverage
    ================================================================ */
+/* ================================================================
+   SKY-1587 — Dataview plugin: full neon-glass aesthetic (LN-32)
+
+   Builds on SKY-1328 dark coverage above. Adds:
+     - LN neon border on the block-query container
+     - box-shadow glow on table headers
+     - will-change + smooth transitions on table rows
+     - neon-frame inset on row hover
+     - inline query badge
+     - result list item separators
+     - loading state fade
+   ================================================================ */
+
+/* Container neon border — bg is transparent (parent glass via LN-27) */
+.theme-dark .block-language-dataview {
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.14);
+  border-radius: var(--ln-radius-sm);
+  padding: 4px 0;
+}
+
+/* Table header glow */
+.theme-dark .dataview.table-view-table > thead > tr > th,
+.theme-dark .dataview.table-view-table > .dataview.table-view-thead > .dataview.table-view-tr-header > .dataview.table-view-th {
+  box-shadow: 0 2px 8px rgb(from var(--ln-cyan) r g b / 0.14);
+  font-weight: var(--ln-font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+
+/* Row base — compositor pre-allocation + smooth transition */
+.theme-dark .dataview.table-view-table > tbody > tr {
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+/* Row hover — neon-frame inset */
+.theme-dark .dataview.table-view-table > tbody > tr:hover {
+  background-color: rgb(from var(--ln-cyan) r g b / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.35);
+}
+
+/* Inline query output — cyan badge */
+.theme-dark .dataview-inline-query {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.07);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.25);
+  border-radius: var(--ln-radius-sm);
+  padding: 1px 4px;
+  font-size: 0.875em;
+}
+
+/* Result list item separators */
+.theme-dark .dataview.list-view-ul li,
+.theme-dark .dataview.dataview-result-list-root li {
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.06);
+  padding-bottom: 2px;
+}
+
+/* Loading state — faint, no jarring chrome */
+.theme-dark .dataview-loading {
+  color: var(--text-faint);
+  opacity: 0.7;
+}
+
+/* ================================================================
+   END — SKY-1587 Dataview LN-32 aesthetic
+   ================================================================ */
+
 
