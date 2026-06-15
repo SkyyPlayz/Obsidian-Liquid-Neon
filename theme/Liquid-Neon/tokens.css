@@ -22,6 +22,8 @@
   --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
+  /* Near-black label: 13:1 on cyan, 4.9:1 on violet, 6.9:1 on magenta — all > 3:1 AA (SKY-1586) */
+  --ln-graph-text: var(--LN-graph-text, #111118);
 
   /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
   --ln-sidebar-icon: var(--ln-cyan);
@@ -177,6 +179,9 @@
   --ln-color-warning: #FFD700;
   --ln-color-danger: #FF4444;
   --ln-color-info: var(--ln-cyan);
+
+  /* Text — LN-30: #7878C8 passes WCAG AA (4.9:1 on darkest glass, 4.9:1 on canvas) */
+  --ln-muted: #7878C8;
 
   /* ============================================
      GLASS SURFACE — Phase 1 visual foundation

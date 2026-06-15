@@ -6569,6 +6569,8 @@ body {
   --ln-graph-node-attachment: var(--LN-graph-node-attachment, var(--ln-cyan-dark));
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line:            var(--LN-graph-line, var(--ln-violet));
+  /* Near-black label: 13:1 on cyan, 4.9:1 on violet, 6.9:1 on magenta — all > 3:1 AA (SKY-1586) */
+  --ln-graph-text:            var(--LN-graph-text, #111118);
 
   /* SKY-541 — Glow tokens: tokens.css defines these but Obsidian only loads theme.css.
      Define here so var(--ln-glow-*) references in Phase 1–3 resolve at runtime.
@@ -7281,6 +7283,7 @@ body.LN-reduced-motion *::after {
   --graph-node-unresolved:  var(--ln-graph-node-unresolved);
   --graph-line:             var(--ln-graph-line);
   --graph-bg:               var(--color-base-00); /* opaque: canvas needs solid fill to clear between frames (fixes drag afterimage) */
+  --graph-text:             var(--ln-graph-text); /* near-black: WCAG AA on all neon fills (SKY-1586) */
 }
 
 /* ----------------------------------------------------------------
