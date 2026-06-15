@@ -24,6 +24,11 @@
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
 
+  /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
+  --ln-sidebar-icon: var(--ln-cyan);
+  --ln-sidebar-icon-hover: var(--ln-violet);
+  --ln-sidebar-icon-active: var(--ln-magenta);
+
   /* ============================================
      SURFACE & BACKGROUND
      ============================================ */
@@ -1495,6 +1500,124 @@ body, .workspace-drawer .nav-buttons-container, .is-mobile .view-header-nav-butt
     border-radius: var(--radius-s);
     transition: animation 0.3s, color 0.3s !important;
     color: var(--icon-color-hover);
+}
+
+/* Liquid Neon ribbon/sidebar icon tinting */
+.workspace-ribbon .clickable-icon,
+.workspace-ribbon .side-dock-ribbon-action,
+.workspace-ribbon .side-dock-ribbon-tab,
+.mod-left-split .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header-inner-icon,
+.mod-left-split .workspace-tab-header .clickable-icon,
+.mod-right-split .workspace-tab-header .clickable-icon,
+.sidebar-toggle-button.mod-left,
+.sidebar-toggle-button.mod-right,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon {
+    color: var(--ln-sidebar-icon);
+    transition: color 0.2s ease, filter 0.2s ease;
+}
+
+.workspace-ribbon .clickable-icon svg,
+.workspace-ribbon .side-dock-ribbon-action svg,
+.workspace-ribbon .side-dock-ribbon-tab svg,
+.mod-left-split .workspace-tab-header-inner-icon svg,
+.mod-right-split .workspace-tab-header-inner-icon svg,
+.mod-left-split .workspace-tab-header .clickable-icon svg,
+.mod-right-split .workspace-tab-header .clickable-icon svg,
+.sidebar-toggle-button.mod-left svg,
+.sidebar-toggle-button.mod-right svg,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg {
+    color: currentColor;
+    stroke: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg *,
+.workspace-ribbon .side-dock-ribbon-action svg *,
+.workspace-ribbon .side-dock-ribbon-tab svg *,
+.mod-left-split .workspace-tab-header-inner-icon svg *,
+.mod-right-split .workspace-tab-header-inner-icon svg *,
+.mod-left-split .workspace-tab-header .clickable-icon svg *,
+.mod-right-split .workspace-tab-header .clickable-icon svg *,
+.sidebar-toggle-button.mod-left svg *,
+.sidebar-toggle-button.mod-right svg *,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg *,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg *,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg *,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg * {
+    stroke: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg:not([fill="none"]) *,
+.workspace-ribbon .side-dock-ribbon-action svg:not([fill="none"]) *,
+.workspace-ribbon .side-dock-ribbon-tab svg:not([fill="none"]) *,
+.mod-left-split .workspace-tab-header-inner-icon svg:not([fill="none"]) *,
+.mod-right-split .workspace-tab-header-inner-icon svg:not([fill="none"]) *,
+.mod-left-split .workspace-tab-header .clickable-icon svg:not([fill="none"]) *,
+.mod-right-split .workspace-tab-header .clickable-icon svg:not([fill="none"]) *,
+.sidebar-toggle-button.mod-left svg:not([fill="none"]) *,
+.sidebar-toggle-button.mod-right svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg:not([fill="none"]) *,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg:not([fill="none"]) * {
+    fill: currentColor;
+}
+
+.workspace-ribbon .clickable-icon svg [fill]:not([fill="none"]),
+.workspace-ribbon .side-dock-ribbon-action svg [fill]:not([fill="none"]),
+.workspace-ribbon .side-dock-ribbon-tab svg [fill]:not([fill="none"]),
+.mod-left-split .workspace-tab-header-inner-icon svg [fill]:not([fill="none"]),
+.mod-right-split .workspace-tab-header-inner-icon svg [fill]:not([fill="none"]),
+.mod-left-split .workspace-tab-header .clickable-icon svg [fill]:not([fill="none"]),
+.mod-right-split .workspace-tab-header .clickable-icon svg [fill]:not([fill="none"]),
+.sidebar-toggle-button.mod-left svg [fill]:not([fill="none"]),
+.sidebar-toggle-button.mod-right svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-icon svg [fill]:not([fill="none"]),
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-icon svg [fill]:not([fill="none"]) {
+    fill: currentColor;
+}
+
+.workspace-ribbon .clickable-icon:hover,
+.workspace-ribbon .side-dock-ribbon-action:hover,
+.workspace-ribbon .side-dock-ribbon-tab:hover,
+.mod-left-split .workspace-tab-header:hover .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header:hover .workspace-tab-header-inner-icon,
+.mod-left-split .workspace-tab-header .clickable-icon:hover,
+.mod-right-split .workspace-tab-header .clickable-icon:hover,
+.sidebar-toggle-button.mod-left:hover,
+.sidebar-toggle-button.mod-right:hover,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button:hover,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button:hover,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self:hover .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self:hover .tree-item-icon {
+    color: var(--ln-sidebar-icon-hover);
+    filter: drop-shadow(0 0 6px rgb(from var(--ln-sidebar-icon-hover) r g b / 0.65));
+}
+
+.workspace-ribbon .clickable-icon.is-active,
+.workspace-ribbon .clickable-icon:active,
+.workspace-ribbon .side-dock-ribbon-action.is-active,
+.workspace-ribbon .side-dock-ribbon-action:active,
+.workspace-ribbon .side-dock-ribbon-tab.is-active,
+.workspace-ribbon .side-dock-ribbon-tab:active,
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.sidebar-toggle-button.mod-left:active,
+.sidebar-toggle-button.mod-right:active,
+.workspace-leaf-content[data-type="file-explorer"] .nav-action-button:active,
+.workspace-leaf-content[data-type="bookmarks"] .nav-action-button:active,
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self.is-active .tree-item-icon,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self.is-active .tree-item-icon {
+    color: var(--ln-sidebar-icon-active);
+    filter: drop-shadow(0 0 8px rgb(from var(--ln-sidebar-icon-active) r g b / 0.7));
 }
 
 
@@ -3778,16 +3901,16 @@ a.tag:hover {
 /* -------- Style Setting's Workspace: Background Images -------- */
 /*Applies the theme's Community Background*/
 .obsidian-app.CG-workspace-background {
-    --Obsidianbg: var(--bgimage);
+    --Obsidianbg: var(--bgimage, var(--ln-bg-image));
     --CGworkspace-background-image: var(--Obsidianbg);
 }
 /*Applies the custom image to the background*/
 .obsidian-app.CG-workspace-background.CG-workspace-background-image-custom{
-    --CGworkspace-background-image: var(--CG-workspace-background-image-custom-option);
+    --CGworkspace-background-image: var(--CG-workspace-background-image-custom-option, var(--ln-bg-image));
 }
 /*Applies the background colors as overlay for superior transparency to background image*/
 .obsidian-app{
-    background: var(--CGworkspace-background-image);
+    background: var(--CGworkspace-background-image, var(--ln-bg-image));
     background-color: var(--background-primary);
     background-blend-mode: overlay;
     background-size: 100% 100%;

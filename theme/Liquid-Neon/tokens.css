@@ -23,6 +23,11 @@
   --ln-graph-node-unresolved: var(--LN-graph-node-unresolved, var(--ln-violet-dark));
   --ln-graph-line: var(--LN-graph-line, var(--ln-violet));
 
+  /* Ribbon/sidebar icon accents — locked Liquid Neon palette */
+  --ln-sidebar-icon: var(--ln-cyan);
+  --ln-sidebar-icon-hover: var(--ln-violet);
+  --ln-sidebar-icon-active: var(--ln-magenta);
+
   /* ============================================
      SURFACE & BACKGROUND
      ============================================ */
