@@ -21,19 +21,81 @@ const SHOT_DIR = path.join(REPO_ROOT, 'docs', 'screenshots');
 // Extract with: cd /tmp && Obsidian-1.6.7.AppImage --appimage-extract
 const OBSIDIAN_BIN = '/tmp/squashfs-root/obsidian';
 const VAULT_PATH = '/home/skyy/obsidian-test-vaults/v1.6.7';
-const DISPLAY = ':99';
+const DISPLAY_NUM = ':99';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * Ensure /tmp/.X11-unix has the sticky bit (mode 1777) so Xvfb can create
+ * its socket, and return the DISPLAY string to use.
+ *
+ * In WSL2, /tmp/.X11-unix is a read-only WSLg tmpfs mount (mode 0777, no
+ * sticky bit) — Xvfb security-checks for the sticky bit and silently skips
+ * socket creation without it.  When we cannot set the sticky bit we fall
+ * back to a TCP connection so no Unix socket is needed.
+ *
+ * Returns ':99'          — Unix socket (preferred)
+ *         '127.0.0.1:99' — TCP fallback when socket dir is not fixable
+ */
+function setupXvfbDisplay() {
+  const sockDir = '/tmp/.X11-unix';
+  const S_ISVTX = 0o1000;
+  try {
+    if (!fs.existsSync(sockDir)) {
+      fs.mkdirSync(sockDir, { mode: 0o1777 });
+      return DISPLAY_NUM;
+    }
+    const st = fs.statSync(sockDir);
+    if (st.mode & S_ISVTX) return DISPLAY_NUM; // Already has sticky bit
+    fs.chmodSync(sockDir, st.mode | S_ISVTX);
+    return DISPLAY_NUM;
+  } catch {
+    // Read-only mount or permission denied — use TCP to bypass socket dir.
+    return '127.0.0.1:99';
+  }
+}
+
+/** Remove /tmp/.X{N}-lock if the recorded PID is no longer alive. */
+function removeStaleXLock(displayNum) {
+  const n = displayNum.replace(/^:/, '');
+  const lockPath = `/tmp/.X${n}-lock`;
+  try {
+    if (!fs.existsSync(lockPath)) return;
+    const pid = parseInt(fs.readFileSync(lockPath, 'utf8').trim(), 10);
+    // Check if the PID is alive by sending signal 0
+    process.kill(pid, 0);
+    // If we reach here, PID is alive — don't remove
+  } catch (e) {
+    if (e.code === 'ESRCH') {
+      // PID does not exist — remove stale lock
+      try { fs.unlinkSync(lockPath); } catch { /* ignore */ }
+    }
+    // EPERM = process exists but not ours; leave the lock alone
+  }
+}
+
 async function startXvfb() {
-  const xvfb = spawn('Xvfb', [DISPLAY, '-screen', '0', '1440x900x24'], {
-    detached: true,
-    stdio: 'ignore',
-  });
+  // Kill any running Xvfb on this display and clean stale lock
+  spawn('pkill', ['-f', `Xvfb ${DISPLAY_NUM}`]);
+  await sleep(500);
+  removeStaleXLock(DISPLAY_NUM);
+
+  const displayEnv = setupXvfbDisplay();
+  const useTcp = !displayEnv.startsWith(':');
+
+  const xvfbArgs = [DISPLAY_NUM, '-screen', '0', '1440x900x24'];
+  if (useTcp) {
+    // Enable TCP listener so Electron/Playwright can connect via 127.0.0.1:99.
+    // Note: -nolisten unix causes Xvfb to exit when no other transport is
+    // configured, so we ADD -listen tcp and tolerate the Unix socket failing.
+    xvfbArgs.push('-listen', 'tcp');
+  }
+
+  const xvfb = spawn('Xvfb', xvfbArgs, { detached: true, stdio: 'ignore' });
   xvfb.unref();
   await sleep(2000);
-  console.log('✓ Xvfb started on', DISPLAY);
-  return xvfb;
+  console.log(`✓ Xvfb started on ${DISPLAY_NUM} (DISPLAY=${displayEnv})`);
+  return displayEnv;
 }
 
 async function waitForSelector(page, selector, timeout = 15000) {
@@ -50,14 +112,14 @@ async function main() {
   console.log('Launching Obsidian to capture v0.2.0 community screenshots…');
   console.log('Output directory:', SHOT_DIR);
 
-  await startXvfb();
+  const displayEnv = await startXvfb();
 
   let app;
   try {
     app = await electron.launch({
       executablePath: OBSIDIAN_BIN,
       args: [VAULT_PATH, '--no-sandbox'],
-      env: { ...process.env, DISPLAY },
+      env: { ...process.env, DISPLAY: displayEnv },
       timeout: 45_000,
     });
   } catch (err) {
