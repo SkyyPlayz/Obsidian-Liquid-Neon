@@ -545,7 +545,7 @@ settings:
 		title: Show Header Indication
 		description: Enabling this will show the small header indicator next to headers, such as H1, H2, etc.
 		type: class-toggle
-		default: true
+		default: false
    -
       id: CG-hr
       title: Heading Dividing Line (---)
@@ -3582,8 +3582,6 @@ textarea:active, textarea:focus, input[type='text']:active, input[type='search']
     margin-left: -45px;
     margin-right: 25px;
     text-shadow: none;
-    content: 'HH';
-    color: transparent;
 }
 
 
