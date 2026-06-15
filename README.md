@@ -4,17 +4,17 @@ A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep
 
 ## Screenshots
 
-### Hero view
-![Liquid Neon main editor](docs/screenshots/hero.png)
+### Hero view — deep-black canvas with neon prose
+![Editor pane showing cyan-accented links, violet headings, and frosted-glass sidebar against a near-black background](docs/screenshots/hero.png)
 
-### Navigation and file explorer
-![File explorer with neon-frame hover](docs/screenshots/nav-hover.png)
+### Navigation and file explorer — neon frame on hover
+![File-explorer tree with electric-cyan hover frame and magenta accent on the active file row](docs/screenshots/nav-hover.png)
 
-### Graph view
-![Neon-colored graph nodes and edges](docs/screenshots/graph-view.png)
+### Graph view — neon node glow and edge arcs
+![Graph view showing cyan-glowing node clusters connected by violet edge arcs on a starfield canvas](docs/screenshots/graph-view.png)
 
-### Style Settings
-![Liquid Neon customization panel](docs/screenshots/style-settings.png)
+### Style Settings — real-time neon customization
+![Style Settings panel with color pickers for Cyan, Violet, and Magenta plus Glass and Accessibility controls](docs/screenshots/style-settings.png)
 
 ## Showcase
 
@@ -30,6 +30,8 @@ Short animated loops showing the theme's signature interactions.
 ![Graph view with neon node glow and arc connections](assets/showcase/graph-view.gif)
 
 ## Color palette
+
+Three electric accents on a near-black canvas — every token is tunable via Style Settings color pickers.
 
 | Token | Value | Role |
 |-------|-------|------|
@@ -89,7 +91,14 @@ Changing any color picker updates accent gradients, hover frames, focus rings, a
 
 #### Graph View
 
-Six color pickers for individual graph node types (default, focused, tag, attachment, unresolved) and edge lines.
+| Control | What it does |
+|---------|-------------|
+| **Node color — default** | Fill color for unvisited graph nodes. |
+| **Node color — focused** | Fill color for the currently selected node. |
+| **Node color — tag** | Fill color for tag nodes. |
+| **Node color — attachment** | Fill color for attachment (image/PDF) nodes. |
+| **Node color — unresolved** | Fill color for unresolved/missing-file nodes. |
+| **Edge color** | Color of the lines connecting nodes. |
 
 #### Accessibility
 
