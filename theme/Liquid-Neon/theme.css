@@ -4465,8 +4465,8 @@ body.is-frameless:not(.is-hidden-frameless) .titlebar-button.mod-logo{
 body.is-frameless:not(.is-hidden-frameless) .titlebar-button-container.mod-left:hover {
     background-blend-mode:multiply;
 }
-/*Removes default logo*/
-body:not(.is-hidden-frameless) svg.logo-full {
+/*Removes default logo so the themed corner symbol is the only logo in every frame mode*/
+svg.logo-full {
     display: none;
 }
 /*Classic Obsidian header*/
