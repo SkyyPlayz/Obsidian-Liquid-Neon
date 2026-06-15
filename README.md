@@ -83,9 +83,9 @@ After installing Style Settings, open **Settings → Style Settings → Liquid N
 
 | Control | Default | What it affects |
 |---------|---------|-----------------|
-| **Neon Cyan** | `#00E5FF` | Tab underlines, focus rings, active selections, scrollbar |
-| **Neon Violet** | `#8A2BE2` | Border gradients, scrollbar thumb, graph edges |
-| **Neon Magenta** | `#FF2BD6` | Hover frames, gradient endpoints, heading H3 |
+| **Neon Cyan** | `#00F0FF` | Tab underlines, focus rings, active selections, scrollbar |
+| **Neon Violet** | `#9B5FFF` | Border gradients, scrollbar thumb, graph edges |
+| **Neon Magenta** | `#FF4DFF` | Hover frames, gradient endpoints, heading H3 |
 
 Changing any color picker updates accent gradients, hover frames, focus rings, and graph node/edge colors in real time.
 
