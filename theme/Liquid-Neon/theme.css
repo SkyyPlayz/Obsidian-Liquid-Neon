@@ -5323,82 +5323,113 @@ button.clickable-icon[aria-label="Remove"]:active {
 /*#region ======= Plugins ======= */
 /*#region -------- Kanban -------- */
 
-/*Removes unnecessary line seps from kanban start box*/
-.kanban-plugin__checkbox-wrapper{
-    border-top: none;
-    border-bottom: none;
+/* ================================================================
+   SKY-1643 — Kanban plugin: neon-glass aesthetic (LN-37)
+
+   Lane  = violet glass column + neon violet left-border gradient
+   Item  = subtle cyan glass card + cyan hover frame
+   ================================================================ */
+
+/* Remove unnecessary checkbox separators */
+.kanban-plugin__checkbox-wrapper {
+  border-top: none;
+  border-bottom: none;
 }
 
-/*Removes Unneccessary background*/
-.workspace-split:not(.mod-left-split) .node-insert-event, .kanban-plugin__item-content-wrapper{
-    background-color: transparent;
+/* Transparent containers — parent glass bg shows through */
+.workspace-split:not(.mod-left-split) .node-insert-event,
+.kanban-plugin__item-content-wrapper {
+  background-color: transparent;
 }
 
-/*Sets the style for lists and spacing for hover list style*/
-.kanban-plugin__item {
-    border: transparent;
-    background: var(--background-settings-2);
-    color: var(--text-muted);
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    border-radius: 3px;
-}
-/*removes redundant default title wrapper styling*/
-.kanban-plugin__item-title-wrapper {
-    border: transparent;
-    background-color: transparent;
-}
-/*Styles internal Kanban Lane*/
-.kanban-plugin__lane-items {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
-    background-color: var(--background-primary);
-    border-radius: 5px;
-}
-/*Styles List on hover/active*/
-.kanban-plugin__item:hover, .kanban-plugin__item:active {
-    background-color: var(--text-selection);
-    color: var(--text-on-accent);
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
-}
-.kanban-plugin__item:active {
-    color: var(--text-on-accent);
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
-    background-color: var(--color-accent-active);
-}
-
-/*Styles Kanban Containers*/
+/* Lane column — violet glass surface + neon left-border gradient */
 .kanban-plugin__lane {
-    border-left: 2px solid;
-    border-right: 2px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to top, transparent, var(--text-accent), transparent);
-    background-color: var(--background-secondary);
-}
-/*Removes line seperator*/
-.kanban-plugin__lane-header-wrapper, .kanban-plugin__item-button-wrapper, .kanban-plugin__item-form {
-    border: none;
+  background: rgb(from var(--ln-violet) r g b / 0.06);
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  border-left: 2px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to bottom, transparent, var(--ln-violet), transparent);
 }
 
-/*Styled to match with finder search*/
-.kanban-plugin__search-wrapper {
-    border-bottom: 2px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right, transparent, var(--text-accent), transparent);
-    justify-content: center;
+/* Lane title / header — violet label, no separator line */
+.kanban-plugin__lane-title-wrapper,
+.kanban-plugin__lane-header-wrapper {
+  border: none;
+  background: transparent;
+  color: var(--ln-violet);
+  font-weight: var(--ln-font-weight-semibold);
 }
-/*Expand searchbox*/
+
+/* Lane title text glow */
+.kanban-plugin__lane-title {
+  color: var(--ln-violet);
+  text-shadow: 0 0 8px rgb(from var(--ln-violet) r g b / 0.40);
+}
+
+/* Button / form wrappers — no separator lines */
+.kanban-plugin__item-button-wrapper,
+.kanban-plugin__item-form {
+  border: none;
+}
+
+/* Items container — transparent with subtle cyan top/bottom borders */
+.kanban-plugin__lane-items {
+  background: transparent;
+  border-top: 1px solid rgb(from var(--ln-cyan) r g b / 0.12);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.12);
+  border-left: none;
+  border-right: none;
+}
+
+/* Item card — subtle cyan glass surface */
+.kanban-plugin__item {
+  background: rgb(from var(--ln-cyan) r g b / 0.03);
+  color: var(--text-normal);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.08);
+  border-radius: var(--ln-radius-sm);
+  transition: background var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+/* Item title — no redundant border */
+.kanban-plugin__item-title-wrapper {
+  border: none;
+  background: transparent;
+}
+
+/* Item hover — neon cyan frame + subtle glow */
+.kanban-plugin__item:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  border-color: rgb(from var(--ln-cyan) r g b / 0.35);
+  box-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.25);
+  color: var(--text-normal);
+}
+
+/* Item active — violet frame */
+.kanban-plugin__item:active {
+  background: rgb(from var(--ln-violet) r g b / 0.12);
+  border-color: rgb(from var(--ln-violet) r g b / 0.50);
+  box-shadow: 0 0 8px rgb(from var(--ln-violet) r g b / 0.30);
+  color: var(--text-normal);
+}
+
+/* Search bar — neon bottom border */
+.kanban-plugin__search-wrapper {
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.25);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  justify-content: center;
+}
+
+/* Filter input — layout preserved */
 input.kanban-plugin__filter-input {
-    width: 40%;
-    margin-right: 5px;
+  width: 40%;
+  margin-right: 5px;
 }
 /*#endregion*/
 
@@ -8005,5 +8036,166 @@ body {
 /* ================================================================
    END — SKY-1587 Dataview LN-32 aesthetic
    ================================================================ */
+/* ================================================================
+   LN-38 / SKY-1644 — obsidian-tasks plugin: neon-glass theming
+
+   CSS classes verified against obsidian-tasks-group/obsidian-tasks
+   v7.x (class names stable since v4; data-task-* attrs stable v4+).
+
+   Scope: .theme-dark only — no light-mode rules set yet.
+   ================================================================ */
+
+/*#region ---- Tasks Plugin (SKY-1644 / LN-38) ---- */
+
+/* ------ Query view: block container -------------------------------- */
+/* Subtle neon border to frame query result blocks */
+.theme-dark .block-language-tasks {
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.14);
+  border-radius: var(--ln-radius-sm);
+  padding: 4px 0;
+}
+
+/* ------ Section header (groupBy output) ---------------------------- */
+.theme-dark .tasks-header {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.35);
+  font-weight: var(--ln-font-weight-semibold);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.20);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+/* ------ Task list items -------------------------------------------- */
+/* Compositor pre-allocation + smooth hover feedback */
+.theme-dark .tasks-list-item {
+  border-radius: var(--ln-radius-sm);
+  padding: 2px 4px;
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow  var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+.theme-dark .tasks-list-item:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.06);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.28);
+}
+
+/* ------ Backlink pill --------------------------------------------- */
+.theme-dark .tasks-backlink {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.28);
+  border-radius: var(--ln-radius-sm);
+  padding: 1px 5px;
+  font-size: 0.8em;
+  text-decoration: none;
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow  var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .tasks-backlink:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.15);
+  border-color: rgb(from var(--ln-cyan) r g b / 0.50);
+  box-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.35);
+}
+
+/* ------ Count badge on task headings ------------------------------ */
+.theme-dark .tasks-count {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.10);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.30);
+  border-radius: var(--ln-radius-full);
+  padding: 1px 6px;
+  font-size: 0.8em;
+  font-weight: var(--ln-font-weight-medium);
+}
+
+/* ------ Edit / create modal --------------------------------------- */
+/* .tasks-modal is added to Obsidian's .modal element by the plugin */
+.theme-dark .tasks-modal {
+  background: var(--ln-surface-elevated);
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.38);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 30px rgb(from var(--ln-violet) r g b / 0.20),
+              inset 0 0 0 1px rgb(from var(--ln-violet) r g b / 0.18);
+  color: var(--text-normal);
+}
+
+/* Form sections inside the modal */
+.theme-dark .tasks-form-section {
+  background: rgb(from var(--ln-violet) r g b / 0.06);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.18);
+  border-radius: var(--ln-radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.theme-dark .tasks-form-section label {
+  color: var(--text-muted);
+  font-size: 0.875em;
+  font-weight: var(--ln-font-weight-medium);
+}
+
+/* ------ Priority badges ------------------------------------------- */
+/* High → magenta */
+.theme-dark [data-task-priority="high"] {
+  color: var(--ln-magenta);
+  text-shadow: 0 0 6px rgb(from var(--ln-magenta) r g b / 0.50);
+}
+
+/* Medium → cyan */
+.theme-dark [data-task-priority="medium"] {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.50);
+}
+
+/* Low → muted violet (#7878C8) */
+.theme-dark [data-task-priority="low"] {
+  color: var(--ln-muted);
+}
+
+/* None / no priority → text-muted */
+.theme-dark [data-task-priority="none"] {
+  color: var(--text-muted);
+}
+
+/* ------ Date badge colour by due-date category -------------------- */
+/* obsidian-tasks v5+ sets [data-task-due-date-category] on each    */
+/* .task-list-item in query results. Values: Overdue | Today | NotYet */
+.theme-dark [data-task-due-date-category="Overdue"] {
+  color: var(--ln-magenta);
+  text-shadow: 0 0 5px rgb(from var(--ln-magenta) r g b / 0.40);
+}
+
+.theme-dark [data-task-due-date-category="Today"] {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 5px rgb(from var(--ln-cyan) r g b / 0.40);
+}
+
+.theme-dark [data-task-due-date-category="NotYet"] {
+  color: var(--text-muted);
+}
+
+/* ------ Done tasks: muted visual ---------------------------------- */
+/* [data-task-status-type="DONE"] is set on the li element by the   */
+/* plugin. We apply muted color + strikethrough; keep checkbox full. */
+.theme-dark [data-task-status-type="DONE"] {
+  color: var(--text-faint);
+  text-decoration: line-through;
+  text-decoration-color: rgb(from var(--ln-muted) r g b / 0.50);
+}
+
+.theme-dark [data-task-status-type="DONE"] .task-list-item-checkbox {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Open tasks: Obsidian body-text default — no override needed */
+
+/*#endregion*/
+
+
 
 
