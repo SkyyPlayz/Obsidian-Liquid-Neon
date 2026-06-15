@@ -821,26 +821,6 @@ settings:
 
 */
 /* @settings
-name: Cyber Glow Support 
-id: CG-Support
-collapsed: false
-level: 0
-settings:
--
-    id: CG-github
-    title: Have a suggestion or found a problem with the theme
-    description: Submit an issue on [Github](https://github.com/ThePharaohArt/Obsidian-CyberGlow/issues)
-    type: info-text
-    markdown: true
--
-    id: CG-more-themes
-    title: My Other themes
-    description: Check out my other themes:[RetroOS 98](https://github.com/ThePharaohArt/Obsidian-RetroOS98)
-    type: info-text
-    markdown: true
-
-*/
-/* @settings
 name: Liquid Neon
 id: LN
 collapsed: false
