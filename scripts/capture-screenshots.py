@@ -19,7 +19,6 @@ import stat
 import sys
 import subprocess
 import time
-import signal
 import pathlib
 
 from PIL import Image
@@ -44,19 +43,6 @@ def sleep(s):
 
 
 def _setup_x11_display() -> str:
-    """
-    Ensure /tmp/.X11-unix has the sticky bit so Xvfb can create its socket,
-    and return the DISPLAY string to use for this run.
-
-    In WSL2 without systemd-tmpfiles, /tmp/.X11-unix is a read-only WSLg
-    tmpfs mount (mode 0777, no sticky bit) - Xvfb security-checks for the
-    sticky bit and silently skips socket creation without it.  When we can
-    neither create nor chmod the directory we fall back to TCP so no Unix
-    socket is needed.
-
-    Returns ':99'          -- Unix socket path (preferred)
-            '127.0.0.1:99' -- TCP fallback when socket dir is not fixable
-    """
     sock_dir = pathlib.Path("/tmp/.X11-unix")
     try:
         if not sock_dir.exists():
@@ -64,23 +50,21 @@ def _setup_x11_display() -> str:
             return DISPLAY_NUM
         current_mode = sock_dir.stat().st_mode
         if current_mode & stat.S_ISVTX:
-            return DISPLAY_NUM  # Already has sticky bit -- Unix socket will work
+            return DISPLAY_NUM
         os.chmod(str(sock_dir), current_mode | stat.S_ISVTX)
         return DISPLAY_NUM
     except OSError:
-        # Read-only mount or permission denied -- use TCP to bypass the socket dir.
         return "127.0.0.1:99"
 
 
 def _remove_stale_lock(display_num: str) -> None:
-    """Remove /tmp/.X{N}-lock if the recorded PID is no longer alive."""
     n = display_num.lstrip(":")
     lock = pathlib.Path(f"/tmp/.X{n}-lock")
     if not lock.exists():
         return
     try:
         pid = int(lock.read_text().strip())
-        os.kill(pid, 0)  # 0 = probe; raises ProcessLookupError if dead
+        os.kill(pid, 0)
     except ProcessLookupError:
         lock.unlink(missing_ok=True)
     except (ValueError, OSError):
@@ -97,10 +81,6 @@ def start_xvfb():
 
     xvfb_cmd = ["Xvfb", DISPLAY_NUM, "-screen", "0", f"{SCREEN_W}x{SCREEN_H}x24"]
     if use_tcp:
-        # Enable TCP listener so Xlib can connect via 127.0.0.1:99.
-        # Note: -nolisten unix causes Xvfb to exit when no other transport
-        # is configured, so we keep the default unix transport attempt and
-        # ADD tcp -- Xvfb tolerates the unix socket creation failing silently.
         xvfb_cmd += ["-listen", "tcp"]
 
     proc = subprocess.Popen(xvfb_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -131,10 +111,7 @@ def capture_screen(display) -> Image.Image:
 
 
 def send_key(display, keysym, shift=False, ctrl=False):
-    """Send a key event (press + release) using XTest."""
     keycode = display.keysym_to_keycode(keysym)
-    root = display.screen().root
-
     if ctrl:
         ctrl_code = display.keysym_to_keycode(Xlib.XK.XK_Control_L)
         Xlib.ext.xtest.fake_input(display, Xlib.X.KeyPress, ctrl_code)
@@ -158,7 +135,6 @@ def send_key(display, keysym, shift=False, ctrl=False):
 
 
 def type_string(display, text):
-    """Type a string character by character."""
     for ch in text:
         ks = Xlib.XK.string_to_keysym(ch)
         if ks == Xlib.X.NoSymbol:
@@ -180,7 +156,7 @@ def click(display, x, y, button=1):
     sleep(0.05)
     Xlib.ext.xtest.fake_input(display, Xlib.X.ButtonRelease, button)
     display.sync()
-    sleep(0.2)
+    sleep(0.3)
 
 
 def ctrl_key(display, key_sym, shift=False):
@@ -191,58 +167,99 @@ def main():
     xvfb_proc, display_env = start_xvfb()
     obs_proc = launch_obsidian(display_env)
 
-    print("Waiting for Obsidian to load (12s)...")
-    sleep(12)
+    print("Waiting for Obsidian to load (14s)...")
+    sleep(14)
 
     display = Xlib.display.Display(display_env)
 
+    # ── Focus the Obsidian window by clicking in the main area ────────────────
+    click(display, 720, 450)
+    sleep(0.5)
+
+    # ── HERO SHOT: open Test-Note.md via quick switcher ───────────────────────
+    # Test-Note.md has rich markdown content (headings, code, table, list, quote)
     print("\nCapturing hero.png...")
-    ctrl_key(display, Xlib.XK.XK_o)
-    sleep(1.0)
-    type_string(display, "Story World")
-    sleep(0.6)
+    ctrl_key(display, Xlib.XK.XK_o)  # Ctrl+O = quick open
+    sleep(1.2)
+    # Type "Test" to find Test-Note.md
+    type_string(display, "Test")
+    sleep(0.8)
     send_key(display, Xlib.XK.XK_Return)
-    sleep(2.5)
+    sleep(3.0)  # Wait for note to fully render
 
     img = capture_screen(display)
     hero_path = SHOT_DIR / "hero.png"
     img.save(str(hero_path), optimize=True)
     print(f"hero.png ({hero_path.stat().st_size:,} bytes)")
 
+    # ── NAV-HOVER: open file explorer then hover over a nav item ─────────────
+    # From hero shot analysis: ribbon is at x≈225, file tree panel at x≈250-535
+    # The Tags pane was open — click the Files ribbon icon (y≈140 in ribbon)
     print("\nCapturing nav-hover.png...")
+
+    # Click the second ribbon icon (Files) - at x≈225, y≈140
+    click(display, 225, 140)
+    sleep(1.2)
+
+    # Also try Ctrl+Shift+E to open/focus file explorer
     ctrl_key(display, Xlib.XK.XK_e, shift=True)
-    sleep(1.0)
-    mouse_move(display, 70, 130)
-    sleep(0.5)
+    sleep(1.2)
+
+    # The file list items should be at x≈390 (middle of left panel), y starts ≈130
+    # Hover over a file item near the top of the file list
+    mouse_move(display, 390, 155)
+    sleep(0.6)
+
     img = capture_screen(display)
     nav_path = SHOT_DIR / "nav-hover.png"
     img.save(str(nav_path), optimize=True)
     print(f"nav-hover.png ({nav_path.stat().st_size:,} bytes)")
 
+    # Move mouse away
     mouse_move(display, 720, 450)
     sleep(0.3)
 
+    # ── GRAPH VIEW: use command palette to open it ────────────────────────────
     print("\nCapturing graph-view.png...")
-    ctrl_key(display, Xlib.XK.XK_g, shift=True)
-    sleep(4.5)
+    # Use command palette (Ctrl+P) to search for graph
+    ctrl_key(display, Xlib.XK.XK_p)
+    sleep(1.2)
+    type_string(display, "graph")
+    sleep(0.8)
+    send_key(display, Xlib.XK.XK_Return)
+    sleep(5.0)  # Graph needs time to render nodes and edges
+
     img = capture_screen(display)
     graph_path = SHOT_DIR / "graph-view.png"
     img.save(str(graph_path), optimize=True)
     print(f"graph-view.png ({graph_path.stat().st_size:,} bytes)")
 
+    # Close graph with Escape
     send_key(display, Xlib.XK.XK_Escape)
     sleep(0.8)
 
-    print("\nCapturing style-settings.png...")
-    ctrl_key(display, Xlib.XK.XK_comma)
-    sleep(2.2)
-    click(display, 130, 200)
-    sleep(1.5)
+    # ── APPEARANCE SETTINGS ───────────────────────────────────────────────────
+    # From the style-settings screenshot: Settings panel starts at x≈130,y≈55
+    # Left nav items start at x≈175, y≈68; items are ~28px apart
+    # General(0), Editor(1), Files and links(2), Appearance(3)
+    # Appearance y ≈ 68 + 3*28 = 152
+    print("\nCapturing style-settings.png (Appearance panel)...")
+    ctrl_key(display, Xlib.XK.XK_comma)  # Ctrl+, = Settings
+    sleep(2.5)
+
+    # Click "Appearance" tab in settings left nav
+    # From analysis: Appearance is the 4th item, at approximately x=175, y=118
+    click(display, 175, 118)
+    sleep(1.8)
 
     img = capture_screen(display)
     ss_path = SHOT_DIR / "style-settings.png"
     img.save(str(ss_path), optimize=True)
     print(f"style-settings.png ({ss_path.stat().st_size:,} bytes)")
+
+    # Close settings
+    send_key(display, Xlib.XK.XK_Escape)
+    sleep(0.5)
 
     display.close()
 
