@@ -6440,60 +6440,8 @@ background-color: var(--background-primary);
     margin:0px;
 }
 
-/*Bases Layout Dropdown Appearing from behind Obsidian bug*/
-.menu.query-toolbar-menu {
-    z-index: 0;
-}
-
-.bases-toolbar-menu-item-info, .metadata-property.bases-sort-property-container, .filter-expression.metadata-property {
-    padding: 5px;
-}
-.metadata-property.bases-sort-property-container{
-    gap: 5px;
-    background-color: transparent;
-}
-
-.suggestion-item.bases-toolbar-menu-item{
-    padding: 0 7px 0 3px;
-}
-
-.bases-toolbar-menu-item:hover, .bases-toolbar-menu-item:active, .suggestion-item.is-selected, .suggestion-item.mobile-tap, .bases-query-container .filter-expression, .bases-sort-container .bases-sort-property-container .bases-sort-direction{
-    background-color: transparent;
-}
-
-.bases-toolbar-menu-item .bases-toolbar-menu-item-info{
-    border-radius: var(--radius-l);
-}
-
-.bases-table-container.node-insert-event, .bases-tbody{
-    box-shadow: none;
-    background-color: transparent;
-}
-
-.combobox-button.filter-operator:hover, .bases-toolbar-items .suggestion-group[data-group="actions"], .query-toolbar-menu .query-toolbar-section:not(:last-child), .bases-toolbar-menu-container .search-input-container{
-border: none;
-}
-.bases-query-container .filter-row, .base-toolbar-sort-item{
-    background-color: var(--background-settings-2);
-    padding: 5px 5px 5px 0;
-    border-radius: var(--radius-s);
-}
-.bases-query-container .filter-row .conjunction{
-    text-align: center;
-        min-width: 3.5rem;
-}
-.bases-query-container .filter-expression .filter-row-actions{
-    gap: 3px;
-}
-.query-toolbar-menu .query-toolbar-section-header{
-    border-radius: var(--radius-s);
-}
-.el-pre .block-language-base.bases-embed.interactive-child {
-    background: var(--background-primary);
-}
-.bases-cards-item {
-    box-shadow: none;
-}
+/* Bases layout/bug-fix rules consolidated into the dedicated LN-45 region
+   at the end of this file — see: #region Bases Native Database (LN-45) */
 
 
 /* ================================================================
@@ -8437,6 +8385,164 @@ body {
 .theme-dark .notice.plugin-templater-error {
   color: var(--ln-magenta);
   border-color: rgb(from var(--ln-magenta) r g b / 0.5);
+}
+
+/*#endregion*/
+
+/*#region ---- Bases Native Database (SKY-1920 / LN-45) ---- */
+
+/* ================================================================
+   LN-45 — Obsidian Bases (1.8+ native database view): neon-glass
+   aesthetic pass.
+
+   Intentionally global (defined at earlier points in this file):
+   - Tables §      .bases-td border/glow, .bases-tr box-shadow reset
+   - Notes/Tab §   .bases-header / .bases-thead bg + gradient border
+   - Buttons §     .bases-td.mod-implicit:hover/active
+   - Menu §        .bases-toolbar-menu-item:hover/active (global § Menu),
+                   .bases-cards-item:hover/active (global § Menu list)
+   Column-type icons and new-row/add-col CTAs inherit global button +
+   accent-color rules and need no dedicated override.
+   ================================================================ */
+
+/* ------ Bug fix: toolbar dropdown z-index --------------------- */
+/* Bases toolbar dropdown renders behind Obsidian chrome without this. */
+.menu.query-toolbar-menu {
+  z-index: 0;
+}
+
+/* ------ Table container --------------------------------------- */
+.bases-table-container.node-insert-event,
+.bases-tbody {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+/* ------ Table header — neon cyan glass ------------------------ */
+/* Overrides global Notes/Tab § gradient border-image. border-image is
+   incompatible with border-radius — use box-shadow for the glow instead. */
+.theme-dark .bases-header,
+.theme-dark .bases-thead {
+  background: rgb(from var(--ln-cyan) r g b / 0.07);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.35);
+  border-top: none;
+  border-image: none;
+  box-shadow: 0 1px 8px rgb(from var(--ln-cyan) r g b / 0.15);
+}
+
+/* ------ Table row hover --------------------------------------- */
+/* 0.05 is intentionally lighter than Dataview tbody tr:hover (0.08)
+   to keep Bases visually distinct. Bases cells use .bases-td; Dataview
+   cells use .dataview.table-view-table — no cascade bleed between them. */
+.theme-dark .bases-tr:hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.05);
+}
+
+/* ------ Card view items --------------------------------------- */
+/* Violet glass surface, matching Kanban item aesthetic (LN-37).
+   box-shadow glow avoids border-image + border-radius incompatibility. */
+.theme-dark .bases-cards-item {
+  background: rgb(from var(--ln-violet) r g b / 0.04);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.12);
+  border-radius: var(--ln-radius-sm);
+  box-shadow: none;
+  transition: background var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease,
+              box-shadow var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+.theme-dark .bases-cards-item:hover {
+  background: rgb(from var(--ln-violet) r g b / 0.10);
+  border-color: rgb(from var(--ln-violet) r g b / 0.38);
+  box-shadow: 0 0 8px rgb(from var(--ln-violet) r g b / 0.25);
+}
+
+.theme-dark .bases-cards-item:active {
+  background: rgb(from var(--ln-violet) r g b / 0.16);
+  border-color: rgb(from var(--ln-violet) r g b / 0.55);
+  box-shadow: 0 0 8px rgb(from var(--ln-violet) r g b / 0.35);
+}
+
+/* ------ Toolbar section headers ------------------------------- */
+/* Violet accent label, no underline — matches sidebar section pattern. */
+.theme-dark .query-toolbar-menu .query-toolbar-section-header {
+  color: var(--ln-violet);
+  font-weight: var(--ln-font-weight-semibold);
+  text-decoration: none;
+  border-radius: var(--ln-radius-sm);
+}
+
+/* ------ Toolbar border resets --------------------------------- */
+.combobox-button.filter-operator:hover,
+.bases-toolbar-items .suggestion-group[data-group="actions"],
+.query-toolbar-menu .query-toolbar-section:not(:last-child),
+.bases-toolbar-menu-container .search-input-container {
+  border: none;
+}
+
+/* ------ Filter / query pills ---------------------------------- */
+/* Filter row wrapper — violet glass (overrides --background-settings-2) */
+.theme-dark .bases-query-container .filter-row,
+.theme-dark .base-toolbar-sort-item {
+  background: rgb(from var(--ln-violet) r g b / 0.06);
+  padding: 5px 5px 5px 0;
+  border-radius: var(--ln-radius-sm);
+}
+
+/* Filter expression chip — violet glass matching multi-select-pill pattern */
+.theme-dark .bases-query-container .filter-expression {
+  background: rgb(from var(--ln-violet) r g b / 0.12);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.28);
+  border-radius: var(--ln-radius-sm);
+}
+
+/* Sort direction chip */
+.theme-dark .bases-sort-container .bases-sort-property-container .bases-sort-direction {
+  background: rgb(from var(--ln-violet) r g b / 0.08);
+  border-radius: var(--ln-radius-sm);
+}
+
+.bases-query-container .filter-row .conjunction {
+  text-align: center;
+  min-width: 3.5rem;
+}
+
+.bases-query-container .filter-expression .filter-row-actions {
+  gap: 3px;
+}
+
+/* ------ Toolbar menu item layout ------------------------------ */
+.bases-toolbar-menu-item-info,
+.metadata-property.bases-sort-property-container,
+.filter-expression.metadata-property {
+  padding: 5px;
+}
+
+.metadata-property.bases-sort-property-container {
+  gap: 5px;
+  background-color: transparent;
+}
+
+.suggestion-item.bases-toolbar-menu-item {
+  padding: 0 7px 0 3px;
+}
+
+/* Menu item hover/active bg comes from global § Menu; keep transparent here. */
+.bases-toolbar-menu-item:hover,
+.bases-toolbar-menu-item:active,
+.suggestion-item.is-selected,
+.suggestion-item.mobile-tap {
+  background-color: transparent;
+}
+
+.bases-toolbar-menu-item .bases-toolbar-menu-item-info {
+  border-radius: var(--radius-l);
+}
+
+/* ------ Embedded Bases block ---------------------------------- */
+.el-pre .block-language-base.bases-embed.interactive-child {
+  background: var(--background-primary);
 }
 
 /*#endregion*/
