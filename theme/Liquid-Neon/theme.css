@@ -6537,7 +6537,7 @@ settings:
   -
     id: LN-graph-node
     title: Node color
-    description: Default node fill color in the graph canvas.
+    description: Default node fill color in the graph canvas. Close and reopen the graph view after changing for colors to take effect.
     type: variable-color
     opacity: false
     format: hex
@@ -6545,7 +6545,7 @@ settings:
   -
     id: LN-graph-node-focused
     title: Focused node color
-    description: Selected / highlighted node.
+    description: Selected / highlighted node. Close and reopen the graph view after changing.
     type: variable-color
     opacity: false
     format: hex
@@ -6553,7 +6553,7 @@ settings:
   -
     id: LN-graph-node-tag
     title: Tag node color
-    description: Tag-type nodes.
+    description: Tag-type nodes. Close and reopen the graph view after changing.
     type: variable-color
     opacity: false
     format: hex
@@ -6561,7 +6561,7 @@ settings:
   -
     id: LN-graph-node-attachment
     title: Attachment node color
-    description: Attachment-type nodes.
+    description: Attachment-type nodes. Close and reopen the graph view after changing.
     type: variable-color
     opacity: false
     format: hex
@@ -6569,7 +6569,7 @@ settings:
   -
     id: LN-graph-node-unresolved
     title: Unresolved node color
-    description: Nodes with no matching note (dimmer by convention).
+    description: Nodes with no matching note (dimmer by convention). Close and reopen the graph view after changing.
     type: variable-color
     opacity: false
     format: hex
@@ -6577,7 +6577,7 @@ settings:
   -
     id: LN-graph-line
     title: Edge line color
-    description: Connection lines between graph nodes.
+    description: Connection lines between graph nodes. Close and reopen the graph view after changing.
     type: variable-color
     opacity: false
     format: hex
@@ -6621,6 +6621,14 @@ body {
      Replaces hsl(var(--color-accent-hsl)) indirection with direct --ln-cyan reference. */
   --activetab-accent: var(--ln-cyan);
   --activetab-bg: rgb(from var(--ln-cyan) r g b / 0.15);
+
+  /* h*-glow defined on body{} (0-0-1) not .theme-dark{} (0-1-0) so Style Settings h1-glow..h6-glow pickers can override */
+  --h1-glow: var(--ln-cyan);
+  --h2-glow: var(--ln-violet);
+  --h3-glow: var(--ln-magenta);
+  --h4-glow: var(--ln-violet);
+  --h5-glow: var(--ln-cyan);
+  --h6-glow: var(--ln-magenta);
 }
 
 /* ----------------------------------------------------------------
@@ -6666,14 +6674,6 @@ body {
   /* bg-primary / bg-secondary referenced by CyberGlow rgba() expressions */
   --bg-primary: 14, 14, 18;
   --bg-secondary: 18, 18, 20;
-
-  /* Heading glows → LN palette */
-  --h1-glow: var(--ln-cyan);
-  --h2-glow: var(--ln-violet);
-  --h3-glow: var(--ln-magenta);
-  --h4-glow: var(--ln-violet);
-  --h5-glow: var(--ln-cyan);
-  --h6-glow: var(--ln-magenta);
 }
 
 /* ----------------------------------------------------------------
