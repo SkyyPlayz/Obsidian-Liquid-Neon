@@ -8302,5 +8302,87 @@ body {
 }
 
 /*#endregion*/
+/*#region ---- QuickAdd Plugin (SKY-1771 / LN-43) ---- */
+/* ================================================================
+   QuickAdd choice-picker modal and suggestion list.
+   Covers .modal.quickAddModal (outer modal variant) and
+   .modal-content.quickAddModal (content-wrapper variant).
+   ================================================================ */
 
+/* Modal chrome — neon-glass surface                                */
+/* Reset the base modal border-image gradient; apply cyan LN frame. */
+.theme-dark .modal.quickAddModal,
+.theme-dark .modal-content.quickAddModal {
+  background: var(--ln-glass-bg);
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate)) !important;
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.20);
+  border-image: none;
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 20px rgb(from var(--ln-cyan) r g b / 0.12),
+              0 8px 32px rgba(0, 0, 0, 0.55);
+  color: var(--text-normal);
+}
 
+/* Modal title — cyan glow header */
+.theme-dark .modal.quickAddModal .modal-title,
+.theme-dark .quickAddModal .modal-title {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 12px rgb(from var(--ln-cyan) r g b / 0.45);
+  font-weight: var(--ln-font-weight-semibold);
+  border-bottom: 1px solid rgb(from var(--ln-cyan) r g b / 0.15);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+/* Suggestion list container — transparent so modal bg shows through */
+.theme-dark .quickAddModal .suggestion-container {
+  background: transparent;
+  border: none;
+}
+
+/* Individual choice items — base state */
+.theme-dark .quickAddModal .suggestion-item {
+  border-radius: var(--ln-radius-sm);
+  background: transparent;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow  var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+/* Hover — violet-tinted glass */
+.theme-dark .quickAddModal .suggestion-item:not(.is-selected):hover {
+  background: rgb(from var(--ln-violet) r g b / 0.10);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-violet) r g b / 0.30);
+  color: var(--text-normal);
+}
+
+/* Keyboard-selected item — cyan text + cyan frame */
+.theme-dark .quickAddModal .suggestion-item.is-selected {
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.35);
+  color: var(--ln-cyan);
+}
+
+/* Capture / text input                                             */
+/* Global LN input rules already apply via broad selectors;        */
+/* these reinforce the LN look scoped to the QuickAdd modal.       */
+.theme-dark .modal.quickAddModal input[type="text"],
+.theme-dark .quickAddModal input.prompt-input {
+  background: rgb(from var(--ln-cyan) r g b / 0.05);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.22);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  transition: border-color var(--ln-duration-fast) ease,
+              box-shadow    var(--ln-duration-fast) ease;
+}
+
+.theme-dark .modal.quickAddModal input[type="text"]:focus,
+.theme-dark .quickAddModal input.prompt-input:focus {
+  border-color: rgb(from var(--ln-cyan) r g b / 0.55);
+  box-shadow: 0 0 0 2px rgb(from var(--ln-cyan) r g b / 0.15);
+  outline: none;
+}
+
+/*#endregion*/
