@@ -8386,3 +8386,57 @@ body {
 }
 
 /*#endregion*/
+/*#region ---- Templater Plugin (LN-44) ---- */
+/* ================================================================
+   Templater template-picker modal and prompt dialogs.
+   Templater uses the standard Obsidian .prompt modal with .suggestion-item
+   children for the template chooser fuzzy list.
+   ================================================================ */
+
+/* Modal chrome — inherits from global Obsidian .prompt rules,            */
+/* adding Templater-specific accent styling as needed.                    */
+/* The global .prompt CSS handles the base glass-surface treatment.       */
+
+/* Suggestion items in the Templater modal — neon-glass list             */
+.theme-dark .prompt .suggestion-item {
+  border-radius: var(--ln-radius-sm);
+  background: transparent;
+  border-left: 1px solid transparent;
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow  var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+/* Hover — cyan-tinted glass with left border accent                      */
+.theme-dark .prompt .suggestion-item:not(.is-selected):hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.10);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.25);
+  border-left-color: var(--ln-cyan);
+  color: var(--text-normal);
+}
+
+/* Active/selected item — cyan background + left inset border             */
+.theme-dark .prompt .suggestion-item.is-selected {
+  background: rgb(from var(--ln-cyan) r g b / 0.18);
+  box-shadow: inset 2px 0 0 var(--ln-cyan);
+  border-left-color: var(--ln-cyan);
+  color: var(--ln-cyan);
+}
+
+/* Status bar item — subtle cyan hover tint                               */
+.theme-dark .status-bar-item.plugin-templater-obsidian {
+  transition: color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .status-bar-item.plugin-templater-obsidian:hover {
+  color: var(--ln-cyan);
+}
+
+/* Error notifications — Templater error color accent using magenta       */
+.theme-dark .notice.plugin-templater-error {
+  color: var(--ln-magenta);
+  border-color: rgb(from var(--ln-magenta) r g b / 0.5);
+}
+
+/*#endregion*/
