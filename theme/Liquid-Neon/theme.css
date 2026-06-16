@@ -8196,6 +8196,111 @@ body {
 
 /*#endregion*/
 
+/* ================================================================
+   LN-39 / SKY-1768 — Excalidraw plugin: neon-glass canvas theming
 
+   Scope: .theme-dark .excalidraw — Obsidian light-mode unaffected.
+   Glow via box-shadow only — border-image is incompatible with
+   border-radius (Engineering Lesson 2026-06-15).
+
+   Existing global exclusions preserved:
+     .excalidraw .color-picker__button
+     .excalidraw .help-icon
+     .excalidraw .dropdown-menu-button
+     .excalidraw .ToolIcon_type_button--show
+   ================================================================ */
+
+/*#region ---- Excalidraw Plugin (SKY-1768 / LN-39) ---- */
+
+/* ------ 1. Canvas background ------------------------------------ */
+/* Excalidraw 2.x reads --color-surface-lowest-container for the   */
+/* canvas clear color. Must be opaque — transparent causes drag     */
+/* afterimage (same root cause as graph-canvas SKY-721).           */
+.theme-dark .excalidraw {
+  --color-surface-lowest-container: #0c0c10;
+}
+
+/* ------ 2. Main toolbar (.App-toolbar) — neon-glass surface ----- */
+.theme-dark .excalidraw .App-toolbar {
+  background: rgba(12, 12, 16, 0.72);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.30);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 10px rgb(from var(--ln-cyan) r g b / 0.18),
+              inset 0 0 4px rgb(from var(--ln-cyan) r g b / 0.06);
+}
+
+/* ------ 3. Island panels (generic popups) — glass surface ------- */
+/* Overrides the coarse border-image rule from the global menu      */
+/* block (line ~2076); box-shadow glow is border-radius-safe.       */
+.theme-dark .excalidraw .Island {
+  background: rgba(12, 12, 16, 0.72);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.20);
+  border-top: none;
+  border-bottom: none;
+  border-image: none;
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 10px rgb(from var(--ln-cyan) r g b / 0.14);
+}
+
+/* ------ 4. Context menu — LN menu style ------------------------- */
+.theme-dark .excalidraw .context-menu {
+  background: rgba(12, 12, 16, 0.72);
+  backdrop-filter: blur(var(--ln-blur-sm)) saturate(var(--ln-saturate-reduced));
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.25);
+  border-top: none;
+  border-bottom: none;
+  border-image: none;
+  border-radius: var(--ln-radius-sm);
+  box-shadow: 0 0 12px rgb(from var(--ln-cyan) r g b / 0.18);
+}
+
+.theme-dark .excalidraw .context-menu li button {
+  color: var(--text-muted);
+}
+
+.theme-dark .excalidraw .context-menu li button:hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+}
+
+/* ------ 5. Modal dialogs — glass-surface (violet accent) -------- */
+.theme-dark .excalidraw .Dialog,
+.theme-dark .excalidraw .Island.App-menu__left {
+  background: var(--ln-glass-bg-solid);
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate));
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.35);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 20px rgb(from var(--ln-violet) r g b / 0.20),
+              0 0 40px rgb(from var(--ln-violet) r g b / 0.10);
+}
+
+/* Dialog title — cyan label */
+.theme-dark .excalidraw .Dialog .Dialog__title {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.40);
+}
+
+/* ------ 6. Toolbar icon hover — subtle cyan frame --------------- */
+/* .ToolIcon_type_button--show is already excluded from global glow */
+.theme-dark .excalidraw .ToolIcon__icon:hover,
+.theme-dark .excalidraw .ToolIcon_type_button:not(.ToolIcon_type_button--show):hover {
+  color: var(--ln-cyan);
+  background: rgb(from var(--ln-cyan) r g b / 0.08);
+  border-radius: var(--ln-radius-sm);
+  box-shadow: 0 0 6px rgb(from var(--ln-cyan) r g b / 0.25);
+}
+
+/* Active / selected tool — violet */
+.theme-dark .excalidraw .ToolIcon_type_button--selected .ToolIcon__icon,
+.theme-dark .excalidraw [aria-pressed="true"] .ToolIcon__icon {
+  color: var(--ln-violet);
+  background: rgb(from var(--ln-violet) r g b / 0.12);
+  box-shadow: 0 0 6px rgb(from var(--ln-violet) r g b / 0.30);
+  border-radius: var(--ln-radius-sm);
+}
+
+/*#endregion*/
 
 
