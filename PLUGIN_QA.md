@@ -201,6 +201,29 @@
 4. **Glow/effect verification:** Hover/interact with element and confirm glow/transition behavior
 5. **Log findings:** If any surface fails, document the selector, expected color, actual color, and severity
 
+### Companion Graph Refresh Smoke Test (LN-50)
+1. Install/enable the Liquid Neon Companion plugin and confirm **Auto-refresh graph on color change** is on by default in the plugin settings.
+2. Open Obsidian's Graph view and keep it visible.
+3. In Style Settings, change one graph color picker such as Node, Focused node, Tag node, Attachment node, Unresolved node, or Edge line.
+4. Confirm the graph view refreshes once within 500ms of the final picker change and shows **Liquid Neon: graph colors updated** when notices are enabled.
+5. Drag a graph color picker rapidly and confirm the graph refresh is debounced (one refresh after the drag settles, not a refresh for every intermediate value).
+6. Close all Graph views, change a graph color again, and confirm there is no error and no refresh notice.
+7. Toggle **Auto-refresh graph on color change** off, restart Obsidian, and confirm the setting persists and color changes no longer auto-refresh open graph views.
+8. Toggle **Show graph refresh notice** off and confirm graph refreshes still happen without the notice.
+
+### Companion Settings Tab Smoke Test (LN-51)
+
+1. Open **Settings → Liquid Neon Companion**. Confirm the tab opens without console errors.
+2. Verify three section headings are visible: **Background**, **Graph Colors**, **Advanced**.
+3. In the **Graph Colors** section, confirm six colour-swatch rows are present: Node, Focused node, Tag node, Attachment node, Unresolved node, Edge line.
+4. Each swatch must be a 16×16px square with `border-radius: 3px` and a visible border. Confirm its `background-color` matches the live CSS variable (open DevTools, inspect the swatch `<span>`, and compare `background-color` against `getComputedStyle(document.body).getPropertyValue('--ln-graph-node')` etc.).
+5. Open **Style Settings → Liquid Neon → Graph Colors** and change any colour. Without closing the Companion settings tab, confirm the corresponding swatch updates to the new colour within one paint frame.
+6. Confirm the **Auto-refresh graph on color change** toggle is present in the **Graph Colors** section, defaults to **on**, and persists its value across an Obsidian restart.
+7. Confirm the **Show graph refresh notice** toggle is present in the **Graph Colors** section.
+8. Confirm the notice *"Graph colors update when the graph view is reopened. Enable Auto-refresh above to automate this."* appears below the swatch rows.
+9. In the **Advanced** section, confirm the **Version** row shows `Liquid Neon Companion v{N} | Theme v{N}` with real version strings (not "unknown"), assuming the theme is installed in the active vault.
+10. Close and reopen the settings tab; confirm swatches reflect current computed values on each open.
+
 ### Pass Criteria
 - All **high** severity items must pass
 - All **medium** severity items must pass

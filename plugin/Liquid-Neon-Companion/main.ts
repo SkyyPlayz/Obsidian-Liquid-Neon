@@ -9,15 +9,26 @@ import {
   validateImagePath,
   resolvedInsideRoot,
 } from "./src/utils";
+import {
+  createDebouncedAction,
+  DEFAULT_GRAPH_REFRESH_OPTIONS,
+  GRAPH_REFRESH_DEBOUNCE_MS,
+  isStyleSettingsCssChange,
+  mutationTouchesGraphColorVariables,
+  refreshOpenGraphLeaves,
+} from "./src/graph-refresh";
 
 interface LiquidNeonSettings {
   imagePath: string;
   scrimAlpha: number;
+  autoRefreshGraphOnColorChange: boolean;
+  showGraphRefreshNotice: boolean;
 }
 
 const DEFAULT_SETTINGS: LiquidNeonSettings = {
   imagePath: "",
   scrimAlpha: 0,
+  ...DEFAULT_GRAPH_REFRESH_OPTIONS,
 };
 
 export default class LiquidNeonCompanion extends Plugin {
@@ -26,15 +37,22 @@ export default class LiquidNeonCompanion extends Plugin {
   private styleEl: HTMLStyleElement | null = null;
   private scrimEl: HTMLElement | null = null;
   private objectUrl: string | null = null;
+  private graphRefreshDebouncer: ReturnType<typeof createDebouncedAction> | null = null;
+  private graphStyleMutationObserver: MutationObserver | null = null;
+  private readonly handleStyleSettingsChanged = () => this.scheduleGraphRefresh();
 
   async onload() {
     await this.loadSettings();
     this.addSettingTab(new LiquidNeonSettingTab(this.app, this));
     await this.applyBackground();
+    this.registerGraphRefreshHandlers();
   }
 
   onunload() {
     this.cleanup();
+    this.graphRefreshDebouncer?.cancel();
+    this.graphStyleMutationObserver?.disconnect();
+    this.graphStyleMutationObserver = null;
   }
 
   // ── Public surface (called from the settings tab) ──────────────────────────
@@ -70,6 +88,43 @@ export default class LiquidNeonCompanion extends Plugin {
       URL.revokeObjectURL(this.objectUrl);
       this.objectUrl = null;
     }
+  }
+
+  private registerGraphRefreshHandlers(): void {
+    this.graphRefreshDebouncer = createDebouncedAction(
+      async () => {
+        await refreshOpenGraphLeaves(this.app, this.settings, Notice);
+      },
+      GRAPH_REFRESH_DEBOUNCE_MS
+    );
+
+    this.registerEvent(
+      (this.app.workspace as any).on("css-change", (data?: unknown) => {
+        if (isStyleSettingsCssChange(data)) this.scheduleGraphRefresh();
+      })
+    );
+
+    document.addEventListener("style-settings:changed", this.handleStyleSettingsChanged);
+    this.register(() => {
+      document.removeEventListener("style-settings:changed", this.handleStyleSettingsChanged);
+      this.graphRefreshDebouncer?.cancel();
+      this.graphStyleMutationObserver?.disconnect();
+      this.graphStyleMutationObserver = null;
+    });
+
+    this.graphStyleMutationObserver = new MutationObserver((records) => {
+      if (mutationTouchesGraphColorVariables(records)) this.scheduleGraphRefresh();
+    });
+    this.graphStyleMutationObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+      attributeOldValue: true,
+    });
+  }
+
+  private scheduleGraphRefresh(): void {
+    if (!this.settings.autoRefreshGraphOnColorChange) return;
+    this.graphRefreshDebouncer?.trigger();
   }
 
   private async imagePathToObjectUrl(filePath: string): Promise<string | null> {
@@ -238,7 +293,6 @@ class LiquidNeonSettingTab extends PluginSettingTab {
       );
     }
 
-    // ── Current image info ────────────────────────────────────────────────────
     if (this.plugin.settings.imagePath) {
       new Setting(containerEl)
         .setName("Current image")
@@ -266,6 +320,36 @@ class LiquidNeonSettingTab extends PluginSettingTab {
             `Recomputed automatically whenever you change the image.`
         );
     }
+
+    // ── Graph Refresh ─────────────────────────────────────────────────────────
+    new Setting(containerEl).setHeading().setName("Graph Refresh");
+
+    new Setting(containerEl)
+      .setName("Auto-refresh graph on color change")
+      .setDesc(
+        "When enabled, Style Settings graph color changes refresh open graph views after a 300ms debounce so new colors apply without manual reopening."
+      )
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.autoRefreshGraphOnColorChange)
+          .onChange(async (value) => {
+            this.plugin.settings.autoRefreshGraphOnColorChange = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("Show graph refresh notice")
+      .setDesc("Show a brief notice after Liquid Neon refreshes open graph views.")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.showGraphRefreshNotice)
+          .onChange(async (value) => {
+            this.plugin.settings.showGraphRefreshNotice = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
   }
 }
 
