@@ -16,6 +16,12 @@ A cyberpunk-neon Obsidian theme — electric cyan, violet, and magenta on a deep
 ### Style Settings — real-time neon customization
 ![Style Settings panel with color pickers for Cyan, Violet, and Magenta plus Glass and Accessibility controls](docs/screenshots/style-settings.png)
 
+### Kanban — neon-glass lanes
+![Kanban board with frosted-glass lane cards and neon-cyan column headers on a deep-black canvas](docs/screenshots/kanban.png)
+
+### Tasks — neon-glass query table
+![obsidian-tasks query block rendered as a neon-bordered glass table with cyan checkbox accents](docs/screenshots/tasks.png)
+
 ## Showcase
 
 Short animated loops showing the theme's signature interactions.
