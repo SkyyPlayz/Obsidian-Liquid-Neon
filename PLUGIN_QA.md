@@ -166,6 +166,27 @@
 
 ---
 
+### 13. Omnisearch (LN-49)
+
+| Surface | CSS Selectors to Verify | Expected Visual Outcome | Severity |
+|---------|------------------------|------------------------|----------|
+| **Modal overlay** | `.prompt.omnisearch-modal` | Neon-glass frame with cyan border/glow | high |
+| **Search input** | `.omnisearch-input-field .prompt-input` | Cyan border; cyan glow on focus | high |
+| **Result row base** | `.suggestion-item.omnisearch-result` | Transparent, slight rounded corners | high |
+| **Result row hover** | `.suggestion-item.omnisearch-result:hover` | Cyan-tinted glass with left border accent | high |
+| **Result row selected** | `.suggestion-item.omnisearch-result.is-selected` | Cyan background + inset left border | high |
+| **Result title** | `.omnisearch-result__title` | Cyan text with subtle glow when selected | high |
+| **File extension badge** | `.omnisearch-result__extension` | Magenta-glass pill (bg, border, text) | medium |
+| **Match count badge** | `.omnisearch-result__counter` | Magenta-glass pill with semibold text | medium |
+| **Result excerpt** | `.omnisearch-result__body` | Muted text; cyan on selected row | medium |
+| **Folder path** | `.omnisearch-result__folder-path` | Muted text; violet on selected row | medium |
+| **Text highlight** | `.omnisearch-default-highlight` | Cyan underline on matched text | medium |
+| **Keyboard hints** | `.prompt-instruction-command` | Violet-glass pill styling | medium |
+
+**Known issues:** GH#36 (none reported for Omnisearch as of 2026-06-16)
+
+---
+
 ## Test Procedure
 
 ### Setup

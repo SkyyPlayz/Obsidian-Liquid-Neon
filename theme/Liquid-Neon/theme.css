@@ -8546,3 +8546,159 @@ body {
 }
 
 /*#endregion*/
+/*#region ---- Omnisearch Plugin (LN-49) ---- */
+/* ================================================================
+   Omnisearch search overlay and result list.
+   Omnisearch is the top-10 most-installed Obsidian plugin with a
+   floating search modal — inherits from standard .prompt modal
+   with custom result row styling (.omnisearch-result).
+   ================================================================ */
+
+/* Search overlay modal — neon-glass frame */
+/* Inherits from global .prompt rules; applying Omnisearch-specific cyan glow */
+.theme-dark .prompt.omnisearch-modal {
+  background: var(--ln-glass-bg);
+  backdrop-filter: blur(var(--ln-blur)) saturate(var(--ln-saturate)) !important;
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.20);
+  border-radius: var(--ln-radius-md);
+  box-shadow: 0 0 20px rgb(from var(--ln-cyan) r g b / 0.12),
+              0 8px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* Search input field — inherits global LN input styling with cyan glow focus */
+.theme-dark .omnisearch-input-field .prompt-input {
+  background: rgb(from var(--ln-cyan) r g b / 0.05);
+  border: 1px solid rgb(from var(--ln-cyan) r g b / 0.22);
+  border-radius: var(--ln-radius-sm);
+  color: var(--text-normal);
+  transition: border-color var(--ln-duration-fast) ease,
+              box-shadow    var(--ln-duration-fast) ease;
+}
+
+.theme-dark .omnisearch-input-field .prompt-input:focus {
+  border-color: rgb(from var(--ln-cyan) r g b / 0.55);
+  box-shadow: 0 0 0 2px rgb(from var(--ln-cyan) r g b / 0.15);
+  outline: none;
+}
+
+/* Result list container — transparent so modal bg shows through */
+.theme-dark .omnisearch-modal .suggestion-container {
+  background: transparent;
+  border: none;
+}
+
+/* Search result rows — base state with compositor pre-alloc */
+.theme-dark .suggestion-item.omnisearch-result {
+  border-radius: var(--ln-radius-sm);
+  background: transparent;
+  border-left: 1px solid transparent;
+  transition: background var(--ln-duration-fast) ease,
+              box-shadow  var(--ln-duration-fast) ease,
+              border-color var(--ln-duration-fast) ease;
+  will-change: box-shadow;
+}
+
+/* Hover — cyan-tinted glass with left border accent */
+.theme-dark .suggestion-item.omnisearch-result:not(.is-selected):hover {
+  background: rgb(from var(--ln-cyan) r g b / 0.10);
+  box-shadow: inset 0 0 0 1px rgb(from var(--ln-cyan) r g b / 0.25);
+  border-left-color: var(--ln-cyan);
+  color: var(--text-normal);
+}
+
+/* Selected result — cyan background + left inset border */
+.theme-dark .suggestion-item.omnisearch-result.is-selected {
+  background: rgb(from var(--ln-cyan) r g b / 0.18);
+  box-shadow: inset 2px 0 0 var(--ln-cyan);
+  border-left-color: var(--ln-cyan);
+  color: var(--ln-cyan);
+}
+
+/* Result title — cyan accent with subtle glow */
+.theme-dark .omnisearch-result__title {
+  color: inherit;
+  transition: color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .suggestion-item.omnisearch-result.is-selected .omnisearch-result__title {
+  color: var(--ln-cyan);
+  text-shadow: 0 0 8px rgb(from var(--ln-cyan) r g b / 0.35);
+}
+
+/* File extension badge — magenta-glass pill */
+.theme-dark .omnisearch-result__extension {
+  background: rgb(from var(--ln-magenta) r g b / 0.12);
+  border: 1px solid rgb(from var(--ln-magenta) r g b / 0.28);
+  color: var(--ln-magenta);
+  border-radius: var(--ln-radius-sm);
+  padding: 2px 6px;
+  font-size: 0.75em;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+/* Match count badge — magenta-glass accent */
+.theme-dark .omnisearch-result__counter {
+  background: rgb(from var(--ln-magenta) r g b / 0.12);
+  color: var(--ln-magenta);
+  border-radius: var(--ln-radius-sm);
+  padding: 2px 6px;
+  font-size: 0.75em;
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: var(--ln-font-weight-semibold);
+}
+
+/* Result excerpt/body — muted text with cyan highlight on selection */
+.theme-dark .omnisearch-result__body {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.4;
+  transition: color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .suggestion-item.omnisearch-result.is-selected .omnisearch-result__body {
+  color: rgb(from var(--ln-cyan) r g b / 0.85);
+}
+
+/* Folder path breadcrumb — violet-muted with icon */
+.theme-dark .omnisearch-result__folder-path {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  transition: color var(--ln-duration-fast) ease;
+}
+
+.theme-dark .suggestion-item.omnisearch-result.is-selected .omnisearch-result__folder-path {
+  color: rgb(from var(--ln-violet) r g b / 0.75);
+}
+
+/* Text highlighting within results — cyan underline */
+.theme-dark .omnisearch-default-highlight {
+  background: transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--ln-cyan);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Keyboard shortcut hint chips — violet-glass pill styling */
+.theme-dark .prompt-instructions .prompt-instruction-command {
+  background: rgb(from var(--ln-violet) r g b / 0.12);
+  border: 1px solid rgb(from var(--ln-violet) r g b / 0.28);
+  color: var(--ln-violet);
+  border-radius: var(--ln-radius-sm);
+  padding: 2px 8px;
+  display: inline-block;
+  font-weight: var(--ln-font-weight-semibold);
+  font-size: 0.8em;
+  margin-right: 4px;
+}
+
+/* Hotkey display in suggestions — violet accent */
+.theme-dark .suggestion-hotkey {
+  color: var(--ln-violet);
+  font-weight: var(--ln-font-weight-semibold);
+  font-size: 0.8em;
+}
+
+/*#endregion*/
