@@ -8,6 +8,7 @@ import {
   computeScrimAlphaFromLum,
   validateImagePath,
   resolvedInsideRoot,
+  computeSoftnessVars,
 } from "./src/utils";
 import {
   createDebouncedAction,
@@ -21,6 +22,7 @@ import {
 interface LiquidNeonSettings {
   imagePath: string;
   scrimAlpha: number;
+  softnessValue: number;
   autoRefreshGraphOnColorChange: boolean;
   showGraphRefreshNotice: boolean;
 }
@@ -28,6 +30,7 @@ interface LiquidNeonSettings {
 const DEFAULT_SETTINGS: LiquidNeonSettings = {
   imagePath: "",
   scrimAlpha: 0,
+  softnessValue: 50,
   ...DEFAULT_GRAPH_REFRESH_OPTIONS,
 };
 
@@ -45,6 +48,7 @@ export default class LiquidNeonCompanion extends Plugin {
     await this.loadSettings();
     this.addSettingTab(new LiquidNeonSettingTab(this.app, this));
     await this.applyBackground();
+    this.applySoftness();
     this.registerGraphRefreshHandlers();
   }
 
@@ -53,6 +57,9 @@ export default class LiquidNeonCompanion extends Plugin {
     this.graphRefreshDebouncer?.cancel();
     this.graphStyleMutationObserver?.disconnect();
     this.graphStyleMutationObserver = null;
+    document.body.style.removeProperty("--ln-blur");
+    document.body.style.removeProperty("--ln-surface-opacity");
+    document.body.style.removeProperty("--ln-saturate");
   }
 
   // ── Public surface (called from the settings tab) ──────────────────────────
@@ -73,6 +80,27 @@ export default class LiquidNeonCompanion extends Plugin {
     await this.saveSettings();
 
     this.injectScrim(alpha);
+  }
+
+  /** Live-updates the scrim opacity without re-scanning the image. */
+  async setScrimAlpha(alpha: number): Promise<void> {
+    this.settings.scrimAlpha = alpha;
+    await this.saveSettings();
+    if (this.scrimEl) {
+      this.scrimEl.style.backgroundColor = `rgba(0,0,0,${alpha.toFixed(3)})`;
+    } else if (alpha > 0) {
+      this.injectScrim(alpha);
+    }
+  }
+
+  /** Injects the three glass-depth CSS variables onto document.body. */
+  applySoftness(): void {
+    const { blur, opacity, saturate } = computeSoftnessVars(this.settings.softnessValue);
+    Object.assign(document.body.style, {
+      "--ln-blur": blur,
+      "--ln-surface-opacity": String(opacity),
+      "--ln-saturate": saturate,
+    });
   }
 
   // ── Private helpers ────────────────────────────────────────────────────────
@@ -319,6 +347,27 @@ class LiquidNeonSettingTab extends PluginSettingTab {
             `over the brightest decile of your background image. ` +
             `Recomputed automatically whenever you change the image.`
         );
+
+      new Setting(containerEl)
+        .setName("Scrim opacity")
+        .setDesc("Override the auto-computed scrim opacity (0–100%). Drag to adjust live.")
+        .addSlider((slider) =>
+          slider
+            .setLimits(0, 100, 1)
+            .setValue(Math.round(this.plugin.settings.scrimAlpha * 100))
+            .setDynamicTooltip()
+            .onChange(async (value) => {
+              await this.plugin.setScrimAlpha(value / 100);
+            })
+        )
+        .addButton((btn) =>
+          btn
+            .setButtonText("Reset to auto")
+            .onClick(async () => {
+              await this.plugin.applyBackground();
+              this.display();
+            })
+        );
     }
 
     // ── Graph Refresh ─────────────────────────────────────────────────────────
@@ -347,6 +396,26 @@ class LiquidNeonSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.showGraphRefreshNotice = value;
             await this.plugin.saveSettings();
+          })
+      );
+
+    // ── Glass & Depth ─────────────────────────────────────────────────────────
+    new Setting(containerEl).setHeading().setName("Glass & Depth");
+
+    new Setting(containerEl)
+      .setName("Softness ↔ Contrast")
+      .setDesc(
+        "0 = softest (heavy blur, semi-transparent glass)  ·  100 = sharpest (minimal blur, opaque glass)"
+      )
+      .addSlider((slider) =>
+        slider
+          .setLimits(0, 100, 1)
+          .setValue(this.plugin.settings.softnessValue)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.softnessValue = value;
+            await this.plugin.saveSettings();
+            this.plugin.applySoftness();
           })
       );
 

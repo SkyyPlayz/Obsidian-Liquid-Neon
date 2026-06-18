@@ -85,3 +85,24 @@ export function resolvedInsideRoot(filePath: string, root: string): boolean {
   const normalizedRoot = root.endsWith(sep) ? root.slice(0, -1) : root;
   return resolved === normalizedRoot || resolved.startsWith(normalizedRoot + sep);
 }
+
+/**
+ * Computes the three CSS variable values for the Softness↔Contrast slider.
+ *
+ * value=0 → softest: heavy blur, semi-transparent glass, high saturation.
+ * value=100 → sharpest: minimal blur, opaque glass, lower saturation.
+ *
+ * Input is clamped to [0, 100] — no extrapolation outside this range.
+ */
+export function computeSoftnessVars(value: number): {
+  blur: string;
+  opacity: number;
+  saturate: string;
+} {
+  const v = Math.min(100, Math.max(0, value));
+  return {
+    blur: `${24 - (v / 100) * 16}px`,
+    opacity: 0.58 + (v / 100) * 0.32,
+    saturate: `${160 - (v / 100) * 40}%`,
+  };
+}

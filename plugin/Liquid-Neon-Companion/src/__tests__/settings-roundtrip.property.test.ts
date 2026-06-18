@@ -7,11 +7,13 @@ import { validateImagePath, resolvedInsideRoot } from "../utils";
 interface LiquidNeonSettings {
   imagePath: string;
   scrimAlpha: number;
+  softnessValue: number;
 }
 
 const DEFAULT_SETTINGS: LiquidNeonSettings = {
   imagePath: "",
   scrimAlpha: 0,
+  softnessValue: 50,
 };
 
 /**
@@ -25,17 +27,19 @@ function simulateLoad(raw: unknown): LiquidNeonSettings {
 // ── JSON roundtrip ─────────────────────────────────────────────────────────────
 
 describe("LiquidNeonSettings JSON roundtrip", () => {
-  it("arbitrary (imagePath, scrimAlpha) survive JSON.parse(JSON.stringify(…))", () => {
+  it("arbitrary (imagePath, scrimAlpha, softnessValue) survive JSON.parse(JSON.stringify(…))", () => {
     fc.assert(
       fc.property(
         fc.string(),
         fc.float({ min: 0, max: Math.fround(0.85), noNaN: true }),
-        (imagePath, scrimAlpha) => {
-          const original: LiquidNeonSettings = { imagePath, scrimAlpha };
+        fc.integer({ min: 0, max: 100 }),
+        (imagePath, scrimAlpha, softnessValue) => {
+          const original: LiquidNeonSettings = { imagePath, scrimAlpha, softnessValue };
           const rt = JSON.parse(JSON.stringify(original)) as LiquidNeonSettings;
           return (
             rt.imagePath === imagePath &&
-            Math.abs(rt.scrimAlpha - scrimAlpha) < 1e-10
+            Math.abs(rt.scrimAlpha - scrimAlpha) < 1e-10 &&
+            rt.softnessValue === softnessValue
           );
         }
       )
@@ -47,6 +51,7 @@ describe("LiquidNeonSettings JSON roundtrip", () => {
       const merged = simulateLoad(nullish);
       expect(merged.imagePath).toBe("");
       expect(merged.scrimAlpha).toBe(0);
+      expect(merged.softnessValue).toBe(50);
     }
   });
 });

@@ -82,4 +82,35 @@
 
 ---
 
-*Inventory maintained by SecurityEngineer. See [SKY-373](/SKY/issues/SKY-373) and [SKY-580](/SKY/issues/SKY-580) for context.*
+---
+
+## 5. Scrim opacity slider — `settings.scrimAlpha` (manual override, SKY-2297)
+
+| Field | Value |
+|-------|-------|
+| **File** | `plugin/Liquid-Neon-Companion/main.ts` |
+| **Method** | `setScrimAlpha(alpha: number)` |
+| **Source** | Obsidian `SliderComponent` in settings tab (user drag, value 0–100) |
+| **Origin** | User interaction in settings UI; value normalized to [0, 1] by `value / 100` |
+| **Trust boundary** | Plugin settings tab → `document.body` style via `rgba()` string |
+| **Risk** | **None.** The value is an integer from a bounded slider (0–100) divided by 100. The resulting float is formatted via `Number.toFixed(3)` and placed inside an `rgba()` CSS value on an existing DOM element. No filesystem access, no untrusted external input. |
+| **Current mitigation** | SliderComponent enforces integer in [0, 100]; `alpha.toFixed(3)` produces a bounded decimal string. |
+
+---
+
+## 6. Softness slider — `settings.softnessValue` (SKY-2297)
+
+| Field | Value |
+|-------|-------|
+| **File** | `plugin/Liquid-Neon-Companion/main.ts` |
+| **Method** | `applySoftness()` via `computeSoftnessVars()` |
+| **Source** | Obsidian `SliderComponent` in settings tab (user drag, value 0–100) |
+| **Origin** | User interaction in settings UI |
+| **Trust boundary** | Plugin settings tab → `document.body.style` CSS variable injection |
+| **Risk** | **None.** Value is an integer from a bounded slider clamped to [0, 100] in `computeSoftnessVars`. All three output strings (`--ln-blur`, `--ln-surface-opacity`, `--ln-saturate`) are computed from pure arithmetic and formatted as numeric CSS values. No template injection, no external input. |
+| **Current mitigation** | `computeSoftnessVars` clamps input to [0, 100] before math. Unit tests cover boundary values. |
+| **Property test** | `src/__tests__/softness-interp.test.ts` |
+
+---
+
+*Inventory maintained by SecurityEngineer. See [SKY-373](/SKY/issues/SKY-373) and [SKY-580](/SKY/issues/SKY-580) for context. Surfaces 5–6 added by FoundingEngineer in [SKY-2297](/SKY/issues/SKY-2297).*
