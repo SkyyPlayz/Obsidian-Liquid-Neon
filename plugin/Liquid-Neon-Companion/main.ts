@@ -58,7 +58,7 @@ export default class LiquidNeonCompanion extends Plugin {
     this.graphStyleMutationObserver?.disconnect();
     this.graphStyleMutationObserver = null;
     document.body.style.removeProperty("--ln-blur");
-    document.body.style.removeProperty("--ln-surface-opacity");
+    document.body.style.removeProperty("--ln-glass-opacity");
     document.body.style.removeProperty("--ln-saturate");
   }
 
@@ -98,7 +98,7 @@ export default class LiquidNeonCompanion extends Plugin {
     const { blur, opacity, saturate } = computeSoftnessVars(this.settings.softnessValue);
     Object.assign(document.body.style, {
       "--ln-blur": blur,
-      "--ln-surface-opacity": String(opacity),
+      "--ln-glass-opacity": String(opacity),
       "--ln-saturate": saturate,
     });
   }
